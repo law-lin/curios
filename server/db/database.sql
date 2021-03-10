@@ -41,10 +41,6 @@ CREATE TYPE curios.jwt_token as (
   exp BIGINT,
 );
 
-CREATE TABLE curios.instructor as (
-  instructor_id UUID REFERENCES curios.user(user_id) ON DELETE CASCADE,
-  
-);
 CREATE TABLE curios.class as (
   class_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   course_number VARCHAR(255),
@@ -69,7 +65,6 @@ CREATE TABLE curios.user_class as (
   CONSTRAINT fk_user_class_class
     FOREIGN KEY (class_id) REFERENCES curios.class(class_id)
 );
-
 
 CREATE FUNCTION curios.current_user_id() RETURNS UUID AS $$
   SELECT current_setting('jwt.claims.user_id', true)::uuid;
