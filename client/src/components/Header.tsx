@@ -7,9 +7,12 @@ export const Header: React.FC<HeaderProps> = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   return (
     <Flex mt={2} align='center'>
-      <Heading ml={4} size='lg' fontFamily='helvetica'>
-        Curios
-      </Heading>
+      <Link as={ReachLink} to='/' style={{ textDecoration: 'none' }} mr={2}>
+        <Heading ml={4} size='lg' fontFamily='helvetica'>
+          Curios
+        </Heading>
+      </Link>
+
       <Flex ml='auto'>
         <Button mr={8} onClick={toggleColorMode}>
           Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
