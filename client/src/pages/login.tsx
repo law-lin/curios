@@ -4,13 +4,13 @@ import React from 'react';
 import { InputField } from '../components/InputField';
 import { Wrapper } from '../components/Wrapper';
 
-const Login: React.FC<{}> = ({}) => {
+const Login: React.FC<{}> = () => {
   return (
     <Wrapper variant='small'>
       <Formik
         initialValues={{ usernameOrEmail: '', password: '' }}
-        onSubmit={() => {
-          console.log('yay');
+        onSubmit={(values) => {
+          console.log(`usernameOrEmail: ${values.usernameOrEmail}`);
         }}
       >
         {() => (
