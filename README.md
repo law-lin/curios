@@ -2,6 +2,18 @@
 
 Create the necessary database in your local Postgres database.
 
+Create a `.env` file with the following keys:
+- CLIENT=pg
+- PORT=8080
+- DATABASE=curios
+- PG_USER (your Postgres user)
+- PASSWORD (your Postgres password)
+- HOST=127.0.0.1
+- PG_PORT=5432
+- POSTGRAPHILE_SCHEMA=curios
+- POSTGRAPHILE_DEFAULT_ROLE=curios_anonymous
+- JWT_SECRET (the JWT secret)
+
 Run `npx knex migrate:latest` to update your schema in the Postgres db.
 
 Run `yarn start:dev`
