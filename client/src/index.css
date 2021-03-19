@@ -7,6 +7,28 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body.light-mode {
+  background-color: #fff;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+body.dark-mode {
+  background-color: #10171d;
+  color: #dfdfdf;
+}
+
+body.dark-mode .navbar {
+  background-color: #1b2938;
+}
+
+body.dark-mode .dark-mode-toggle > button {
+  color: #999;
+}
+body.dark-mode .dark-mode-toggle > button:last-child {
+  color: lightblue;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
