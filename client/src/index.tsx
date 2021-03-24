@@ -4,9 +4,19 @@ import './index.css';
 import App from './App';
 import 'antd/dist/antd.css';
 
+import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react';
+
+const theme = extendTheme({
+  config: {
+    useSystemColorMode: true,
+    initialColorMode: 'dark',
+  },
+});
+
 ReactDOM.render(
-  <React.StrictMode>
+  <ChakraProvider theme={theme}>
+    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
     <App />
-  </React.StrictMode>,
+  </ChakraProvider>,
   document.getElementById('root')
 );
