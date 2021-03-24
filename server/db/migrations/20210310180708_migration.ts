@@ -1,4 +1,4 @@
-import * as Knex from 'knex';
+import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
   await knex.raw(`
@@ -33,16 +33,16 @@ export async function up(knex: Knex): Promise<void> {
   CREATE TABLE curios_private.user_account (
     user_id UUID PRIMARY KEY REFERENCES curios.user(user_id) ON DELETE CASCADE,
     email citext CHECK(LENGTH(email) <= 255 AND email ~ '[^@]+@[^@]+\.[^@]+') UNIQUE,
-    password TEXT NOT NULL,
+    password TEXT NOT NULL
   );
 
   CREATE TYPE curios.jwt_token as (
     role TEXT,
     user_id UUID,
-    exp BIGINT,
+    exp BIGINT
   );
 
-  CREATE TABLE curios.class as (
+  CREATE TABLE curios.class (
     class_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     course_number VARCHAR(255),
     course_name VARCHAR(255) NOT NULL,
@@ -50,13 +50,12 @@ export async function up(knex: Knex): Promise<void> {
     status BOOLEAN DEFAULT 'on', -- 'on' represents active, 'off' represents inactive
     private_posts BOOLEAN DEFAULT 'on',
     student_polls BOOLEAN DEFAULT 'on',
-    description TEXT,
-
+    description TEXT
   );
 
-  CREATE TYPE user_role AS ENUM ('instructor','student','teaching assistant')
+  CREATE TYPE user_role AS ENUM ('instructor','student','teaching assistant');
 
-  CREATE TABLE curios.user_class as (
+  CREATE TABLE curios.user_class (
     user_id UUID NOT NULL,
     class_id UUID NOT NULL,
     user_role USER_ROLE,  -- defines what kind of role that user has in a particular class
