@@ -16,7 +16,7 @@ import NotificationsView from 'views/NotificationsView';
 import MessagesView from 'views/MessagesView';
 import SearchView from 'views/SearchView';
 
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 function MainPage() {
   const [collapsed, setCollapsed] = useState(false);
