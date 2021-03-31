@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Link } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import React from 'react';
-import { InputField } from '../components/InputField';
-import { Wrapper } from '../components/Wrapper';
+import { InputField } from 'components/InputField';
+import { Wrapper } from 'components/Wrapper';
 
-const Login: React.FC<{}> = () => {
+const LoginPage: React.FC<{}> = () => {
   return (
     <Wrapper variant='small'>
       <Formik
@@ -43,4 +43,4 @@ const Login: React.FC<{}> = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

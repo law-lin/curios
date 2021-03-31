@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
-import { Layout, Menu } from 'antd';
-import {
-  BellOutlined,
-  MessageOutlined,
-  SearchOutlined,
-  VerticalLeftOutlined,
-  VerticalRightOutlined,
-} from '@ant-design/icons';
+// import { Layout, Menu } from 'antd';
+
 import 'pages/mainpage.css';
 import UserSettings from 'components/UserSettings';
 import useDarkMode from 'use-dark-mode';
@@ -15,22 +9,36 @@ import { Switch, Route, Link } from 'react-router-dom';
 import NotificationsView from 'views/NotificationsView';
 import MessagesView from 'views/MessagesView';
 import SearchView from 'views/SearchView';
-
-const { Header, Sider, Content } = Layout;
+import Sidebar from 'components/sidebar/Sidebar';
 
 function MainPage() {
-  const [collapsed, setCollapsed] = useState(false);
   const { value } = useDarkMode(false);
 
   return (
-    <Layout style={{ height: '100vh', background: 'inherit' }}>
-      <Sider
-        theme={value ? 'dark' : 'light'}
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
+    <div
+      style={{
+        background: 'inherit',
+        display: 'flex',
+      }}
+    >
+      <div style={{ display: 'flex' }}>
+        <Sidebar />
+      </div>
+
+      <main
+        style={{
+          margin: '24px 16px',
+          padding: 24,
+          minHeight: 280,
+        }}
       >
-        <div className='sider'>
+        <Switch>
+          <Route exact path={'/notifications'} component={NotificationsView} />
+          <Route exact path={'/messages'} component={MessagesView} />
+          <Route exact path={'/search'} component={SearchView} />
+        </Switch>
+      </main>
+      {/* <div className='sider'>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <div className='logo'>Curios</div>
             <Menu
@@ -39,15 +47,8 @@ function MainPage() {
               mode='inline'
               defaultSelectedKeys={['3']}
             >
-              <Menu.Item key='1' icon={<BellOutlined />}>
-                <Link to={'/notifications'}> Notifications</Link>
-              </Menu.Item>
-              <Menu.Item key='2' icon={<MessageOutlined />}>
-                <Link to={'/messages'}> Messages</Link>
-              </Menu.Item>
-              <Menu.Item key='3' icon={<SearchOutlined />}>
-                <Link to={'/search'}> Search</Link>
-              </Menu.Item>
+            
+            
               <Menu.Divider />
             </Menu>
             <div style={{ padding: '24px 20px', flex: 1 }}>
@@ -81,9 +82,9 @@ function MainPage() {
           >
             <UserSettings />
           </div>
-        </div>
-      </Sider>
-      <Content
+        </div> */}
+
+      {/* <Content
         className='site-layout-background'
         style={{
           margin: '24px 16px',
@@ -91,13 +92,9 @@ function MainPage() {
           minHeight: 280,
         }}
       >
-        <Switch>
-          <Route exact path={'/notifications'} component={NotificationsView} />
-          <Route exact path={'/messages'} component={MessagesView} />
-          <Route exact path={'/search'} component={SearchView} />
-        </Switch>
-      </Content>
-    </Layout>
+      
+      </Content> */}
+    </div>
   );
 }
 

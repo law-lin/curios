@@ -1,9 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import useDarkMode from 'use-dark-mode';
+import {
+  useColorMode,
+  Modal,
+  useDisclosure,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+} from '@chakra-ui/react';
 
 interface ButtonProps {
-  isDark: boolean;
+  colorMode: string;
   collapsed: boolean;
 }
 const Button = styled.button<ButtonProps>`
@@ -12,9 +21,11 @@ const Button = styled.button<ButtonProps>`
   cursor: pointer;
   border-radius: ${(props) => (props.collapsed ? '9999px' : '100px')};
   width: ${(props) => (props.collapsed ? '2rem' : '11rem')};
-  color: ${(props) => (props.isDark ? '#FFFFFF' : '#4F4F4F')};
-  border: 2px solid ${(props) => (props.isDark ? '#2C2E30' : '#E0E0E0')};
-  background: ${(props) => (props.isDark ? '#1E1F21' : '#FAFBFC')};
+  color: ${(props) => (props.colorMode === 'dark' ? '#FFFFFF' : '#4F4F4F')};
+  border: 2px solid
+    ${(props) => (props.colorMode === 'dark' ? '#2C2E30' : '#E0E0E0')};
+  background: ${(props) =>
+    props.colorMode === 'dark' ? '#1E1F21' : '#FAFBFC'};
   &:focus {
     outline: none;
   }
@@ -24,12 +35,23 @@ interface Props {
   collapsed: boolean;
 }
 const CreateButton = ({ collapsed }: Props) => {
-  const { value } = useDarkMode(false);
-
+  const { colorMode } = useColorMode();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Button isDark={value} collapsed={collapsed}>
-      {!collapsed ? 'Create a class or group' : '+'}
-    </Button>
+    <>
+      <Button colorMode={colorMode} collapsed={collapsed} onClick={onOpen}>
+        {!collapsed ? 'Create a class or group' : '+'}
+      </Button>
+      <Modal onClose={onClose} isOpen={isOpen} isCentered>
+        <ModalOverlay />
+
+        <ModalContent>
+          <ModalHeader>Create a class or group.</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>Ok</ModalBody>
+        </ModalContent>
+      </Modal>
+    </>
   );
 };
 

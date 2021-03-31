@@ -4,7 +4,7 @@ import MainPage from 'pages/MainPage';
 
 import './App.css';
 
-import Login from './pages/login';
+import LoginPage from './pages/LoginPage';
 import Register from './pages/register';
 
 import { Header } from 'components/Header';
@@ -13,11 +13,13 @@ function App() {
   return (
     <div className='App'>
       <Router>
+        <Header />
         <Switch>
-          <Route exact path='/' component={Header} />
-          <Route path='/login' component={Login} />
+          {/* <Route exact path='/' component={Header} /> */}
+          <Route exact path='/' component={MainPage} />
+          <Route path='/login' component={LoginPage} />
           <Route path='/register' component={Register} />
-          <Route path='/app' component={MainPage} />
+
           <MainPage />
         </Switch>
       </Router>
