@@ -27,7 +27,7 @@ const Login: React.FC<{}> = () => {
             ) {
               localStorage.setItem('token', login.data.authenticate.jwtToken);
             }
-            console.log(`jwt_token: ${login.data?.authenticate?.jwtToken}`);
+            console.log(`jwt_token: ${localStorage.getItem('token')}`);
           } catch (error) {
             console.log(error);
           }
