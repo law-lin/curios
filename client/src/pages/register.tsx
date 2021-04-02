@@ -4,17 +4,18 @@ import { useRegisterUserMutation } from '../generated/graphql';
 import React from 'react';
 import { InputField } from '../components/InputField';
 import { Wrapper } from '../components/Wrapper';
+import { useHistory } from 'react-router-dom';
 
 const Register: React.FC<{}> = () => {
   const [registerUser] = useRegisterUserMutation();
-
+  const history = useHistory();
   return (
     <Wrapper variant='small'>
       <Formik
         initialValues={{ name: '', username: '', password: '', email: '' }}
         onSubmit={async (values) => {
           try {
-            await registerUser({
+            const newUser = await registerUser({
               variables: {
                 name: values.name,
                 username: values.username,
@@ -22,6 +23,10 @@ const Register: React.FC<{}> = () => {
                 email: values.email,
               },
             });
+            console.log(
+              `${newUser.data?.registerUser?.user?.username} registered.`
+            );
+            history.push('/app');
           } catch (error) {
             console.log(error);
           }

@@ -1,24 +1,45 @@
 import { Box, Button, Flex, Link } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
+import { useAuthenticateMutation } from 'generated/graphql';
 import React from 'react';
 import { InputField } from '../components/InputField';
 import { Wrapper } from '../components/Wrapper';
 
 const Login: React.FC<{}> = () => {
+  const [authenticate] = useAuthenticateMutation();
   return (
     <Wrapper variant='small'>
       <Formik
-        initialValues={{ usernameOrEmail: '', password: '' }}
-        onSubmit={(values) => {
-          console.log(`usernameOrEmail: ${values.usernameOrEmail}`);
+        initialValues={{ email: '', password: '' }}
+        onSubmit={async (values) => {
+          try {
+            const login = await authenticate({
+              variables: {
+                email: values.email,
+                password: values.password,
+              },
+            });
+            if (
+              login &&
+              login.data &&
+              login.data.authenticate &&
+              login.data.authenticate.jwtToken
+            ) {
+              localStorage.setItem('token', login.data.authenticate.jwtToken);
+            }
+            console.log(`jwt_token: ${login.data?.authenticate?.jwtToken}`);
+          } catch (error) {
+            console.log(error);
+          }
         }}
       >
         {() => (
           <Form>
             <InputField
-              name='usernameOrEmail'
-              placeholder='username or email'
-              label='Username or Email'
+              name='email'
+              placeholder='email'
+              label='Email'
+              type='email'
             />
             <Box mt={4}>
               <InputField
