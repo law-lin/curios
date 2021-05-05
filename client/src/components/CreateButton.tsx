@@ -9,7 +9,11 @@ import {
   ModalHeader,
   ModalBody,
   ModalCloseButton,
+  Box,
+  Divider,
+  Center,
 } from '@chakra-ui/react';
+import CreateModal from './CreateModal';
 
 interface ButtonProps {
   colorMode: string;
@@ -42,15 +46,7 @@ const CreateButton = ({ collapsed }: Props) => {
       <Button colorMode={colorMode} collapsed={collapsed} onClick={onOpen}>
         {!collapsed ? 'Create a class or group' : '+'}
       </Button>
-      <Modal onClose={onClose} isOpen={isOpen} isCentered>
-        <ModalOverlay />
-
-        <ModalContent>
-          <ModalHeader>Create a class or group.</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>Ok</ModalBody>
-        </ModalContent>
-      </Modal>
+      <CreateModal onClose={onClose} isOpen={isOpen} />
     </>
   );
 };
