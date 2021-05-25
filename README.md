@@ -61,7 +61,7 @@ Some useful commands are:
 \c curios    # This will connect you to the database
 \dt          # This will list all tables in the working database
 ```
-You can use any SQL command to interact with the database too, such as `SELECT * FROM curios.user` to examine all the users.
+You can use any SQL command to interact with the database too, such as `SELECT * FROM curios.user;` to examine all the users.
 
 ## Modifying the Database
 `npx knex migrate:make migration create_table` to create a migration file (this example has create_table as the migration name)
