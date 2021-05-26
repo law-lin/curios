@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import MainPage from 'pages/MainPage';
+import MainPage from 'pages/Main';
 
-import './App.css';
+import 'App.css';
 
-import Login from './pages/login';
-import Register from './pages/register';
+import Login from 'pages/Login';
+import Register from 'pages/Register';
 
 import { Header } from 'components/Header';
 
