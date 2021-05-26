@@ -11,7 +11,7 @@ import MessagesView from 'views/MessagesView';
 import SearchView from 'views/SearchView';
 import Sidebar from 'components/sidebar/Sidebar';
 
-function MainPage() {
+function Main() {
   const { value } = useDarkMode(false);
 
   return (
@@ -98,4 +98,4 @@ function MainPage() {
   );
 }
 
-export default MainPage;
+export default Main;

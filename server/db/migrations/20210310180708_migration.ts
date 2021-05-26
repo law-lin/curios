@@ -131,7 +131,7 @@ export async function up(knex: Knex): Promise<void> {
     WHERE o.email = $1;
 
     if account.password = crypt(password, account.password) then
-      return ('curios_user', account.user_id)::curios.jwt_token;
+      return ('curios_user', account.user_id, 60)::curios.jwt_token;
     else
       return null;
     end if;
@@ -150,7 +150,7 @@ export async function up(knex: Knex): Promise<void> {
     WHERE o.email = $1;
 
     if account.password = crypt(password, account.password) then
-      return ('curios_admin', account.user_id)::curios.jwt_token;
+      return ('curios_admin', account.user_id, 60)::curios.jwt_token;
     else
       return null;
     end if;
@@ -174,4 +174,12 @@ export async function up(knex: Knex): Promise<void> {
   `);
 }
 
-export async function down(knex: Knex): Promise<void> {}
+export async function down(knex: Knex): Promise<void> {
+  await knex.raw(`
+  DROP TABLE curios_private.admin_account, curios_private.user_account, curios.user CASCADE; 
+    DROP SCHEMA curios_private, curios CASCADE;
+    DROP ROLE IF EXISTS curios_anonymous;
+    DROP ROLE IF EXISTS curios_user;
+    DROP ROLE IF EXISTS curios_admin;
+    DROP ROLE IF EXISTS curios_postgraphile;`);
+}

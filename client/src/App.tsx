@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import MainPage from 'pages/MainPage';
+import MainPage from 'pages/Main';
 
-import './App.css';
+import 'App.css';
 
-import LoginPage from './pages/LoginPage';
-import Register from './pages/register';
+import Login from 'pages/Login';
+import Register from 'pages/Register';
 
 import { Header } from 'components/Header';
 
@@ -17,7 +17,7 @@ function App() {
         <Switch>
           {/* <Route exact path='/' component={Header} /> */}
           <Route exact path='/' component={MainPage} />
-          <Route path='/login' component={LoginPage} />
+          <Route path='/login' component={Login} />
           <Route path='/register' component={Register} />
 
           <MainPage />

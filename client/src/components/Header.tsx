@@ -1,14 +1,22 @@
-import { Button, Flex, Heading, Link, useColorMode } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  Heading,
+  Link,
+  useColorMode,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import React from 'react';
 import { Link as ReachLink } from 'react-router-dom';
 interface HeaderProps {}
 
 export const Header: React.FC<HeaderProps> = () => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const headingColor = useColorModeValue('black', 'white');
   return (
     <Flex mt={2} align='center'>
       <Link as={ReachLink} to='/' style={{ textDecoration: 'none' }} mr={2}>
-        <Heading ml={4} size='lg' fontFamily='helvetica'>
+        <Heading ml={4} color={headingColor} size='lg' fontFamily='helvetica'>
           Curios
         </Heading>
       </Link>
