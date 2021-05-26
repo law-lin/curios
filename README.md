@@ -59,14 +59,15 @@ You can use pgAdmin (comes preinstalled with Postgres) to interact with the loca
 Some useful commands are:
 ```
 \c curios    # This will connect you to the database
-\dt          # This will list all tables in the working database
+\dt curios.* # This will list all tables for the curios schema
 ```
 You can use any SQL command to interact with the database too, such as `SELECT * FROM curios.user;` to examine all the users.
 
 ## Modifying the Database
-`npx knex migrate:make migration create_table` to create a migration file (this example has create_table as the migration name)
-Update this migration file as per project needs.
+`server/db/database.sql` is not actually being used - it serves as the central schema we're using in our app. Whenever a change is made to the database, it should be done by appending whatever's necessary to `server/db/database.sql` and then creating the corresponding Knex migration for it.
 
-`npx knex seed:make 01_users` to create a seed file (for dummy data).
+`npx knex migrate:make migration create_table` to create a migration file (this example has create_table as the migration name)
+
+`npx knex seed:make 01_users` to create a seed file (for dummy data). 01_users is the name of the seed file here. You must prefix the name chronologically, e.g. if the most recent seed file is `05_posts` then you must use `06` as the new seed file prefix.
 
 You will want to run `npx knex migrate:latest` whenever you make changes to the database schema so that it's reflected in the Postgres db.
