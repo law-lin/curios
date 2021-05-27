@@ -14,12 +14,13 @@ import {
   Button,
   Container,
   Heading,
+  Text,
 } from '@chakra-ui/react';
 import { SiGoogleclassroom } from 'react-icons/si';
 import { BiGroup } from 'react-icons/bi';
 const CreateModal = ({ onClose, isOpen }) => {
   return (
-    <Modal onClose={onClose} isOpen={isOpen} isCentered>
+    <Modal onClose={onClose} isOpen={isOpen} size='xl' isCentered>
       <ModalOverlay />
 
       <ModalContent>
@@ -31,9 +32,11 @@ const CreateModal = ({ onClose, isOpen }) => {
               <Center h='100%'>
                 <Container textAlign='center'>
                   <Heading textAlign='center'>Class</Heading>
-                  <Box d='flex' justifyContent='center'>
+                  <Box d='flex' m={5} justifyContent='center'>
                     <SiGoogleclassroom size={50} />
                   </Box>
+                  <Text mb={5}>Classes are a space for students, TAs, 
+                    and professors to communicate.</Text>
                   <Button>Create a new class</Button>
                 </Container>
               </Center>
@@ -43,12 +46,12 @@ const CreateModal = ({ onClose, isOpen }) => {
             </Center>
             <Box>
               <Center h='100%'>
-                <Container>
+                <Container textAlign='center'>
                   <Heading textAlign='center'>Group</Heading>
-                  <Box d='flex' justifyContent='center'>
+                  <Box d='flex' m={5} justifyContent='center'>
                     <BiGroup size={50} />
                   </Box>
-
+                  <Text mb={5}>Groups let you and your peers work together by yourselves.</Text>
                   <Button>Create a new group</Button>
                 </Container>
               </Center>
