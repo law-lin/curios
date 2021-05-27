@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Switch, Route, Link } from 'react-router-dom';
-import NewClass from 'pages/NewClass';
-import NewGroup from 'pages/NewGroup';
+import CreateClass from 'pages/CreateClass';
+import CreateGroup from 'pages/CreateGroup';
 import {
   useColorMode,
   Modal,
@@ -25,8 +25,8 @@ const CreateModal = ({ onClose, isOpen }) => {
   return (
     <>
     <Switch>
-          <Route exact path={'/newclass'} component={NewClass} />
-          <Route exact path={'/newgroup'} component={NewGroup} />
+          <Route exact path={'/createclass'} component={CreateClass} />
+          <Route exact path={'/creategroup'} component={CreateGroup} />
     </Switch>
     <Modal onClose={onClose} isOpen={isOpen} size='xl' isCentered>
       <ModalOverlay />
@@ -44,7 +44,7 @@ const CreateModal = ({ onClose, isOpen }) => {
                   </Box>
                   <Text mb={5}>Classes are a space for students, TAs, 
                     and professors to communicate.</Text>
-                  <Link to={'/newclass'}> 
+                  <Link to={'/createclass'}> 
                     <Button>Create a new class</Button>
                   </Link>
                 </Container>
@@ -61,7 +61,7 @@ const CreateModal = ({ onClose, isOpen }) => {
                     <BiGroup size={50} />
                   </Box>
                   <Text mb={5}>Groups let you and your peers work together by yourselves.</Text>
-                  <Link to={'/newgroup'}> 
+                  <Link to={'/creategroup'}> 
                     <Button>Create a new group</Button>
                   </Link>
                 </Container>
