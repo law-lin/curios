@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Switch, Route, Link } from 'react-router-dom';
+import NewClass from 'pages/NewClass';
+import NewGroup from 'pages/NewGroup';
 import {
   useColorMode,
   Modal,
@@ -20,9 +23,13 @@ import { SiGoogleclassroom } from 'react-icons/si';
 import { BiGroup } from 'react-icons/bi';
 const CreateModal = ({ onClose, isOpen }) => {
   return (
+    <>
+    <Switch>
+          <Route exact path={'/newclass'} component={NewClass} />
+          <Route exact path={'/newgroup'} component={NewGroup} />
+    </Switch>
     <Modal onClose={onClose} isOpen={isOpen} size='xl' isCentered>
       <ModalOverlay />
-
       <ModalContent>
         <ModalHeader>Create new</ModalHeader>
         <ModalCloseButton />
@@ -37,7 +44,9 @@ const CreateModal = ({ onClose, isOpen }) => {
                   </Box>
                   <Text mb={5}>Classes are a space for students, TAs, 
                     and professors to communicate.</Text>
-                  <Button>Create a new class</Button>
+                  <Link to={'/newclass'}> 
+                    <Button>Create a new class</Button>
+                  </Link>
                 </Container>
               </Center>
             </Box>
@@ -52,7 +61,9 @@ const CreateModal = ({ onClose, isOpen }) => {
                     <BiGroup size={50} />
                   </Box>
                   <Text mb={5}>Groups let you and your peers work together by yourselves.</Text>
-                  <Button>Create a new group</Button>
+                  <Link to={'/newgroup'}> 
+                    <Button>Create a new group</Button>
+                  </Link>
                 </Container>
               </Center>
             </Box>
@@ -60,6 +71,7 @@ const CreateModal = ({ onClose, isOpen }) => {
         </ModalBody>
       </ModalContent>
     </Modal>
+    </>
   );
 };
 
