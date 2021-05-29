@@ -14,7 +14,7 @@ export const Wrapper: React.FC<WrapperProps> = ({
 }) => {
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <Box
         mt={8}
         mx='auto'

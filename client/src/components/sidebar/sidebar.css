@@ -4,7 +4,6 @@
 
 .pro-sidebar .pro-sidebar-inner {
   box-shadow: inset -1px 0 0 0 rgb(120 127 133 / 12%);
-  height: 100vh;
 }
 .pro-sidebar.light .pro-sidebar-inner {
   background: #ffffff;

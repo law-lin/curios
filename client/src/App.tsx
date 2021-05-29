@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import MainPage from 'pages/Main';
+import Main from 'pages/Main';
 
 import 'App.css';
 
@@ -13,15 +13,17 @@ function App() {
   return (
     <div className='App'>
       <Router>
-        <Header />
-        <Switch>
-          {/* <Route exact path='/' component={Header} /> */}
-          <Route exact path='/' component={MainPage} />
-          <Route path='/login' component={Login} />
-          <Route path='/register' component={Register} />
+        <>
+          <Header />
+          <Switch>
+            {/* <Route  path='/' component={Header} /> */}
+            <Route exact path='/' component={Main} />
+            <Route path='/login' component={Login} />
+            <Route path='/register' component={Register} />
 
-          <MainPage />
-        </Switch>
+            <Main />
+          </Switch>
+        </>
       </Router>
     </div>
   );

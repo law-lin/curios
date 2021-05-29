@@ -19,25 +19,26 @@ function Main() {
       style={{
         background: 'inherit',
         display: 'flex',
+        flex: 1,
       }}
     >
-      <div style={{ display: 'flex' }}>
+      <aside style={{ display: 'flex' }}>
         <Sidebar />
-      </div>
+      </aside>
 
-      <main
+      <aside
         style={{
           margin: '24px 16px',
           padding: 24,
-          minHeight: 280,
         }}
       >
         <Switch>
           <Route exact path={'/notifications'} component={NotificationsView} />
           <Route exact path={'/messages'} component={MessagesView} />
           <Route exact path={'/search'} component={SearchView} />
+          <Route path={'/c/:courseId'} />
         </Switch>
-      </main>
+      </aside>
       {/* <div className='sider'>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <div className='logo'>Curios</div>
