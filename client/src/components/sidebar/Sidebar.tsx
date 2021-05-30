@@ -22,12 +22,12 @@ import CreateButton from 'components/CreateButton';
 import UserSettings from 'components/UserSettings';
 // import 'react-pro-sidebar/dist/scss/styles.css';
 
-const courseList = ['PSY 103', 'CSE 220', 'CSE 320', 'MAT 373'];
+const courseList = ['CSE 220', 'CSE 320', 'CSE/MAT 373'];
 const Courses = () => (
   <>
-    {courseList.map((course: any) => (
+    {courseList.map((course: any, index) => (
       <MenuItem>
-        <Link to={`/c/${course}`}>{course}</Link>
+        <Link to={`/c/${index + 1}`}>{course}</Link>
       </MenuItem>
     ))}
   </>

@@ -10,6 +10,7 @@ import NotificationsView from 'views/NotificationsView';
 import MessagesView from 'views/MessagesView';
 import SearchView from 'views/SearchView';
 import Sidebar from 'components/sidebar/Sidebar';
+import Course from 'views/Course';
 
 function Main() {
   const { value } = useDarkMode(false);
@@ -26,19 +27,14 @@ function Main() {
         <Sidebar />
       </aside>
 
-      <aside
-        style={{
-          margin: '24px 16px',
-          padding: 24,
-        }}
-      >
-        <Switch>
-          <Route exact path={'/notifications'} component={NotificationsView} />
-          <Route exact path={'/messages'} component={MessagesView} />
-          <Route exact path={'/search'} component={SearchView} />
-          <Route path={'/c/:courseId'} />
-        </Switch>
-      </aside>
+      <Switch>
+        <Route exact path={'/notifications'} component={NotificationsView} />
+        <Route exact path={'/messages'} component={MessagesView} />
+        <Route exact path={'/search'} component={SearchView} />
+        <Route path={'/c/:courseId/:postId'} component={Course} />
+        <Route path={'/c/:courseId'} component={Course} />
+      </Switch>
+
       {/* <div className='sider'>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <div className='logo'>Curios</div>

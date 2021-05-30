@@ -2,7 +2,19 @@ import UserSettings from 'components/UserSettings';
 import React from 'react';
 
 function NotificationsView() {
-  return <div>Notifications</div>;
+  return (
+    <>
+      <aside
+        style={{
+          margin: '24px 16px',
+          padding: 24,
+        }}
+      >
+        Notifications
+      </aside>
+      <div>More content</div>
+    </>
+  );
 }
 
 export default NotificationsView;

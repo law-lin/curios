@@ -3077,6 +3077,11 @@
     "@svgr/plugin-svgo" "^5.5.0"
     loader-utils "^2.0.0"
 
+"@szhsin/react-menu@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@szhsin/react-menu/-/react-menu-1.10.0.tgz#e4a9bfdd77164870d6daf9cafe8e1d1c84e61f0b"
+  integrity sha512-N8+OcI8JfYp5oKurbxwYkDS7o+/fPuW5bi1syVVIhaQdPJaQ+P09o3tTxmlWHTdmDzKxfw0zNhRHF7Bz5j9m0Q==
+
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-1.1.2.tgz#b1665e2c461a2cd92f4c1bbf50d5454de0d4b421"
@@ -11708,7 +11713,7 @@ prompts@2.4.0, prompts@^2.0.1:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@15, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -12324,6 +12329,13 @@ react-is@^17.0.1:
   version "17.0.1"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
+
+react-list@^0.8.16:
+  version "0.8.16"
+  resolved "https://registry.yarnpkg.com/react-list/-/react-list-0.8.16.tgz#3f19b249998de0086787da3789d35b59553ede3a"
+  integrity sha512-LSxfvdwB9Ip+E+8NBtLPW2pcIngzuV0rSoH9nMt9C2lFjZEbnoBY/ib/Zx121jPgFgg3xYkMlMXSzx5gaiP5ig==
+  dependencies:
+    prop-types "15"
 
 react-pro-sidebar@^0.6.0:
   version "0.6.0"

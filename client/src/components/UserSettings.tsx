@@ -1,16 +1,12 @@
 import React from 'react';
 
 import {
-  Menu,
-  MenuButton,
   MenuList,
-  MenuItem,
   MenuItemOption,
   MenuGroup,
   MenuOptionGroup,
   MenuIcon,
   MenuCommand,
-  MenuDivider,
   Button,
   Avatar,
   Switch,
@@ -18,9 +14,17 @@ import {
 } from '@chakra-ui/react';
 import useDarkMode from 'use-dark-mode';
 
+import {
+  Menu,
+  MenuItem,
+  MenuButton,
+  MenuDivider,
+  FocusableItem,
+} from '@szhsin/react-menu';
+import '@szhsin/react-menu/dist/index.css';
+
 const styles = {
   menuItem: {
-    padding: '0 16px',
     marginTop: '4px',
     marginBottom: '8px',
   },
@@ -58,32 +62,49 @@ const UserSettings = ({ collapsed }) => {
 
   return (
     <>
-      <Menu strategy='fixed'>
-        <MenuList right={0} width={150}>
-          <div style={styles.menuItem}>
-            <UserInfo />
-          </div>
-          <MenuDivider />
-          <div style={styles.menuItem}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span>Dark Mode</span>
-              <Switch
-                checked={colorMode === 'dark'}
-                onChange={toggleColorMode}
-              />
+      <Menu
+        menuButton={
+          <MenuButton>
+            <UserButton />
+          </MenuButton>
+        }
+        direction='top'
+        align='start'
+        offsetY={12}
+      >
+        <FocusableItem>
+          {({ ref }) => (
+            <div style={styles.menuItem}>
+              <UserInfo />
             </div>
-          </div>
+          )}
+        </FocusableItem>
 
-          <MenuItem>
-            <span>Settings</span>
-          </MenuItem>
-          <MenuItem>
-            <span>Log Out</span>
-          </MenuItem>
-        </MenuList>
-        <MenuButton
+        <MenuDivider />
+        <FocusableItem>
+          {({ ref }) => (
+            <div style={styles.menuItem}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <span style={{ marginRight: '10px' }}>Dark Mode</span>
+                <Switch
+                  checked={colorMode === 'dark'}
+                  onChange={toggleColorMode}
+                />
+              </div>
+            </div>
+          )}
+        </FocusableItem>
+
+        <MenuItem>
+          <span>Settings</span>
+        </MenuItem>
+        <MenuItem>
+          <span>Log Out</span>
+        </MenuItem>
+
+        {/* <MenuButton
           as={(props) => <UserButton {...props} collapsed={collapsed} />}
-        />
+        /> */}
       </Menu>
     </>
   );
