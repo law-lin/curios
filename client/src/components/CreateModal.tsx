@@ -24,11 +24,7 @@ import { BiGroup } from 'react-icons/bi';
 const CreateModal = ({ onClose, isOpen }) => {
   return (
     <>
-    <Switch>
-          <Route exact path={'/createclass'} component={CreateClass} />
-          <Route exact path={'/creategroup'} component={CreateGroup} />
-    </Switch>
-    <Modal onClose={onClose} isOpen={isOpen} size='xl' isCentered>
+    <Modal isOpen={isOpen} onClose={onClose} size='xl' isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Create new</ModalHeader>
@@ -44,9 +40,8 @@ const CreateModal = ({ onClose, isOpen }) => {
                   </Box>
                   <Text mb={5}>Classes are a space for students, TAs, 
                     and professors to communicate.</Text>
-                  <Link to={'/createclass'}> 
-                    <Button>Create a new class</Button>
-                  </Link>
+                  {/*HEY THIS IS IMPORTANT*/}
+                  <CreateClass onCloseM = {onClose} />
                 </Container>
               </Center>
             </Box>
@@ -61,9 +56,8 @@ const CreateModal = ({ onClose, isOpen }) => {
                     <BiGroup size={50} />
                   </Box>
                   <Text mb={5}>Groups let you and your peers work together by yourselves.</Text>
-                  <Link to={'/creategroup'}> 
-                    <Button>Create a new group</Button>
-                  </Link>
+                  {/*HEY THIS IS ALSO IMPORTANT*/}
+                  <CreateGroup onCloseM = {onClose}/>
                 </Container>
               </Center>
             </Box>
