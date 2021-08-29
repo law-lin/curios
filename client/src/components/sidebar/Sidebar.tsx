@@ -20,22 +20,24 @@ import {
 import 'components/sidebar/sidebar.css';
 import CreateButton from 'components/CreateButton';
 import UserSettings from 'components/UserSettings';
+import { Class } from 'types';
 // import 'react-pro-sidebar/dist/scss/styles.css';
 
-const courseList = ['CSE 220', 'CSE 320', 'CSE/MAT 373'];
-const Courses = () => (
-  <>
-    {courseList.map((course: any, index) => (
-      <MenuItem>
-        <Link to={`/c/${index + 1}`}>{course}</Link>
-      </MenuItem>
-    ))}
-  </>
-);
-
-const Sidebar = () => {
+const Sidebar = ({ classes }) => {
   const { colorMode } = useColorMode();
   const [collapsed, setCollapsed] = useState(false);
+
+  const Courses = () => (
+    <>
+      {classes.map((classItem: Class) => (
+        <MenuItem>
+          <Link to={`/c/${classItem.id}`}>
+            {classItem.classNumber} ({classItem.classTerm})
+          </Link>
+        </MenuItem>
+      ))}
+    </>
+  );
 
   return (
     <ProSidebar className={colorMode} collapsed={collapsed}>

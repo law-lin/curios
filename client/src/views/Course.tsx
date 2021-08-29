@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PostList, { Post } from 'components/PostList';
 import { useHistory, useParams } from 'react-router-dom';
 import { Stack, Box, Heading, Text } from '@chakra-ui/react';
+import { Class } from 'types';
 
 interface Params {
   courseId: string;
@@ -164,15 +165,23 @@ const posts = [
   },
 ];
 
-function Course() {
+interface Props {
+  classes: Class[];
+}
+function Course({ classes }: Props) {
   const { courseId, postId } = useParams<Params>();
   const history = useHistory();
 
-  const course = courses.find((course) => course.id === courseId);
+  const classItem = classes.find(
+    (classes) => classes.id === parseInt(courseId)
+  );
   const post = posts.find((post) => post.number === postId);
 
   console.log(postId);
   console.log(post);
+  if (!classItem) {
+    return <div>No such class exists!</div>;
+  }
   return (
     <>
       <aside
@@ -185,8 +194,9 @@ function Course() {
         }}
       >
         <Box p={5}>
-          <Heading size='lg'>{course?.number}</Heading>
-          <Heading size='sm'>{course?.title}</Heading>
+          <Heading size='lg'>{classItem.classNumber}</Heading>
+          <Heading size='sm'>{classItem.className}</Heading>
+          <Heading size='sm'>{classItem.classTerm}</Heading>
         </Box>
 
         <PostList

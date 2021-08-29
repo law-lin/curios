@@ -1,37 +1,23 @@
+import React from 'react';
 import { Box, Button, Flex, Link } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
-import { useAuthenticateMutation } from 'generated/graphql';
-import React from 'react';
 import { InputField } from 'components/InputField';
 import { Wrapper } from 'components/Wrapper';
+import { login } from 'lib/supabase/store';
+import { useHistory } from 'react-router-dom';
 
 const Login: React.FC<{}> = () => {
-  const [authenticate] = useAuthenticateMutation();
+  const history = useHistory();
+
+  const handleLogin = async ({ email, password }) => {
+    await login(email, password);
+  };
+
   return (
     <Wrapper variant='small'>
       <Formik
         initialValues={{ email: '', password: '' }}
-        onSubmit={async (values) => {
-          try {
-            const login = await authenticate({
-              variables: {
-                email: values.email,
-                password: values.password,
-              },
-            });
-            if (
-              login &&
-              login.data &&
-              login.data.authenticate &&
-              login.data.authenticate.jwtToken
-            ) {
-              localStorage.setItem('token', login.data.authenticate.jwtToken);
-            }
-            console.log(`jwt_token: ${localStorage.getItem('token')}`);
-          } catch (error) {
-            console.log(error);
-          }
-        }}
+        onSubmit={handleLogin}
       >
         {() => (
           <Form>

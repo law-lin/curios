@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { Layout, Menu } from 'antd';
 
 import 'pages/mainpage.css';
@@ -11,10 +11,19 @@ import MessagesView from 'views/MessagesView';
 import SearchView from 'views/SearchView';
 import Sidebar from 'components/sidebar/Sidebar';
 import Course from 'views/Course';
+import { fetchClasses } from 'lib/supabase/store';
 
 function Main() {
   const { value } = useDarkMode(false);
-
+  const [classes, setClasses] = useState([]);
+  useEffect(() => {
+    async function load() {
+      const classes = await fetchClasses();
+      console.log('Classes', classes);
+      setClasses(classes);
+    }
+    load();
+  }, []);
   return (
     <div
       style={{
@@ -24,15 +33,21 @@ function Main() {
       }}
     >
       <aside style={{ display: 'flex' }}>
-        <Sidebar />
+        <Sidebar classes={classes} />
       </aside>
 
       <Switch>
         <Route exact path={'/notifications'} component={NotificationsView} />
         <Route exact path={'/messages'} component={MessagesView} />
         <Route exact path={'/search'} component={SearchView} />
-        <Route path={'/c/:courseId/:postId'} component={Course} />
-        <Route path={'/c/:courseId'} component={Course} />
+        <Route
+          path={'/c/:courseId/:postId'}
+          component={() => <Course classes={classes} />}
+        />
+        <Route
+          path={'/c/:courseId'}
+          component={() => <Course classes={classes} />}
+        />
       </Switch>
 
       {/* <div className='sider'>

@@ -22,6 +22,7 @@ import {
   FocusableItem,
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
+import { logout } from 'lib/supabase/store';
 
 const styles = {
   menuItem: {
@@ -98,7 +99,7 @@ const UserSettings = ({ collapsed }) => {
         <MenuItem>
           <span>Settings</span>
         </MenuItem>
-        <MenuItem>
+        <MenuItem onClick={logout}>
           <span>Log Out</span>
         </MenuItem>
 
