@@ -44,7 +44,7 @@ const CreateButton = ({ collapsed }: Props) => {
   return (
     <>
       <Button colorMode={colorMode} collapsed={collapsed} onClick={onOpen}>
-        {!collapsed ? 'Create a class or group' : '+'}
+        {!collapsed ? 'Create a Class or Group' : '+'}
       </Button>
       <CreateModal onClose={onClose} isOpen={isOpen} />
     </>
