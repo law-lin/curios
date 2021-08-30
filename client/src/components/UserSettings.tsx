@@ -23,6 +23,7 @@ import {
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import { logout } from 'lib/supabase/store';
+import { useUser } from 'providers/AuthProvider';
 
 const styles = {
   menuItem: {
@@ -32,12 +33,13 @@ const styles = {
 };
 
 const UserInfo = ({ collapsed }: { collapsed?: boolean }) => {
+  const { user } = useUser();
   return (
     <div style={{ display: 'flex' }}>
       <Avatar />
       {!collapsed && (
         <div style={{ margin: '0 0 0 10px' }}>
-          <span>Lawrence</span>
+          <span>{user?.name}</span>
         </div>
       )}
     </div>
