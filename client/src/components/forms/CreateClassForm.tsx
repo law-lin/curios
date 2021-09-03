@@ -57,7 +57,7 @@ const CreateClassForm = ({ onSubmit }: Props) => {
         </FormErrorMessage>
       </FormControl>
       <FormControl isInvalid={errors.name}>
-        <FormLabel htmlFor='classTerm'>Class Number</FormLabel>
+        <FormLabel htmlFor='classTerm'>Class Term</FormLabel>
         <Select
           id='classTerm'
           placeholder='Select term'
