@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
@@ -120,10 +120,17 @@ const MenuBar = ({ editor }) => {
   );
 };
 
-export default () => {
+interface Props {
+  onChange: Dispatch<SetStateAction<string>>;
+}
+
+const Editor = ({ onChange }: Props) => {
   const editor = useEditor({
     extensions: [StarterKit, Highlight, Typography],
     content: ``,
+    onUpdate({ editor }) {
+      onChange(editor.getHTML());
+    },
   });
 
   return (
@@ -133,3 +140,5 @@ export default () => {
     </div>
   );
 };
+
+export default Editor;

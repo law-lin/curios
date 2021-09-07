@@ -101,3 +101,15 @@ export const fetchClasses = async () => {
     return toCamelCase(classes);
   }
 };
+
+export const createPost = async (
+  type: string,
+  title: string,
+  content: string
+) => {
+  await supabase.from('posts').insert({
+    type,
+    title,
+    content,
+  });
+};
