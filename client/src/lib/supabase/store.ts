@@ -56,12 +56,17 @@ export const fetchUser = async (email: string): Promise<User | undefined> => {
   }
 };
 
-export const createClass = async (className: string, classNumber: string) => {
+export const createClass = async (
+  className: string,
+  classNumber: string,
+  classTerm: string
+) => {
   const currentUserId = supabase.auth.user()?.id;
   const { data } = await supabase.from('classes').insert({
     created_by: currentUserId,
     class_name: className,
     class_number: classNumber,
+    class_term: classTerm,
   });
   if (data) {
     await supabase.from('users_classes').insert({
@@ -95,4 +100,16 @@ export const fetchClasses = async () => {
     const classes = data.map((d) => d.classes);
     return toCamelCase(classes);
   }
+};
+
+export const createPost = async (
+  type: string,
+  title: string,
+  content: string
+) => {
+  await supabase.from('posts').insert({
+    type,
+    title,
+    content,
+  });
 };

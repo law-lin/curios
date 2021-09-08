@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Switch, Route, Link } from 'react-router-dom';
-import CreateClass from 'pages/CreateClass';
-import CreateGroup from 'pages/CreateGroup';
 import {
   useColorMode,
   Modal,
@@ -18,6 +16,10 @@ import {
   Container,
   Heading,
   Text,
+  FormControl,
+  FormLabel,
+  FormErrorMessage,
+  FormHelperText,
   Input,
 } from '@chakra-ui/react';
 import { SiGoogleclassroom } from 'react-icons/si';
@@ -25,6 +27,8 @@ import { BiGroup } from 'react-icons/bi';
 import ViewSlider from 'react-view-slider';
 import { InputField } from './InputField';
 import { createClass } from 'lib/supabase/store';
+import { useForm } from 'react-hook-form';
+import CreateClassForm from './forms/CreateClassForm';
 
 const CreateModal = ({ onClose, isOpen }) => {
   const [index, setIndex] = useState(1);
@@ -97,42 +101,21 @@ const CreateModal = ({ onClose, isOpen }) => {
     <>
       <ModalHeader>Create new class</ModalHeader>
       <ModalBody>
-        <Box d='flex' justifyContent='space-around' flexDir='row'>
-          <Box>
-            <Center h='100%'>
-              <Container textAlign='center'>
-                <Box d='flex' m={5} justifyContent='center'>
-                  <SiGoogleclassroom size={50} />
-                </Box>
-                <Input
-                  name='className'
-                  placeholder='e.g. Computer Science Principles'
-                  label='Class Name'
-                />
-                <Input
-                  name='classNumber'
-                  placeholder='e.g. CSE 101'
-                  label='Class Name'
-                />
-                <Box d='flex' p={5} justifyContent='space-evenly'>
-                  <Button
-                    onClick={() =>
-                      createClass('Computer Science Principles', 'CSE 101')
-                    }
-                  >
-                    Create Class
-                  </Button>
-                  <Button onClick={() =>
-                    goBack()
-                  }
-                  >
-                    Go Back
-                  </Button>
-                </Box>
-              </Container>
-            </Center>
-          </Box>
+        {/* <Box d='flex' justifyContent='space-around' flexDir='row'> */}
+        <Box>
+          <Center h='100%'>
+            <Container textAlign='center'>
+              <Box d='flex' m={5} justifyContent='center'>
+                <SiGoogleclassroom size={50} />
+              </Box>
+              <CreateClassForm onSubmit={handleClose} />
+              <Button margin={2.5} onClick={() => goBack()}>
+                Go Back
+              </Button>
+            </Container>
+          </Center>
         </Box>
+        {/* </Box> */}
       </ModalBody>
     </>
   );

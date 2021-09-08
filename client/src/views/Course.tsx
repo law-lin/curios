@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import PostList, { Post } from 'components/PostList';
 import { useHistory, useParams } from 'react-router-dom';
-import { Stack, Box, Heading, Text } from '@chakra-ui/react';
+import { Stack, Box, Heading, Text, Button } from '@chakra-ui/react';
 import { Class } from 'types';
+import PostItem from './Post';
+import NewPost from './NewPost';
 
 interface Params {
   courseId: string;
@@ -66,99 +68,46 @@ const posts = [
     date: '5/24/21',
   },
   {
+    number: '6',
     title: 'Pipeline failed',
     details:
       'For each time I submit homework, since yesterday, it always said pipeline failed, what should I do?',
     date: '5/24/21',
   },
   {
+    number: '7',
     title: 'Gitlab pipeline cancelled',
     details:
       "Im trying to submit my latest commit to gitlab, it automatically cancels the job. And even if i try to re run it, it just stays in the 'pending' state .  I've changed the .gitlab-ci.yml and tried it, it still gets cancelled as soon as I submit.",
     date: '5/24/21',
   },
   {
+    number: '8',
     title: 'Send_ack and send_nack issue?',
     details:
       'For some reason, on valgrind, getting this issue on my client.c, basically any time I send an ACK or NACK',
     date: '5/24/21',
   },
   {
+    number: '10',
     title: 'office hours?',
     details: 'I have no idea what to do!!! I have no idea what to do!!!',
     date: '5/24/21',
   },
   {
+    number: '11',
     title: 'office hours?',
     details: 'I have no idea what to do!!! I have no idea what to do!!!',
     date: '5/24/21',
   },
   {
+    number: '12',
     title: 'office hours?',
     details: 'I have no idea what to do!!! I have no idea what to do!!!',
     date: '5/24/21',
   },
   {
-    title: 'office hours?',
-    details: 'I have no idea what to do!!! I have no idea what to do!!!',
-    date: '5/24/21',
-  },
-  {
-    title: 'office hours?',
-    details: 'I have no idea what to do!!! I have no idea what to do!!!',
-    date: '5/24/21',
-  },
-  {
-    title: 'office hours?',
-    details: 'I have no idea what to do!!! I have no idea what to do!!!',
-    date: '5/24/21',
-  },
-  {
-    title: 'office hours?',
-    details: 'I have no idea what to do!!! I have no idea what to do!!!',
-    date: '5/24/21',
-  },
-  {
-    title: 'office hours?',
-    details: 'I have no idea what to do!!! I have no idea what to do!!!',
-    date: '5/24/21',
-  },
-  {
-    title: 'office hours?',
-    details: 'I have no idea what to do!!! I have no idea what to do!!!',
-    date: '5/24/21',
-  },
-  {
-    title: 'office hours?',
-    details: 'I have no idea what to do!!! I have no idea what to do!!!',
-    date: '5/24/21',
-  },
-  {
-    title: 'office hours?',
-    details: 'I have no idea what to do!!! I have no idea what to do!!!',
-    date: '5/24/21',
-  },
-  {
-    title: 'office hours?',
-    details: 'I have no idea what to do!!! I have no idea what to do!!!',
-    date: '5/24/21',
-  },
-  {
-    title: 'office hours?',
-    details: 'I have no idea what to do!!! I have no idea what to do!!!',
-    date: '5/24/21',
-  },
-  {
-    title: 'office hours?',
-    details: 'I have no idea what to do!!! I have no idea what to do!!!',
-    date: '5/24/21',
-  },
-  {
-    title: 'office hours?',
-    details: 'I have no idea what to do!!! I have no idea what to do!!!',
-    date: '5/24/21',
-  },
-  {
+    number: '13',
     title: 'office hours?',
     details: 'I have no idea what to do!!! I have no idea what to do!!!',
     date: '5/24/21',
@@ -171,6 +120,7 @@ interface Props {
 function Course({ classes }: Props) {
   const { courseId, postId } = useParams<Params>();
   const history = useHistory();
+  const [showNewPost, setShowNewPost] = useState(false);
 
   const classItem = classes.find(
     (classes) => classes.id === parseInt(courseId)
@@ -179,6 +129,7 @@ function Course({ classes }: Props) {
 
   console.log(postId);
   console.log(post);
+
   if (!classItem) {
     return <div>No such class exists!</div>;
   }
@@ -197,6 +148,9 @@ function Course({ classes }: Props) {
           <Heading size='lg'>{classItem.classNumber}</Heading>
           <Heading size='sm'>{classItem.className}</Heading>
           <Heading size='sm'>{classItem.classTerm}</Heading>
+          <Box>
+            <Button onClick={() => setShowNewPost(true)}>Add Post</Button>
+          </Box>
         </Box>
 
         <PostList
@@ -207,23 +161,7 @@ function Course({ classes }: Props) {
           }
         />
       </aside>
-      <Box flex={1}>
-        <Stack spacing={4} pt={5} px='22'>
-          <Box p={5} shadow='sm' borderWidth='1px'>
-            <Text>Question @{post?.number}</Text>
-            <Heading fontSize='xl'>{post?.title}</Heading>
-            <Text mt={4}>{post?.details}</Text>
-          </Box>
-          <Box p={5} shadow='sm' borderWidth='1px'>
-            <Heading fontSize='xl'>Instructor Answers</Heading>
-            <Text mt={4}>I can help you.</Text>
-          </Box>
-          <Box p={5} shadow='sm' borderWidth='1px'>
-            <Heading fontSize='xl'>Student Answers</Heading>
-            <Text mt={4}>I can help you.</Text>
-          </Box>
-        </Stack>
-      </Box>
+      <Box flex={1}>{showNewPost ? <NewPost /> : <PostItem post={post} />}</Box>
     </>
   );
 }
