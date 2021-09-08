@@ -121,7 +121,7 @@ const MenuBar = ({ editor }) => {
 };
 
 interface Props {
-  onChange: Dispatch<SetStateAction<string>>;
+  onChange: (newContent: string) => void;
 }
 
 const Editor = ({ onChange }: Props) => {
