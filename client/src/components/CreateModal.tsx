@@ -27,25 +27,30 @@ import { InputField } from './InputField';
 import { createClass } from 'lib/supabase/store';
 
 const CreateModal = ({ onClose, isOpen }) => {
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(1);
 
   const handleClose = () => {
-    setIndex(0);
+    setIndex(1);
     onClose();
   };
+
+  const goCreate = () => setIndex(0);
+  const goBack = () => setIndex(1);
+  const goJoin = () => setIndex(2);
+
   const renderView = ({ index, active, transitionState }) => {
     console.log(index);
     switch (index) {
       case 0:
-        return <FirstView />;
+        return <CreateView />;
       case 1:
-        return <SecondView />;
+        return <ChoiceView />;
       case 2:
         return <div>Create Group</div>;
     }
   };
 
-  const FirstView = () => (
+  const ChoiceView = () => (
     <>
       <ModalHeader>Create new</ModalHeader>
       <ModalCloseButton />
@@ -62,7 +67,7 @@ const CreateModal = ({ onClose, isOpen }) => {
                   Classes are a space for students, TAs, and professors to
                   communicate.
                 </Text>
-                <Button onClick={() => setIndex(1)}>Create Class</Button>
+                <Button onClick={() => goCreate()}>Create Class</Button>
               </Container>
             </Center>
           </Box>
@@ -79,7 +84,7 @@ const CreateModal = ({ onClose, isOpen }) => {
                 <Text mb={5}>
                   Groups let you and your peers work together by yourselves.
                 </Text>
-                <Button onClick={() => setIndex(2)}>Create Group</Button>
+                <Button onClick={() => goJoin()}>Create Group</Button>
               </Container>
             </Center>
           </Box>
@@ -88,10 +93,9 @@ const CreateModal = ({ onClose, isOpen }) => {
     </>
   );
 
-  const SecondView = () => (
+  const CreateView = () => (
     <>
       <ModalHeader>Create new class</ModalHeader>
-      <ModalCloseButton />
       <ModalBody>
         <Box d='flex' justifyContent='space-around' flexDir='row'>
           <Box>
@@ -110,14 +114,21 @@ const CreateModal = ({ onClose, isOpen }) => {
                   placeholder='e.g. CSE 101'
                   label='Class Name'
                 />
-
-                <Button
-                  onClick={() =>
-                    createClass('Computer Science Principles', 'CSE 101')
+                <Box d='flex' p={5} justifyContent='space-evenly'>
+                  <Button
+                    onClick={() =>
+                      createClass('Computer Science Principles', 'CSE 101')
+                    }
+                  >
+                    Create Class
+                  </Button>
+                  <Button onClick={() =>
+                    goBack()
                   }
-                >
-                  Create Class
-                </Button>
+                  >
+                    Go Back
+                  </Button>
+                </Box>
               </Container>
             </Center>
           </Box>
@@ -130,7 +141,7 @@ const CreateModal = ({ onClose, isOpen }) => {
       <Modal isOpen={isOpen} onClose={handleClose} size='xl' isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ViewSlider renderView={renderView} numViews={2} activeView={index} />
+          <ViewSlider renderView={renderView} numViews={2} activeView={index} keepViewsMounted={false}/>
         </ModalContent>
       </Modal>
     </>
