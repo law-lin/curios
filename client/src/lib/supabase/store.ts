@@ -1,6 +1,6 @@
 import { User } from 'types';
 import toCamelCase from 'utils/toCamelCase';
-import { supabase } from '.';
+import supabase from '.';
 
 export const register = async (
   email: string,

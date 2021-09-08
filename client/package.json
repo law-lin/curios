@@ -31,6 +31,7 @@
     "react-list": "^0.8.16",
     "react-loading": "^2.0.3",
     "react-pro-sidebar": "^0.6.0",
+    "react-query": "^3.23.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "sass": "^1.39.0",

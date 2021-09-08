@@ -7,4 +7,4 @@ const supabaseServerKey: string =
 const supabase = createClient(supabaseUrl, supabaseServerKey);
 
 // Export for usage by the rest of the app
-export { supabase };
+export default supabase;

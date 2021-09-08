@@ -1,6 +1,6 @@
 import React, { useEffect, useState, createContext, useContext } from 'react';
 import { Session, Subscription } from '@supabase/supabase-js';
-import { supabase } from 'lib/supabase';
+import supabase from 'lib/supabase';
 import { User } from 'types';
 import { fetchUser } from 'lib/supabase/store';
 import { useHistory } from 'react-router-dom';

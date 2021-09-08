@@ -5,15 +5,19 @@ import { InputField } from '../components/InputField';
 import { Wrapper } from '../components/Wrapper';
 import { useHistory } from 'react-router-dom';
 import { register } from 'lib/supabase/store';
+import useCreateUser from 'hooks/useCreateUser';
 
 const Register: React.FC<{}> = () => {
   const history = useHistory();
 
-  const handleRegister = async ({ email, password, name }) => {
-    await register(email, password, name);
-    history.push('/verify-email');
-  };
+  const createUserMutation = useCreateUser();
 
+  const handleRegister = async ({ email, password, name }) => {
+    // await register(email, password, name);
+    createUserMutation.mutate({ email, password, name });
+    console.log('SUCCESS', createUserMutation.isSuccess);
+  };
+  console.log('SUCCESS RENDER', createUserMutation.isSuccess);
   return (
     <Wrapper variant='small'>
       <Formik

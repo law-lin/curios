@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 
 import { ChakraProvider, ColorModeScript, extendTheme } from '@chakra-ui/react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const theme = extendTheme({
   config: {
@@ -12,11 +13,21 @@ const theme = extendTheme({
   },
 });
 
-ReactDOM.render(
-  <ChakraProvider theme={theme}>
-    <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 0,
+    },
+  },
+});
 
-    <App />
-  </ChakraProvider>,
+ReactDOM.render(
+  <QueryClientProvider client={queryClient}>
+    <ChakraProvider theme={theme}>
+      <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+      <App />
+    </ChakraProvider>
+  </QueryClientProvider>,
+
   document.getElementById('root')
 );
