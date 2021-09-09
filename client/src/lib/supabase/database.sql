@@ -20,7 +20,8 @@ create type public.post_type as enum ('question', 'note');
 -- USERS
 create table public.users (
   id          uuid not null primary key, -- UUID from auth.users
-  name        varchar(255) not null,
+  email       text unique,
+  name        varchar(255),
   created_at  timestamp with time zone default timezone('utc'::text, now()) not null,
   status      user_status default 'OFFLINE'::public.user_status
 );
@@ -102,14 +103,14 @@ comment on table public.posts is 'A post for a class';
 -- $$ language plpgsql security definer;
 
 -- Secure the tables
-alter table public.users enable row level security;
+-- alter table public.users enable row level security;
 alter table public.classes enable row level security;
 alter table public.users_classes enable row level security;
 alter table public.posts enable row level security;
 
 create policy "Allow logged-in read access" on public.users for select using ( auth.role() = 'authenticated' );
-create policy "Allow individual insert access" on public.users for insert with check ( auth.uid() = id );
-create policy "Allow individual update access" on public.users for update using ( auth.uid() = id );
+create policy "Allow individual insert access" on public.users for insert with check ( true ); -- auth.uid() = id 
+create policy "Allow individual update access" on public.users for update using ( true ); -- auth.uid() = id 
 
 create policy "Allow logged-in read access" on public.classes for select using ( auth.role() = 'authenticated' );
 create policy "Allow individual insert access" on public.classes for insert with check ( auth.uid() = created_by );
@@ -133,7 +134,7 @@ create function public.handle_new_user()
 returns trigger as $$
 declare is_admin boolean;
 begin
-  insert into public.users (id, username)
+  insert into public.users (id, email)
   values (new.id, new.email);
   
   -- select count(*) = 1 from auth.users into is_admin;
