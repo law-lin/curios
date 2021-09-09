@@ -52,7 +52,7 @@ const PostList = ({ courseId, posts, handleClick }) => {
   };
 
   return (
-    <Box h='85vh' overflow='auto'>
+    <Box maxH='78vh' overflow='auto'>
       <ReactList
         itemRenderer={(index, key) => PostCard(index, key, handleClick)}
         length={posts.length}
