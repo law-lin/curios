@@ -1,11 +1,12 @@
 drop table if exists public.users cascade;
 drop table if exists public.classes cascade;
 drop table if exists public.users_classes cascade;
-
+drop table if exists public.posts cascade;
 -- drop type if exists public.app_permission cascade;
 -- drop type if exists public.app_role cascade;
 drop type if exists public.user_role cascade;
 drop type if exists public.user_status cascade;
+drop type if exists public.post_type cascade;
 
 drop function if exists public.authorize(app_permission, uuid) cascade;
 drop function if exists public.handle_new_user() cascade;
@@ -15,7 +16,7 @@ drop function if exists public.handle_new_user() cascade;
 -- create type public.app_role as enum ('admin', 'moderator');
 create type public.user_role as enum ('instructor', 'student', 'teaching assistant');
 create type public.user_status as enum ('ONLINE', 'OFFLINE');
-
+create type public.post_type as enum ('question', 'note');
 -- USERS
 create table public.users (
   id          uuid not null primary key, -- UUID from auth.users
@@ -51,9 +52,13 @@ comment on table public.users_classes is 'Role a user has for a particular class
 
 -- POSTS
 create table public.posts (
-  id serial primary key
+  id serial primary key,
+  created_by uuid references public.users on delete cascade not null,
   post_id bigint not null,
   class_id bigint references public.classes on delete cascade not null,
+  type post_type,
+  title text,
+  content text,
   unique (post_id, class_id)
 );
 comment on table public.posts is 'A post for a class';
@@ -100,6 +105,7 @@ comment on table public.posts is 'A post for a class';
 alter table public.users enable row level security;
 alter table public.classes enable row level security;
 alter table public.users_classes enable row level security;
+alter table public.posts enable row level security;
 
 create policy "Allow logged-in read access" on public.users for select using ( auth.role() = 'authenticated' );
 create policy "Allow individual insert access" on public.users for insert with check ( auth.uid() = id );
@@ -114,6 +120,10 @@ create policy "Allow logged-in read access" on public.users_classes for select u
 create policy "Allow individual insert access" on public.users_classes for insert with check ( auth.uid() = user_id );
 create policy "Allow individual update access" on public.users_classes for update using ( auth.uid() = user_id );
 
+create policy "Allow logged-in read access" on public.posts for select using ( auth.role() = 'authenticated' );
+create policy "Allow individual insert access" on public.posts for insert with check ( auth.uid() = created_by );
+create policy "Allow individual delete access" on public.posts for delete using ( auth.uid() = created_by );
+create policy "Allow authorized delete access" on public.posts for delete using ( auth.uid() = created_by );
 -- Send "previous data" on change 
 alter table public.users replica identity full; 
 alter table public.classes replica identity full; 
