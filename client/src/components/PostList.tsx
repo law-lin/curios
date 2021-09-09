@@ -15,11 +15,11 @@ export interface Post {
 
 const PostList = ({ courseId, posts, handleClick }) => {
   const location = useLocation();
-
+  console.log('RERENDER');
   const PostCard = (index, key, handleClick) => {
     const isActive = !!matchPath(
       location.pathname,
-      `/c/${courseId}/${posts[index].number}`
+      `/c/${courseId}/p/${posts[index].number}`
     );
 
     return (

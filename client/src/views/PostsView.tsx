@@ -1,36 +1,10 @@
 import React, { useState } from 'react';
 import PostList, { Post } from 'components/PostList';
-import { useHistory, useParams } from 'react-router-dom';
-import { Stack, Box, Heading, Text, Button } from '@chakra-ui/react';
+import { useParams, useHistory, Route } from 'react-router-dom';
+import { Box, Heading, Button } from '@chakra-ui/react';
 import { Class } from 'types';
-import PostItem from './Post';
 import NewPost from './NewPost';
-
-interface Params {
-  courseId: string;
-  postId?: string;
-}
-
-const courses = [
-  {
-    id: '1',
-    title: 'Systems Fundamentals I',
-    number: 'CSE 220',
-    term: 'Fall 2021',
-  },
-  {
-    id: '2',
-    title: 'Systems Fundamentals II',
-    number: 'CSE 320',
-    term: 'Fall 2021',
-  },
-  {
-    id: '3',
-    title: 'Analysis of Algorithms',
-    number: 'CSE/MAT 373',
-    term: 'Fall 2021',
-  },
-];
+import PostView from './PostView';
 
 const posts = [
   {
@@ -114,25 +88,25 @@ const posts = [
   },
 ];
 
-interface Props {
-  classes: Class[];
+interface Params {
+  courseId: string;
+  postId: string;
 }
-function Course({ classes }: Props) {
+
+interface Props {
+  classItem: Class;
+}
+
+function PostsView({ classItem }: Props) {
+  const { classNumber, className, classTerm } = classItem;
   const { courseId, postId } = useParams<Params>();
-  const history = useHistory();
   const [showNewPost, setShowNewPost] = useState(false);
 
-  const classItem = classes.find(
-    (classes) => classes.id === parseInt(courseId)
-  );
+  const history = useHistory();
   const post = posts.find((post) => post.number === postId);
 
-  console.log(postId);
-  console.log(post);
-
-  if (!classItem) {
-    return <div>No such class exists!</div>;
-  }
+  console.log('COURSE ID', courseId);
+  console.log(post?.number);
   return (
     <>
       <aside
@@ -145,25 +119,31 @@ function Course({ classes }: Props) {
         }}
       >
         <Box p={5}>
-          <Heading size='lg'>{classItem.classNumber}</Heading>
-          <Heading size='sm'>{classItem.className}</Heading>
-          <Heading size='sm'>{classItem.classTerm}</Heading>
+          <Heading size='lg'>{classNumber}</Heading>
+          <Heading size='sm'>{className}</Heading>
+          <Heading size='sm'>{classTerm}</Heading>
           <Box>
             <Button onClick={() => setShowNewPost(true)}>Add Post</Button>
           </Box>
         </Box>
-
         <PostList
           courseId={courseId}
           posts={posts}
           handleClick={(post: Post) =>
-            history.replace(`/c/${courseId}/${post.number}`)
+            history.push(`/c/${courseId}/p/${post.number}`)
           }
         />
       </aside>
-      <Box flex={1}>{showNewPost ? <NewPost /> : <PostItem post={post} />}</Box>
+
+      <Box flex={1}>
+        {showNewPost ? (
+          <NewPost />
+        ) : (
+          <Route path={'/c/:courseId/p/:postId'} component={PostView} />
+        )}
+      </Box>
     </>
   );
 }
 
-export default Course;
+export default PostsView;

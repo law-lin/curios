@@ -1,21 +1,18 @@
 import React, { useState, useEffect } from 'react';
-// import { Layout, Menu } from 'antd';
-
 import 'pages/mainpage.css';
-import UserSettings from 'components/UserSettings';
 import useDarkMode from 'use-dark-mode';
-import CreateButton from 'components/CreateButton';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import NotificationsView from 'views/NotificationsView';
 import MessagesView from 'views/MessagesView';
 import SearchView from 'views/SearchView';
 import Sidebar from 'components/sidebar/Sidebar';
-import Course from 'views/Course';
 import { fetchClasses } from 'lib/supabase/store';
+import CourseView from 'views/CourseView';
+import { Class } from 'types';
 
 function Main() {
   const { value } = useDarkMode(false);
-  const [classes, setClasses] = useState([]);
+  const [classes, setClasses] = useState<Class[]>([]);
   useEffect(() => {
     async function load() {
       const classes = await fetchClasses();
@@ -41,12 +38,15 @@ function Main() {
         <Route exact path={'/messages'} component={MessagesView} />
         <Route exact path={'/search'} component={SearchView} />
         <Route
-          path={'/c/:courseId/:postId'}
-          component={() => <Course classes={classes} />}
+          path={'/c/:courseId'}
+          component={() => <CourseView classes={classes} />}
         />
         <Route
-          path={'/c/:courseId'}
-          component={() => <Course classes={classes} />}
+          render={() => {
+            if (classes.length > 0) {
+              return <Redirect to={`/c/${classes[0].id}`} />;
+            }
+          }}
         />
       </Switch>
 
