@@ -2,31 +2,6 @@ import { User } from 'types';
 import toCamelCase from 'utils/toCamelCase';
 import supabase from '.';
 
-export const register = async (
-  email: string,
-  password: string,
-  name: string
-) => {
-  const { user, error } = await supabase.auth.signUp({
-    email,
-    password,
-  });
-  if (user) {
-    const { error: userError } = await supabase
-      .from('users')
-      .update({ name })
-      .eq('id', user.id);
-    console.log(userError);
-  }
-};
-
-export const login = async (email: string, password: string) => {
-  await supabase.auth.signIn({
-    email,
-    password,
-  });
-};
-
 export const logout = () => {
   supabase.auth.signOut();
 };

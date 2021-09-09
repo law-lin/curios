@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
 import supabase from '../lib/supabase';
 
 interface User {
@@ -8,15 +8,15 @@ interface User {
 }
 
 const createUser = async (user: User) => {
-  // Check if username exists
-  const { data: userWithUsername } = await supabase
+  // Check if email exists
+  const { data: userWithEmail } = await supabase
     .from('users')
     .select('*')
     .eq('email', user.email)
     .single();
 
-  if (userWithUsername) {
-    throw new Error('User with username exists');
+  if (userWithEmail) {
+    throw new Error('User with email exists');
   }
 
   const { data, error: signUpError } = await supabase.auth.signUp({
@@ -33,19 +33,19 @@ const createUser = async (user: User) => {
 
 export default function useCreateUser() {
   return useMutation((user: User) => createUser(user), {
-    onSuccess: async (data) => {
-      console.log('DATA', data);
-      // const { name } = uDser;
-      // if (data) {
-      //   const { data: updateData, error: updateError } = await supabase
-      //     .from('users')
-      //     .update({ name })
-      //     .eq('id', data.user.id);
-      //   if (updateError) {
-      //     throw updateError;
-      //   }
-      //   return updateData;
-      // }
+    onSuccess: async (data, user) => {
+      const { name } = user;
+      if (data && 'user' in data && data.user) {
+        const { data: updateData, error: updateError } = await supabase
+          .from('users')
+          .update({ name })
+          .eq('id', data.user.id);
+        if (updateError) {
+          throw updateError;
+        }
+        return updateData;
+      }
+      throw new Error();
     },
   });
 }
