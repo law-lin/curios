@@ -56,14 +56,14 @@ const CreateModal = ({ onClose, isOpen }) => {
 
   const ChoiceView = () => (
     <>
-      <ModalHeader>Create new</ModalHeader>
+      <ModalHeader>Create or Join</ModalHeader>
       <ModalCloseButton />
       <ModalBody>
         <Box d='flex' justifyContent='space-around' flexDir='row'>
           <Box>
             <Center h='100%'>
               <Container textAlign='center'>
-                <Heading textAlign='center'>Class</Heading>
+                <Heading textAlign='center'>Create</Heading>
                 <Box d='flex' m={5} justifyContent='center'>
                   <SiGoogleclassroom size={50} />
                 </Box>
@@ -81,14 +81,14 @@ const CreateModal = ({ onClose, isOpen }) => {
           <Box>
             <Center h='100%'>
               <Container textAlign='center'>
-                <Heading textAlign='center'>Group</Heading>
+                <Heading textAlign='center'>Join</Heading>
                 <Box d='flex' m={5} justifyContent='center'>
                   <BiGroup size={50} />
                 </Box>
                 <Text mb={5}>
-                  Groups let you and your peers work together by yourselves.
+                  Join your classmates in an existing class for discussions, questions, and more. 
                 </Text>
-                <Button onClick={() => goJoin()}>Create Group</Button>
+                <Button onClick={() => goJoin()}>Join Class</Button>
               </Container>
             </Center>
           </Box>
@@ -130,5 +130,9 @@ const CreateModal = ({ onClose, isOpen }) => {
     </>
   );
 };
+
+const JoinView = () => {
+  <div>Hi you can join a class here</div>
+}
 
 export default CreateModal;
