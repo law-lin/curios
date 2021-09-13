@@ -46,11 +46,11 @@ const CreateModal = ({ onClose, isOpen }) => {
     console.log(index);
     switch (index) {
       case 0:
-        return <CreateView />;
+        return <CreateJoinView header ='Create a Class' form = {<CreateClassForm onSubmit={handleClose} />}/>;
       case 1:
         return <ChoiceView />;
       case 2:
-        return <div>Create Group</div>;
+        return <CreateJoinView header ='Join a Class' form = {<CreateClassForm onSubmit={handleClose} />}/>;
     }
   };
 
@@ -97,28 +97,30 @@ const CreateModal = ({ onClose, isOpen }) => {
     </>
   );
 
-  const CreateView = () => (
+  const CreateJoinView = ({header, form}) => (
     <>
-      <ModalHeader>Create new class</ModalHeader>
+      <ModalHeader>{header}</ModalHeader>
       <ModalBody>
-        {/* <Box d='flex' justifyContent='space-around' flexDir='row'> */}
         <Box>
-          <Center h='100%'>
-            <Container textAlign='center'>
+          <Center h="100%">
+            <Container textAlign="center">
               <Box d='flex' m={5} justifyContent='center'>
-                <SiGoogleclassroom size={50} />
+                <BiGroup size={50} />
               </Box>
-              <CreateClassForm onSubmit={handleClose} />
+              {form}
+              {/*join code
+                direct link
+                or instructor manually adds you */}
               <Button margin={2.5} onClick={() => goBack()}>
                 Go Back
               </Button>
             </Container>
           </Center>
         </Box>
-        {/* </Box> */}
       </ModalBody>
     </>
   );
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={handleClose} size='xl' isCentered>
@@ -130,9 +132,5 @@ const CreateModal = ({ onClose, isOpen }) => {
     </>
   );
 };
-
-const JoinView = () => {
-  <div>Hi you can join a class here</div>
-}
 
 export default CreateModal;
