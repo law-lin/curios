@@ -50,7 +50,7 @@ const CreateModal = ({ onClose, isOpen }) => {
       case 1:
         return <ChoiceView />;
       case 2:
-        return <div>Create Group</div>;
+        return <JoinView />;
     }
   };
 
@@ -86,7 +86,8 @@ const CreateModal = ({ onClose, isOpen }) => {
                   <BiGroup size={50} />
                 </Box>
                 <Text mb={5}>
-                  Join your classmates in an existing class for discussions, questions, and more. 
+                  Join your classmates in an existing class for discussions,
+                  questions, and more.
                 </Text>
                 <Button onClick={() => goJoin()}>Join Class</Button>
               </Container>
@@ -119,20 +120,23 @@ const CreateModal = ({ onClose, isOpen }) => {
       </ModalBody>
     </>
   );
+  const JoinView = () => <div>Hi you can join a class here</div>;
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={handleClose} size='xl' isCentered>
         <ModalOverlay />
         <ModalContent>
-          <ViewSlider renderView={renderView} numViews={2} activeView={index} keepViewsMounted={false}/>
+          <ViewSlider
+            renderView={renderView}
+            numViews={2}
+            activeView={index}
+            keepViewsMounted={false}
+          />
         </ModalContent>
       </Modal>
     </>
   );
 };
-
-const JoinView = () => {
-  <div>Hi you can join a class here</div>
-}
 
 export default CreateModal;
