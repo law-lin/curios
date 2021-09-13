@@ -29,6 +29,7 @@ import { InputField } from './InputField';
 import { createClass } from 'lib/supabase/store';
 import { useForm } from 'react-hook-form';
 import CreateClassForm from './forms/CreateClassForm';
+import JoinClassForm from './forms/JoinClassForm'
 
 const CreateModal = ({ onClose, isOpen }) => {
   const [index, setIndex] = useState(1);
@@ -50,7 +51,7 @@ const CreateModal = ({ onClose, isOpen }) => {
       case 1:
         return <ChoiceView />;
       case 2:
-        return <CreateJoinView header ='Join a Class' form = {<CreateClassForm onSubmit={handleClose} />}/>;
+        return <CreateJoinView header ='Join a Class' form = {<JoinClassForm onSubmit={handleClose} />}/>;
     }
   };
 
@@ -109,9 +110,6 @@ const CreateModal = ({ onClose, isOpen }) => {
                 <BiGroup size={50} />
               </Box>
               {form}
-              {/*join code
-                direct link
-                or instructor manually adds you */}
               <Button margin={2.5} onClick={() => goBack()}>
                 Go Back
               </Button>
