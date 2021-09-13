@@ -29,7 +29,7 @@ import { InputField } from './InputField';
 import { createClass } from 'lib/supabase/store';
 import { useForm } from 'react-hook-form';
 import CreateClassForm from './forms/CreateClassForm';
-import JoinClassForm from './forms/JoinClassForm'
+import JoinClassForm from './forms/JoinClassForm';
 
 const CreateModal = ({ onClose, isOpen }) => {
   const [index, setIndex] = useState(1);
