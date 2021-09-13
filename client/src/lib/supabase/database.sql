@@ -55,12 +55,10 @@ comment on table public.users_classes is 'Role a user has for a particular class
 create table public.posts (
   id serial primary key,
   created_by uuid references public.users on delete cascade not null,
-  post_id bigint not null,
   class_id bigint references public.classes on delete cascade not null,
   type post_type,
   title text,
-  content text,
-  unique (post_id, class_id)
+  content text
 );
 comment on table public.posts is 'A post for a class';
 

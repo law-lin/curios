@@ -137,7 +137,7 @@ function PostsView({ classItem }: Props) {
 
       <Box flex={1}>
         {showNewPost ? (
-          <NewPost />
+          <NewPost classId={courseId} />
         ) : (
           <Route path={'/c/:courseId/p/:postId'} component={PostView} />
         )}
