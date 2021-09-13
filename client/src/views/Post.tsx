@@ -8,7 +8,7 @@ const Post = ({ post }) => {
       <Box p={5} shadow='sm' borderWidth='1px'>
         <Text>Question @{post?.number}</Text>
         <Heading fontSize='xl'>{post?.title}</Heading>
-        <Text mt={4}>{post?.details}</Text>
+        <div dangerouslySetInnerHTML={{ __html: post?.content }} />
       </Box>
       <Box p={5} shadow='sm' borderWidth='1px'>
         <Heading fontSize='xl'>Instructor Answers</Heading>

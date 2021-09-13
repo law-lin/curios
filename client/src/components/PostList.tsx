@@ -6,13 +6,6 @@ import { useLocation } from 'react-router-dom';
 
 import './post.css';
 
-export interface Post {
-  number: Number;
-  title: string;
-  details: string;
-  date: Date;
-}
-
 const PostList = ({ courseId, posts, handleClick }) => {
   const location = useLocation();
   console.log('RERENDER');
@@ -38,14 +31,14 @@ const PostList = ({ courseId, posts, handleClick }) => {
           >
             {posts[index].title}
           </Heading>
-          <div dangerouslySetInnerHTML={{ __html: posts[index].content }} />
+
           <Text
             maxH={12}
             fontSize={11}
             overflow='hidden'
             textOverflow='ellipsis'
           >
-            {posts[index].content}
+            <div dangerouslySetInnerHTML={{ __html: posts[index].content }} />
           </Text>
         </div>
       </div>
