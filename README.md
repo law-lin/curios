@@ -22,16 +22,15 @@ env files are a safe way to store project configurations and sensitive data acro
 
 The `.env` file is nothing more than a simple hidden text file that you should create on the target deploy containing `KEY=VALUE` pairs separated by row breaks.
 
-The `curios` project should have an `.env` file in the server directory with the following keys:
+The `curios` project should have an `.env` file in the root directory with the following keys:
 ```
 REACT_APP_PUBLIC_SUPABASE_URL=<SUPABASE PUBLIC URL>
 REACT_APP_PUBLIC_SUPABASE_KEY=<SUPABASE PUBLIC KEY>
 ```
 Make sure to replace `REACT_APP_PUBLIC_SUPABASE_URL`, `REACT_APP_PUBLIC_SUPABASE_KEY`.
 
-4. Change the working directory to the client directory by running `cd ../client`.
-5. Run `yarn` to install client dependencies.
-6. By now, you should everything needed to setup the app. In one terminal, run `yarn start` in the `client` directory.
+4. Run `yarn` to install client dependencies.
+5. By now, you should everything needed to setup the app. In one terminal, run `yarn start` in the `client` directory.
 
 ## Commands
 `yarn start` - starts the client. It should automatically launch a new tab in your browser and be hosted at http://localhost:3000.
