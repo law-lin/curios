@@ -22,7 +22,10 @@ import Highlight from '@tiptap/extension-highlight';
 import Typography from '@tiptap/extension-typography';
 import { createPost } from 'lib/supabase/store';
 
-const NewPost = () => {
+interface Props {
+  classId: string;
+}
+const NewPost = ({ classId }: Props) => {
   const [type, setType] = useState('question');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -39,7 +42,7 @@ const NewPost = () => {
   };
 
   const handleCreate = () => {
-    createPost(type, title, content);
+    createPost(classId, type, title, content);
   };
 
   if (!preview) {

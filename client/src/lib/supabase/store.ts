@@ -78,11 +78,15 @@ export const fetchClasses = async () => {
 };
 
 export const createPost = async (
+  classId: string,
   type: string,
   title: string,
   content: string
 ) => {
+  const currentUserId = supabase.auth.user()?.id;
   await supabase.from('posts').insert({
+    class_id: classId,
+    created_by: currentUserId,
     type,
     title,
     content,
