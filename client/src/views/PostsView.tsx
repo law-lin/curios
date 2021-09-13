@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PostList, { Post } from 'components/PostList';
 import { useParams, useHistory, Route } from 'react-router-dom';
 import { Box, Heading, Button } from '@chakra-ui/react';
 import { Class } from 'types';
 import NewPost from './NewPost';
 import PostView from './PostView';
+import { fetchPosts } from 'lib/supabase/store';
 
 const posts = [
   {
@@ -100,13 +101,25 @@ interface Props {
 function PostsView({ classItem }: Props) {
   const { classNumber, className, classTerm } = classItem;
   const { courseId, postId } = useParams<Params>();
+  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState([]);
   const [showNewPost, setShowNewPost] = useState(false);
 
   const history = useHistory();
-  const post = posts.find((post) => post.number === postId);
 
+  useEffect(() => {
+    async function getPosts() {
+      const posts = await fetchPosts(courseId);
+      setPosts(posts);
+      setLoading(false);
+    }
+    getPosts();
+  }, []);
   console.log('COURSE ID', courseId);
-  console.log(post?.number);
+
+  if (loading) {
+    return null;
+  }
   return (
     <>
       <aside

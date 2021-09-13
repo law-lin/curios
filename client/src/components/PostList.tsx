@@ -19,7 +19,7 @@ const PostList = ({ courseId, posts, handleClick }) => {
   const PostCard = (index, key, handleClick) => {
     const isActive = !!matchPath(
       location.pathname,
-      `/c/${courseId}/p/${posts[index].number}`
+      `/c/${courseId}/p/${posts[index].id}`
     );
 
     return (
@@ -38,13 +38,14 @@ const PostList = ({ courseId, posts, handleClick }) => {
           >
             {posts[index].title}
           </Heading>
+          <div dangerouslySetInnerHTML={{ __html: posts[index].content }} />
           <Text
             maxH={12}
             fontSize={11}
             overflow='hidden'
             textOverflow='ellipsis'
           >
-            {posts[index].details}
+            {posts[index].content}
           </Text>
         </div>
       </div>

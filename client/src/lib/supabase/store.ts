@@ -92,3 +92,13 @@ export const createPost = async (
     content,
   });
 };
+
+export const fetchPosts = async (classId: string) => {
+  const { data } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('class_id', classId);
+  if (data) {
+    return toCamelCase(data);
+  }
+};
