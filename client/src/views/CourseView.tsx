@@ -37,9 +37,14 @@ function CourseView({ classes, match }: Props) {
       <Route exact path={'/c/settings'} component={MessagesView} />
       <Route exact path={'/c/search'} component={SearchView} />
       <Route
-        path={'/c/:courseId/p'}
-        component={() => <PostsView classItem={classItem as Class} />}
+        path={'/c/:courseId/:postId'}
+        render={() => <PostsView classItem={classItem as Class} />}
       />
+      <Route
+        path={'/c/:courseId/p'}
+        render={() => <PostsView classItem={classItem as Class} />}
+      />
+
       <Route
         path={'/c/:courseId'}
         render={() => <Redirect to={`/c/${courseId}/p`} />}

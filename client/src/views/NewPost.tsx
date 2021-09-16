@@ -18,7 +18,7 @@ import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
 import Typography from '@tiptap/extension-typography';
-import { createPost } from 'lib/supabase/store';
+import useCreatePost from 'hooks/useCreatePost';
 
 interface Props {
   classId: string;
@@ -27,6 +27,7 @@ const NewPost = ({ classId }: Props) => {
   const [type, setType] = useState('question');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const createPostMutation = useCreatePost(classId, type, title, content);
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -40,7 +41,7 @@ const NewPost = ({ classId }: Props) => {
   };
 
   const handleCreate = () => {
-    createPost(classId, type, title, content);
+    createPostMutation.mutate();
   };
 
   if (!preview) {

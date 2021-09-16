@@ -4,9 +4,8 @@ import { useParams, useHistory, Route } from 'react-router-dom';
 import { Box, Heading, Button } from '@chakra-ui/react';
 import { Class, Post } from 'types';
 import NewPost from './NewPost';
-import PostItem from './Post';
-import { fetchPosts } from 'lib/supabase/store';
 import PostView from './PostView';
+import usePosts from 'hooks/usePosts';
 
 // const posts = [
 //   {
@@ -103,24 +102,15 @@ function PostsView({ classItem }: Props) {
   const { classNumber, className, classTerm } = classItem;
   const { courseId, postId } = useParams<Params>();
   const [loading, setLoading] = useState(true);
-  const [posts, setPosts] = useState([]);
   const [showNewPost, setShowNewPost] = useState(false);
 
   const history = useHistory();
+  const { data, isSuccess, isLoading } = usePosts(courseId);
 
-  useEffect(() => {
-    async function getPosts() {
-      const posts = await fetchPosts(courseId);
-      setPosts(posts);
-      setLoading(false);
-    }
-    getPosts();
-  }, []);
-  console.log('COURSE ID', courseId);
-
-  if (loading) {
+  if (isLoading) {
     return null;
   }
+  console.log('posts', data);
   return (
     <>
       <aside
@@ -142,7 +132,7 @@ function PostsView({ classItem }: Props) {
         </Box>
         <PostList
           courseId={courseId}
-          posts={posts}
+          posts={data}
           handleClick={(post: Post) =>
             history.push(`/c/${courseId}/p/${post.id}`)
           }
@@ -155,7 +145,7 @@ function PostsView({ classItem }: Props) {
         ) : (
           <Route
             path={'/c/:courseId/p/:postId'}
-            component={() => <PostView posts={posts} />}
+            render={() => <PostView posts={data} />}
           />
         )}
       </Box>

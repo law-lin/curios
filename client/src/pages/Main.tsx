@@ -6,21 +6,16 @@ import NotificationsView from 'views/NotificationsView';
 import MessagesView from 'views/MessagesView';
 import SearchView from 'views/SearchView';
 import Sidebar from 'components/sidebar/Sidebar';
-import { fetchClasses } from 'lib/supabase/store';
 import CourseView from 'views/CourseView';
-import { Class } from 'types';
+import useClasses from 'hooks/useClasses';
 
 function Main() {
   const { value } = useDarkMode(false);
-  const [classes, setClasses] = useState<Class[]>([]);
-  useEffect(() => {
-    async function load() {
-      const classes = await fetchClasses();
-      console.log('Classes', classes);
-      setClasses(classes);
-    }
-    load();
-  }, []);
+  const { data, isLoading } = useClasses();
+
+  if (isLoading) {
+    return null;
+  }
   return (
     <div
       style={{
@@ -30,7 +25,7 @@ function Main() {
       }}
     >
       <aside style={{ display: 'flex' }}>
-        <Sidebar classes={classes} />
+        <Sidebar classes={data} />
       </aside>
 
       <Switch>
@@ -39,12 +34,12 @@ function Main() {
         <Route exact path={'/search'} component={SearchView} />
         <Route
           path={'/c/:courseId'}
-          component={() => <CourseView classes={classes} />}
+          render={() => <CourseView classes={data} />}
         />
         <Route
           render={() => {
-            if (classes.length > 0) {
-              return <Redirect to={`/c/${classes[0].id}`} />;
+            if (data.length > 0) {
+              return <Redirect to={`/c/${data[0].id}`} />;
             }
           }}
         />

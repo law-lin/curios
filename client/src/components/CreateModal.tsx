@@ -16,17 +16,10 @@ import {
   Container,
   Heading,
   Text,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  FormHelperText,
-  Input,
 } from '@chakra-ui/react';
 import { SiGoogleclassroom } from 'react-icons/si';
 import { BiGroup } from 'react-icons/bi';
 import ViewSlider from 'react-view-slider';
-import { InputField } from './InputField';
-import { createClass } from 'lib/supabase/store';
 import { useForm } from 'react-hook-form';
 import CreateClassForm from './forms/CreateClassForm';
 

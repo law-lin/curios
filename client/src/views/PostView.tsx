@@ -1,8 +1,8 @@
-import PostList, { Post } from 'components/PostList';
+import PostList from 'components/PostList';
 import React, { useState } from 'react';
 import { useParams, useHistory, Route } from 'react-router-dom';
 import { Stack, Box, Heading, Text, Button } from '@chakra-ui/react';
-import { Class } from 'types';
+import { Class, Post } from 'types';
 import PostItem from './Post';
 import NewPost from './NewPost';
 

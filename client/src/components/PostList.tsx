@@ -8,7 +8,7 @@ import './post.css';
 
 const PostList = ({ courseId, posts, handleClick }) => {
   const location = useLocation();
-  console.log('RERENDER');
+
   const PostCard = (index, key, handleClick) => {
     const isActive = !!matchPath(
       location.pathname,
