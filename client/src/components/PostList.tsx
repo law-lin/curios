@@ -3,10 +3,16 @@ import ReactList from 'react-list';
 import { Box, Heading, Text } from '@chakra-ui/react';
 import { matchPath } from 'react-router';
 import { useLocation } from 'react-router-dom';
-
+import Preview from './preview/Preview';
 import './post.css';
+import { Post } from 'types';
 
-const PostList = ({ courseId, posts, handleClick }) => {
+interface Props {
+  courseId: string;
+  posts: Post[];
+  handleClick: (post: Post) => void;
+}
+const PostList = ({ courseId, posts, handleClick }: Props) => {
   const location = useLocation();
 
   const PostCard = (index, key, handleClick) => {
@@ -39,6 +45,7 @@ const PostList = ({ courseId, posts, handleClick }) => {
             textOverflow='ellipsis'
           >
             <div dangerouslySetInnerHTML={{ __html: posts[index].content }} />
+            {/* <Preview content={posts[index].content} /> */}
           </Text>
         </div>
       </div>

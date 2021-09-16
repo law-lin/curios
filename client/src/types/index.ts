@@ -25,4 +25,5 @@ export interface Post {
   postType: 'question' | 'note';
   title: string;
   content: string;
+  date: string;
 }

@@ -12,7 +12,7 @@ import {
 } from '@chakra-ui/react';
 import Editor from 'components/editor/Editor';
 import Preview from 'components/preview/Preview';
-
+import { useLocation, useHistory } from 'react-router-dom';
 // tiptap
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -23,10 +23,16 @@ import useCreatePost from 'hooks/useCreatePost';
 interface Props {
   classId: string;
 }
+
+interface Location {
+  pathname: string;
+}
 const NewPost = ({ classId }: Props) => {
   const [type, setType] = useState('question');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const location = useLocation<Location>();
+  const history = useHistory();
   const createPostMutation = useCreatePost(classId, type, title, content);
 
   const preview = useEditor({
@@ -42,6 +48,10 @@ const NewPost = ({ classId }: Props) => {
 
   const handleCreate = () => {
     createPostMutation.mutate();
+  };
+
+  const handleCancel = () => {
+    history.push(location.state.pathname);
   };
 
   if (!preview) {
@@ -72,6 +82,7 @@ const NewPost = ({ classId }: Props) => {
         </Grid>
 
         <Button onClick={handleCreate}>Create</Button>
+        <Button onClick={handleCancel}>Cancel</Button>
       </Box>
 
       <Box p={5} shadow='sm' borderWidth='1px'></Box>

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import PostList from 'components/PostList';
-import { useParams, useHistory, Route } from 'react-router-dom';
+import {
+  useParams,
+  useHistory,
+  useLocation,
+  Switch,
+  Route,
+} from 'react-router-dom';
 import { Box, Heading, Button } from '@chakra-ui/react';
 import { Class, Post } from 'types';
 import NewPost from './NewPost';
@@ -101,16 +107,13 @@ interface Props {
 function PostsView({ classItem }: Props) {
   const { classNumber, className, classTerm } = classItem;
   const { courseId, postId } = useParams<Params>();
-  const [loading, setLoading] = useState(true);
-  const [showNewPost, setShowNewPost] = useState(false);
-
+  const location = useLocation();
   const history = useHistory();
-  const { data, isSuccess, isLoading } = usePosts(courseId);
+  const { data, isLoading } = usePosts(courseId);
 
   if (isLoading) {
     return null;
   }
-  console.log('posts', data);
   return (
     <>
       <aside
@@ -127,7 +130,15 @@ function PostsView({ classItem }: Props) {
           <Heading size='sm'>{className}</Heading>
           <Heading size='sm'>{classTerm}</Heading>
           <Box>
-            <Button onClick={() => setShowNewPost(true)}>Add Post</Button>
+            <Button
+              onClick={() =>
+                history.push(`/c/${courseId}/p/new`, {
+                  pathname: location.pathname,
+                })
+              }
+            >
+              Add Post
+            </Button>
           </Box>
         </Box>
         <PostList
@@ -140,14 +151,17 @@ function PostsView({ classItem }: Props) {
       </aside>
 
       <Box flex={1}>
-        {showNewPost ? (
-          <NewPost classId={courseId} />
-        ) : (
+        <Switch>
+          <Route
+            path={'/c/:courseId/p/new'}
+            render={() => <NewPost classId={courseId} />}
+          />
+
           <Route
             path={'/c/:courseId/p/:postId'}
             render={() => <PostView posts={data} />}
           />
-        )}
+        </Switch>
       </Box>
     </>
   );

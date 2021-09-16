@@ -6,10 +6,17 @@ import Typography from '@tiptap/extension-typography';
 // import './styles.scss';
 
 interface Props {
-  preview: any;
+  preview?: any;
+  content?: string;
 }
-const Preview = ({ preview }: Props) => {
-  return <EditorContent editor={preview} />;
+const Preview = ({ preview, content }: Props) => {
+  let previewEditor = useEditor({
+    extensions: [StarterKit, Highlight, Typography],
+    content,
+    editable: false,
+  });
+
+  return <EditorContent editor={preview ? preview : previewEditor} />;
 };
 
 export default Preview;
