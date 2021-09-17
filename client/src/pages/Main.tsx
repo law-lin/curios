@@ -11,6 +11,7 @@ import MessagesView from 'views/MessagesView';
 import SearchView from 'views/SearchView';
 import Sidebar from 'components/sidebar/Sidebar';
 import Course from 'views/Course';
+import CourseSettings from 'views/CourseSettings'
 import { fetchClasses } from 'lib/supabase/store';
 
 function Main() {
@@ -40,6 +41,10 @@ function Main() {
         <Route exact path={'/notifications'} component={NotificationsView} />
         <Route exact path={'/messages'} component={MessagesView} />
         <Route exact path={'/search'} component={SearchView} />
+        <Route
+          path={'/c/:courseId/settings'}
+          component={() => <CourseSettings classes={classes}/>}
+        />
         <Route
           path={'/c/:courseId/:postId'}
           component={() => <Course classes={classes} />}

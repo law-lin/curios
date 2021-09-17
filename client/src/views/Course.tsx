@@ -148,8 +148,9 @@ function Course({ classes }: Props) {
           <Heading size='lg'>{classItem.classNumber}</Heading>
           <Heading size='sm'>{classItem.className}</Heading>
           <Heading size='sm'>{classItem.classTerm}</Heading>
-          <Box>
+          <Box d='flex' paddingTop='6' justifyContent='space-evenly'>
             <Button onClick={() => setShowNewPost(true)}>Add Post</Button>
+            <Button onClick={() => history.replace(`/c/${courseId}/settings`)}>Settings</Button>
           </Box>
         </Box>
 
