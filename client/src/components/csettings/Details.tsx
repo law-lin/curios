@@ -13,7 +13,6 @@ import {
 } from '@chakra-ui/react';
 import { Class } from 'types';
 import '../../views/CourseSettings.css';
-import { deleteCourse, updateCourse } from 'lib/supabase/store';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useDeleteCourse from 'hooks/useDeleteClass';
