@@ -46,31 +46,31 @@ function CourseSettings({ classes }: Props) {
 			label: 'Class details',
 			description: 'Change your class name and display image',
 			icon: 'N/A',
-			component: <Details classes={classItem} />,
+			component: <Details classItem={classItem} />,
 		},
 		{
 			label: 'Feature preferences',
 			description: 'Customize the class features to your liking',
 			icon: 'N/A',
-			component: <Details classes={classItem} />,
+			component: <Details classItem={classItem} />,
 		},
 		{
 			label: 'Class Members',
 			description: 'See and edit your class roster',
 			icon: 'N/A',
-			component: <Details classes={classItem} />,
+			component: <Details classItem={classItem} />,
 		},
 		{
 			label: 'Invite people',
 			description: 'Send invites for people to join this class',
 			icon: 'N/A',
-			component: <Details classes={classItem} />,
+			component: <Details classItem={classItem} />,
 		},
 		{
 			label: 'Notification preferences',
 			description: 'Choose what notifications you want to receive',
 			icon: 'N/A',
-			component: <Details classes={classItem} />,
+			component: <Details classItem={classItem} />,
 		},
 	];
 

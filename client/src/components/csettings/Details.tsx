@@ -1,20 +1,52 @@
-import { Box, Heading, Input } from '@chakra-ui/react';
+import {
+	Box,
+	Button,
+	Heading,
+	Input,
+	Modal,
+	ModalBody,
+	ModalCloseButton,
+	ModalContent,
+	ModalFooter,
+	ModalHeader,
+	ModalOverlay,
+} from '@chakra-ui/react';
 import { Class } from 'types';
 import '../../views/CourseSettings.css';
+import { deleteCourse, updateCourse } from 'lib/supabase/store';
+import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 interface Props {
-	classes: Class;
+	classItem: Class;
 }
-const Details = ({ classes }: Props) => {
+
+const Details = ({ classItem }: Props) => {
+	const history = useHistory();
+	const [className, setClassName] = useState(classItem.className);
+	const [classNumber, setClassNumber] = useState(classItem.classNumber);
+	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const handleDelete = async () => {
+		const data = await deleteCourse(classItem.id);
+		console.log(data);
+		if (data) {
+			history.push('/c');
+			window.location.reload();
+		}
+	};
+	const handleUpdate = async () => {
+		const data = await updateCourse(classItem.id, className, classNumber);
+		console.log(data);
+	};
 	return (
 		<Box padding='50px'>
 			<Box marginBottom='15px'>
 				<Heading size='md'>
-					{classes.classNumber + ': ' + classes.className}
+					{classItem.classNumber + ': ' + classItem.className}
 				</Heading>
 				<Box>
 					<Heading size='xs' color='gray' marginTop='1'>
-						{classes.classTerm}
+						{classItem.classTerm}
 					</Heading>
 				</Box>
 			</Box>
@@ -53,10 +85,13 @@ const Details = ({ classes }: Props) => {
 								height='32px'
 								variant='filled'
 								placeholder='e.g. Intro to Programming'
-								value={classes.className}
+								value={className}
 								fontSize='12px'
 								width='100%'
-							></Input>
+								onChange={(e) => {
+									setClassName(e.target.value);
+								}}
+							/>
 						</Box>
 						<Box marginBottom='16px'>
 							<Box
@@ -71,9 +106,12 @@ const Details = ({ classes }: Props) => {
 								height='32px'
 								variant='filled'
 								placeholder='e.g. CS 110'
-								value={classes.classNumber}
+								value={classNumber}
 								fontSize='12px'
-							></Input>
+								onChange={(e) => {
+									setClassNumber(e.target.value);
+								}}
+							/>
 						</Box>
 						<Box
 							d='flex'
@@ -89,6 +127,9 @@ const Details = ({ classes }: Props) => {
 							_hover={{
 								filter: 'brightness(95%)',
 								cursor: 'pointer',
+							}}
+							onClick={() => {
+								handleUpdate();
 							}}
 						>
 							Save Changes
@@ -161,9 +202,41 @@ const Details = ({ classes }: Props) => {
 							backgroundColor: '#FC144B',
 							color: 'white',
 						}}
+						onClick={() => {
+							setShowDeleteModal(true);
+						}}
 					>
 						Delete
 					</Box>
+					<Modal
+						isOpen={showDeleteModal}
+						onClose={() => {
+							setShowDeleteModal(false);
+						}}
+					>
+						<ModalOverlay />
+						<ModalContent>
+							<ModalHeader> Delete Class </ModalHeader>
+							<ModalCloseButton />
+
+							<ModalBody>
+								Are you sure you would like to delete this class? This cannot be
+								undone.
+							</ModalBody>
+							<ModalFooter d='flex' justifyContent='center'>
+								<Button
+									variant='outline'
+									mr={3}
+									onClick={() => setShowDeleteModal(false)}
+								>
+									Close
+								</Button>
+								<Button colorScheme='red' onClick={() => handleDelete()}>
+									Delete
+								</Button>
+							</ModalFooter>
+						</ModalContent>
+					</Modal>
 				</Box>
 			</Box>
 		</Box>

@@ -3,32 +3,32 @@ import toCamelCase from 'utils/toCamelCase';
 import { supabase } from '.';
 
 export const register = async (
-  email: string,
-  password: string,
-  name: string
+	email: string,
+	password: string,
+	name: string
 ) => {
-  const { user, error } = await supabase.auth.signUp({
-    email,
-    password,
-  });
-  if (user) {
-    const { error: userError } = await supabase
-      .from('users')
-      .update({ name })
-      .eq('id', user.id);
-    console.log(userError);
-  }
+	const { user, error } = await supabase.auth.signUp({
+		email,
+		password,
+	});
+	if (user) {
+		const { error: userError } = await supabase
+			.from('users')
+			.update({ name })
+			.eq('id', user.id);
+		console.log(userError);
+	}
 };
 
 export const login = async (email: string, password: string) => {
-  await supabase.auth.signIn({
-    email,
-    password,
-  });
+	await supabase.auth.signIn({
+		email,
+		password,
+	});
 };
 
 export const logout = () => {
-  supabase.auth.signOut();
+	supabase.auth.signOut();
 };
 
 /**
@@ -36,53 +36,53 @@ export const logout = () => {
  * @param {string} email
  */
 export const fetchUser = async (email: string): Promise<User | undefined> => {
-  try {
-    let { data } = await supabase
-      .from<User>('users')
-      .select('*')
-      .eq('email', email);
-    let user = data![0];
-    if (!user) {
-      ({ data } = await supabase
-        .from<User>('users')
-        .select('*')
-        .eq('email', email));
-      user = data![0];
-    }
+	try {
+		let { data } = await supabase
+			.from<User>('users')
+			.select('*')
+			.eq('email', email);
+		let user = data![0];
+		if (!user) {
+			({ data } = await supabase
+				.from<User>('users')
+				.select('*')
+				.eq('email', email));
+			user = data![0];
+		}
 
-    return toCamelCase(user);
-  } catch (error) {
-    console.error('error', error);
-  }
+		return toCamelCase(user);
+	} catch (error) {
+		console.error('error', error);
+	}
 };
 
 export const createClass = async (
-  className: string,
-  classNumber: string,
-  classTerm: string
+	className: string,
+	classNumber: string,
+	classTerm: string
 ) => {
-  const currentUserId = supabase.auth.user()?.id;
-  const { data } = await supabase.from('classes').insert({
-    created_by: currentUserId,
-    class_name: className,
-    class_number: classNumber,
-    class_term: classTerm,
-  });
-  if (data) {
-    await supabase.from('users_classes').insert({
-      user_id: currentUserId,
-      class_id: data[0].id,
-      role: 'instructor',
-    });
-  }
+	const currentUserId = supabase.auth.user()?.id;
+	const { data } = await supabase.from('classes').insert({
+		created_by: currentUserId,
+		class_name: className,
+		class_number: classNumber,
+		class_term: classTerm,
+	});
+	if (data) {
+		await supabase.from('users_classes').insert({
+			user_id: currentUserId,
+			class_id: data[0].id,
+			role: 'instructor',
+		});
+	}
 };
 
 export const fetchClasses = async () => {
-  const currentUserId = supabase.auth.user()?.id;
-  const { data } = await supabase
-    .from('users_classes')
-    .select(
-      `
+	const currentUserId = supabase.auth.user()?.id;
+	const { data } = await supabase
+		.from('users_classes')
+		.select(
+			`
       classes (
         id,
         class_name,
@@ -94,22 +94,50 @@ export const fetchClasses = async () => {
         description
       )
   `
-    )
-    .eq('user_id', currentUserId);
-  if (data) {
-    const classes = data.map((d) => d.classes);
-    return toCamelCase(classes);
-  }
+		)
+		.eq('user_id', currentUserId);
+	if (data) {
+		const classes = data.map((d) => d.classes);
+		return toCamelCase(classes);
+	}
 };
 
 export const createPost = async (
-  type: string,
-  title: string,
-  content: string
+	type: string,
+	title: string,
+	content: string
 ) => {
-  await supabase.from('posts').insert({
-    type,
-    title,
-    content,
-  });
+	await supabase.from('posts').insert({
+		type,
+		title,
+		content,
+	});
+};
+
+export const deleteCourse = async (id: Number) => {
+	// const currentUserId = supabase.auth.user()?.id;
+	const { data } = await supabase.from('classes').delete().match({ id: id });
+	if (data) {
+		return data;
+	}
+};
+
+export const updateCourse = async (
+	id: Number,
+	className: string,
+	classNumber: string
+) => {
+	const { data, error } = await supabase
+		.from('classes')
+		.update({ class_name: className, class_number: classNumber })
+		.match({ id: id });
+	// const { data, error } = await supabase
+	// 	.from('classes')
+	// 	.select('*')
+	// 	.match({ id: id });
+	if (data) {
+		return data;
+	} else if (error) {
+		alert(error.message);
+	}
 };
