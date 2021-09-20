@@ -36,7 +36,7 @@ export const deleteCourse = async (id: Number) => {
 };
 
 export const updateCourse = async (
-	id: Number,
+	id: string,
 	className: string,
 	classNumber: string
 ) => {

@@ -16,6 +16,8 @@ import '../../views/CourseSettings.css';
 import { deleteCourse, updateCourse } from 'lib/supabase/store';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import useDeleteCourse from 'hooks/useDeleteClass';
+import useUpdateCourse from 'hooks/useUpdateClass';
 
 interface Props {
 	classItem: Class;
@@ -26,17 +28,25 @@ const Details = ({ classItem }: Props) => {
 	const [className, setClassName] = useState(classItem.className);
 	const [classNumber, setClassNumber] = useState(classItem.classNumber);
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
+	const deletePostMutation = useDeleteCourse(`${classItem.id}`);
+	const updateCourseMutation = useUpdateCourse(
+		`${classItem.id}`,
+		className,
+		classNumber
+	);
+
 	const handleDelete = async () => {
-		const data = await deleteCourse(classItem.id);
-		console.log(data);
-		if (data) {
-			history.push('/c');
-			window.location.reload();
-		}
+		// const data = await deleteCourse(classItem.id);
+		// console.log(data);
+		deletePostMutation.mutate();
+		// if (data) {
+		// 	history.push('/c');
+		// }
 	};
 	const handleUpdate = async () => {
-		const data = await updateCourse(classItem.id, className, classNumber);
-		console.log(data);
+		// const data = await updateCourse(`${classItem.id}`, className, classNumber);
+		// console.log(data);
+		updateCourseMutation.mutate();
 	};
 	return (
 		<Box padding='50px'>
