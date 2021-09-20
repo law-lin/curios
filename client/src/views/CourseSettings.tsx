@@ -20,16 +20,16 @@ interface Params {
 	courseId: string;
 }
 interface Props {
-	classes: Class[];
+	classItem: Class;
 }
 
-function CourseSettings({ classes }: Props) {
-	const { courseId } = useParams<Params>();
+function CourseSettings({ classItem }: Props) {
+	// const { courseId } = useParams<Params>();
 	const [key, setKey] = useState(0);
 
-	const classItem = classes.find(
-		(classes) => classes.id === parseInt(courseId)
-	);
+	// const classItem = classes.find(
+	// 	(classes) => classes.id === parseInt(courseId)
+	// );
 
 	const handleKey = (i) => {
 		if (key !== i) {
