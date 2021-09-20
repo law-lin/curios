@@ -17,3 +17,13 @@ export interface Class {
   studentPolls: boolean;
   description: string;
 }
+
+export interface Post {
+  id: number;
+  createdBy: string;
+  classId: number;
+  postType: 'question' | 'note';
+  title: string;
+  content: string;
+  date: string;
+}

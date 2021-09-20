@@ -2,7 +2,7 @@
   padding: 8px 12px;
   border-radius: 6px;
   cursor: pointer;
-  max-width: 290px;
+  width: 290px;
   height: 95px;
   /* max-height: 100; */
   overflow: hidden;
