@@ -26,31 +26,3 @@ export const fetchUser = async (email: string): Promise<User | undefined> => {
 		console.error('error', error);
 	}
 };
-
-export const deleteCourse = async (id: Number) => {
-	// const currentUserId = supabase.auth.user()?.id;
-	const { data } = await supabase.from('classes').delete().match({ id: id });
-	if (data) {
-		return data;
-	}
-};
-
-export const updateCourse = async (
-	id: string,
-	className: string,
-	classNumber: string
-) => {
-	const { data, error } = await supabase
-		.from('classes')
-		.update({ class_name: className, class_number: classNumber })
-		.match({ id: id });
-	// const { data, error } = await supabase
-	// 	.from('classes')
-	// 	.select('*')
-	// 	.match({ id: id });
-	if (data) {
-		return data;
-	} else if (error) {
-		alert(error.message);
-	}
-};
