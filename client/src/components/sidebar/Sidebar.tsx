@@ -46,9 +46,9 @@ const Sidebar = ({ classes }) => {
           <MenuItem icon={<BellOutlined />}>
             <Link to={'/notifications'}> Notifications</Link>
           </MenuItem>
-          <MenuItem key='2' icon={<MessageOutlined />}>
+          {/* <MenuItem key='2' icon={<MessageOutlined />}>
             <Link to={'/messages'}> Messages</Link>
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem key='3' icon={<SearchOutlined />}>
             <Link to={'/search'}> Search</Link>
           </MenuItem>

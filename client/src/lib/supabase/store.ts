@@ -1,35 +1,6 @@
 import { User } from 'types';
 import toCamelCase from 'utils/toCamelCase';
-import { supabase } from '.';
-
-export const register = async (
-	email: string,
-	password: string,
-	name: string
-) => {
-	const { user, error } = await supabase.auth.signUp({
-		email,
-		password,
-	});
-	if (user) {
-		const { error: userError } = await supabase
-			.from('users')
-			.update({ name })
-			.eq('id', user.id);
-		console.log(userError);
-	}
-};
-
-export const login = async (email: string, password: string) => {
-	await supabase.auth.signIn({
-		email,
-		password,
-	});
-};
-
-export const logout = () => {
-	supabase.auth.signOut();
-};
+import supabase from '.';
 
 /**
  * Fetch a single user
@@ -53,91 +24,5 @@ export const fetchUser = async (email: string): Promise<User | undefined> => {
 		return toCamelCase(user);
 	} catch (error) {
 		console.error('error', error);
-	}
-};
-
-export const createClass = async (
-	className: string,
-	classNumber: string,
-	classTerm: string
-) => {
-	const currentUserId = supabase.auth.user()?.id;
-	const { data } = await supabase.from('classes').insert({
-		created_by: currentUserId,
-		class_name: className,
-		class_number: classNumber,
-		class_term: classTerm,
-	});
-	if (data) {
-		await supabase.from('users_classes').insert({
-			user_id: currentUserId,
-			class_id: data[0].id,
-			role: 'instructor',
-		});
-	}
-};
-
-export const fetchClasses = async () => {
-	const currentUserId = supabase.auth.user()?.id;
-	const { data } = await supabase
-		.from('users_classes')
-		.select(
-			`
-      classes (
-        id,
-        class_name,
-        class_number,
-        class_term,
-        status,
-        private_posts,
-        student_polls,
-        description
-      )
-  `
-		)
-		.eq('user_id', currentUserId);
-	if (data) {
-		const classes = data.map((d) => d.classes);
-		return toCamelCase(classes);
-	}
-};
-
-export const createPost = async (
-	type: string,
-	title: string,
-	content: string
-) => {
-	await supabase.from('posts').insert({
-		type,
-		title,
-		content,
-	});
-};
-
-export const deleteCourse = async (id: Number) => {
-	// const currentUserId = supabase.auth.user()?.id;
-	const { data } = await supabase.from('classes').delete().match({ id: id });
-	if (data) {
-		return data;
-	}
-};
-
-export const updateCourse = async (
-	id: Number,
-	className: string,
-	classNumber: string
-) => {
-	const { data, error } = await supabase
-		.from('classes')
-		.update({ class_name: className, class_number: classNumber })
-		.match({ id: id });
-	// const { data, error } = await supabase
-	// 	.from('classes')
-	// 	.select('*')
-	// 	.match({ id: id });
-	if (data) {
-		return data;
-	} else if (error) {
-		alert(error.message);
 	}
 };

@@ -1,17 +1,26 @@
+import React, { useState } from 'react';
 import { Box, Button } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
-import React from 'react';
 import { InputField } from '../components/InputField';
 import { Wrapper } from '../components/Wrapper';
 import { useHistory } from 'react-router-dom';
-import { register } from 'lib/supabase/store';
+import useCreateUser from 'hooks/useCreateUser';
 
 const Register: React.FC<{}> = () => {
   const history = useHistory();
 
-  const handleRegister = async ({ email, password, name }) => {
-    await register(email, password, name);
-    history.push('/verify-email');
+  const createUserMutation = useCreateUser();
+
+  const handleRegister = async (values) => {
+    // await register(email, password, name);
+    createUserMutation.mutate(values);
+  };
+
+  const renderError = () => {
+    if (createUserMutation.isError) {
+      return (createUserMutation.error as Error).message;
+    }
+    return null;
   };
 
   return (
@@ -44,6 +53,8 @@ const Register: React.FC<{}> = () => {
                 type='password'
               />
             </Box>
+            {renderError()}
+            <p>ok</p>
             <Button mt={4} type='submit' colorScheme='teal'>
               Register
             </Button>

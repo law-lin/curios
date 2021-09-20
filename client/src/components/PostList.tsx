@@ -3,23 +3,22 @@ import ReactList from 'react-list';
 import { Box, Heading, Text } from '@chakra-ui/react';
 import { matchPath } from 'react-router';
 import { useLocation } from 'react-router-dom';
-
+import Preview from './preview/Preview';
 import './post.css';
+import { Post } from 'types';
 
-export interface Post {
-  number: Number;
-  title: string;
-  details: string;
-  date: Date;
+interface Props {
+  courseId: string;
+  posts: Post[];
+  handleClick: (post: Post) => void;
 }
-
-const PostList = ({ courseId, posts, handleClick }) => {
+const PostList = ({ courseId, posts, handleClick }: Props) => {
   const location = useLocation();
 
   const PostCard = (index, key, handleClick) => {
     const isActive = !!matchPath(
       location.pathname,
-      `/c/${courseId}/${posts[index].number}`
+      `/c/${courseId}/p/${posts[index].id}`
     );
 
     return (
@@ -38,13 +37,15 @@ const PostList = ({ courseId, posts, handleClick }) => {
           >
             {posts[index].title}
           </Heading>
+
           <Text
             maxH={12}
             fontSize={11}
             overflow='hidden'
             textOverflow='ellipsis'
           >
-            {posts[index].details}
+            <div dangerouslySetInnerHTML={{ __html: posts[index].content }} />
+            {/* <Preview content={posts[index].content} /> */}
           </Text>
         </div>
       </div>
@@ -52,7 +53,7 @@ const PostList = ({ courseId, posts, handleClick }) => {
   };
 
   return (
-    <Box h='85vh' overflow='auto'>
+    <Box maxH='78vh' overflow='auto'>
       <ReactList
         itemRenderer={(index, key) => PostCard(index, key, handleClick)}
         length={posts.length}

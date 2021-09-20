@@ -3,14 +3,15 @@ import { Box, Button, Flex, Link } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputField } from 'components/InputField';
 import { Wrapper } from 'components/Wrapper';
-import { login } from 'lib/supabase/store';
 import { useHistory } from 'react-router-dom';
+import useLogin from 'hooks/useLogin';
 
 const Login: React.FC<{}> = () => {
   const history = useHistory();
+  const loginMutation = useLogin();
 
-  const handleLogin = async ({ email, password }) => {
-    await login(email, password);
+  const handleLogin = async (values) => {
+    loginMutation.mutate(values);
   };
 
   return (

@@ -1,17 +1,6 @@
 import React from 'react';
 
-import {
-  MenuList,
-  MenuItemOption,
-  MenuGroup,
-  MenuOptionGroup,
-  MenuIcon,
-  MenuCommand,
-  Button,
-  Avatar,
-  Switch,
-  useColorMode,
-} from '@chakra-ui/react';
+import { Avatar, Switch, useColorMode } from '@chakra-ui/react';
 import useDarkMode from 'use-dark-mode';
 
 import {
@@ -22,8 +11,8 @@ import {
   FocusableItem,
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
-import { logout } from 'lib/supabase/store';
 import { useUser } from 'providers/AuthProvider';
+import useLogOut from 'hooks/useLogOut';
 
 const styles = {
   menuItem: {
@@ -62,7 +51,7 @@ const UserButton = React.forwardRef((props: any, ref: any) => (
 
 const UserSettings = ({ collapsed }) => {
   const { colorMode, toggleColorMode } = useColorMode();
-
+  const logOutMutation = useLogOut();
   return (
     <>
       <Menu
@@ -101,7 +90,7 @@ const UserSettings = ({ collapsed }) => {
         <MenuItem>
           <span>Settings</span>
         </MenuItem>
-        <MenuItem onClick={logout}>
+        <MenuItem onClick={() => logOutMutation.mutate()}>
           <span>Log Out</span>
         </MenuItem>
 
