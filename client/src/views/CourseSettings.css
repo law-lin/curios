@@ -1,0 +1,66 @@
+.sbutton {
+	box-sizing: border-box;
+	width: 290px;
+	max-width: 290px;
+	padding: 7px 15px;
+	border-radius: 6px;
+	height: 53px;
+}
+.sbutton:hover {
+	background-color: #f1f2f3;
+	cursor: pointer;
+}
+.sbutton:active {
+	background-color: #f1f2f3;
+	filter: brightness(98%);
+}
+
+.sbutton-title {
+	font-family: 'Roboto', sans-serif;
+	font-size: 14px;
+	line-height: 1.6;
+}
+.sbutton-title {
+}
+.sbutton-description {
+	font-family: 'Roboto', sans-serif;
+	color: rgba(120, 127, 133, 1);
+	font-size: 12px;
+	line-height: 18px;
+}
+
+.sbutton-description.active {
+	color: #c2e1ff;
+}
+
+.sbutton.active {
+	color: white;
+	background-color: #0084ff;
+}
+
+.leavebutton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-family: 'Roboto', sans-serif;
+	height: 30px;
+	font-size: 11px;
+	font-weight: 550;
+	border: 1px solid #e0e0e0;
+	border-radius: 100px;
+	min-width: 85px;
+	width: 85%;
+}
+.leavebutton:hover {
+	background-color: #f1f2f3;
+	cursor: pointer;
+}
+.roundborderbutton {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 120px;
+	height: 32px;
+	border-radius: 34px;
+	border: 1px solid #e0e0e0;
+}
