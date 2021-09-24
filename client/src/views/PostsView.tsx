@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PostList from 'components/PostList';
 import {
-  useParams,
-  useHistory,
-  useLocation,
-  Switch,
-  Route,
+	useParams,
+	useHistory,
+	useLocation,
+	Switch,
+	Route,
 } from 'react-router-dom';
 import { Box, Heading, Button } from '@chakra-ui/react';
 import { Class, Post } from 'types';
@@ -96,75 +96,78 @@ import usePosts from 'hooks/usePosts';
 // ];
 
 interface Params {
-  courseId: string;
-  postId: string;
+	courseId: string;
+	postId: string;
 }
 
 interface Props {
-  classItem: Class;
+	classItem: Class;
 }
 
 function PostsView({ classItem }: Props) {
-  const { classNumber, className, classTerm } = classItem;
-  const { courseId, postId } = useParams<Params>();
-  const location = useLocation();
-  const history = useHistory();
-  const { data, isLoading } = usePosts(courseId);
+	const { classNumber, className, classTerm } = classItem;
+	const { courseId, postId } = useParams<Params>();
+	const location = useLocation();
+	const history = useHistory();
+	const { data, isLoading } = usePosts(courseId);
 
-  if (isLoading) {
-    return null;
-  }
-  return (
-    <>
-      <aside
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          borderRight: 'rgba(120,127,133,0.12) 1px solid',
-          // margin: '24px 16px',
-          // padding: 24,
-        }}
-      >
-        <Box p={5}>
-          <Heading size='lg'>{classNumber}</Heading>
-          <Heading size='sm'>{className}</Heading>
-          <Heading size='sm'>{classTerm}</Heading>
-          <Box>
-            <Button
-              onClick={() =>
-                history.push(`/c/${courseId}/p/new`, {
-                  pathname: location.pathname,
-                })
-              }
-            >
-              Add Post
-            </Button>
-          </Box>
-        </Box>
-        <PostList
-          courseId={courseId}
-          posts={data}
-          handleClick={(post: Post) =>
-            history.push(`/c/${courseId}/p/${post.id}`)
-          }
-        />
-      </aside>
+	if (isLoading) {
+		return null;
+	}
+	return (
+		<>
+			<aside
+				style={{
+					display: 'flex',
+					flexDirection: 'column',
+					borderRight: 'rgba(120,127,133,0.12) 1px solid',
+					// margin: '24px 16px',
+					// padding: 24,
+				}}
+			>
+				<Box p={5}>
+					<Heading size='lg'>{classNumber}</Heading>
+					<Heading size='sm'>{className}</Heading>
+					<Heading size='sm'>{classTerm}</Heading>
+					<Box d='flex' paddingTop='6' justifyContent='space-evenly'>
+						<Button
+							onClick={() =>
+								history.push(`/c/${courseId}/p/new`, {
+									pathname: location.pathname,
+								})
+							}
+						>
+							Add Post
+						</Button>
+						<Button onClick={() => history.replace(`/c/${courseId}/settings`)}>
+							Settings
+						</Button>
+					</Box>
+				</Box>
+				<PostList
+					courseId={courseId}
+					posts={data}
+					handleClick={(post: Post) =>
+						history.push(`/c/${courseId}/p/${post.id}`)
+					}
+				/>
+			</aside>
 
-      <Box flex={1}>
-        <Switch>
-          <Route
-            path={'/c/:courseId/p/new'}
-            render={() => <NewPost classId={courseId} />}
-          />
+			<Box flex={1}>
+				<Switch>
+					<Route
+						path={'/c/:courseId/p/new'}
+						render={() => <NewPost classId={courseId} />}
+					/>
 
-          <Route
-            path={'/c/:courseId/p/:postId'}
-            render={() => <PostView posts={data} />}
-          />
-        </Switch>
-      </Box>
-    </>
-  );
+					<Route
+						path={'/c/:courseId/p/:postId'}
+						render={() => <PostView posts={data} />}
+					/>
+				</Switch>
+			</Box>
+		</>
+	);
 }
 
 export default PostsView;
