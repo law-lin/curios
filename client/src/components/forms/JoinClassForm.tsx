@@ -8,7 +8,6 @@ import {
   Button,
   Select,
 } from '@chakra-ui/react';
-import { createClass } from 'lib/supabase/store';
 
 interface Props {
   onSubmit: () => void;
@@ -22,9 +21,6 @@ const JoinClassForm = ({ onSubmit }: Props) => {
 
   const handleFormSubmit = async (values) => {
     const { className, classNumber, classTerm } = values;
-    console.log(values);
-    await createClass(className, classNumber, classTerm);
-    onSubmit();
   };
 
   /*join code
