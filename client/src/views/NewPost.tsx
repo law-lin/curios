@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Stack,
   Box,
   Heading,
+  Button,
   FormLabel,
   Radio,
   RadioGroup,
@@ -12,18 +13,28 @@ import {
 } from '@chakra-ui/react';
 import Editor from 'components/editor/Editor';
 import Preview from 'components/preview/Preview';
-
+import { useLocation, useHistory } from 'react-router-dom';
 // tiptap
-import { useEditor, EditorContent } from '@tiptap/react';
+import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
 import Typography from '@tiptap/extension-typography';
-import { createPost } from 'lib/supabase/store';
+import useCreatePost from 'hooks/useCreatePost';
 
-const NewPost = () => {
+interface Props {
+  classId: string;
+}
+
+interface Location {
+  pathname: string;
+}
+const NewPost = ({ classId }: Props) => {
   const [type, setType] = useState('question');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const location = useLocation<Location>();
+  const history = useHistory();
+  const createPostMutation = useCreatePost(classId, type, title, content);
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -37,7 +48,11 @@ const NewPost = () => {
   };
 
   const handleCreate = () => {
-    createPost(type, title, content);
+    createPostMutation.mutate();
+  };
+
+  const handleCancel = () => {
+    history.push(location.state.pathname);
   };
 
   if (!preview) {
@@ -67,7 +82,8 @@ const NewPost = () => {
           </GridItem>
         </Grid>
 
-        {/* <Button onClick={handleCreate}>Create</Button> */}
+        <Button onClick={handleCreate}>Create</Button>
+        <Button onClick={handleCancel}>Cancel</Button>
       </Box>
     </Stack>
   );

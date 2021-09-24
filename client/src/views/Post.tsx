@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Stack, Box, Heading, Text, Button } from '@chakra-ui/react';
 import { Class } from 'types';
+import Preview from 'components/preview/Preview';
 
 const Post = ({ post }) => {
   return (
@@ -8,7 +9,7 @@ const Post = ({ post }) => {
       <Box p={5} shadow='sm' borderWidth='1px'>
         <Text>Question @{post?.number}</Text>
         <Heading fontSize='xl'>{post?.title}</Heading>
-        <Text mt={4}>{post?.details}</Text>
+        <Preview content={post?.content} />
       </Box>
       <Box p={5} shadow='sm' borderWidth='1px'>
         <Heading fontSize='xl'>Instructor Answers</Heading>

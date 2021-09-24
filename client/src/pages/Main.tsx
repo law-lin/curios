@@ -6,51 +6,46 @@ import NotificationsView from 'views/NotificationsView';
 import MessagesView from 'views/MessagesView';
 import SearchView from 'views/SearchView';
 import Sidebar from 'components/sidebar/Sidebar';
-import { fetchClasses } from 'lib/supabase/store';
 import CourseView from 'views/CourseView';
-import { Class } from 'types';
+import useClasses from 'hooks/useClasses';
 
 function Main() {
-  const { value } = useDarkMode(false);
-  const [classes, setClasses] = useState<Class[]>([]);
-  useEffect(() => {
-    async function load() {
-      const classes = await fetchClasses();
-      console.log('Classes', classes);
-      setClasses(classes);
-    }
-    load();
-  }, []);
-  return (
-    <div
-      style={{
-        background: 'inherit',
-        display: 'flex',
-        flex: 1,
-      }}
-    >
-      <aside style={{ display: 'flex' }}>
-        <Sidebar classes={classes} />
-      </aside>
+	const { value } = useDarkMode(false);
+	const { data, isLoading } = useClasses();
 
-      <Switch>
-        <Route exact path={'/notifications'} component={NotificationsView} />
-        <Route exact path={'/messages'} component={MessagesView} />
-        <Route exact path={'/search'} component={SearchView} />
-        <Route
-          path={'/c/:courseId'}
-          component={() => <CourseView classes={classes} />}
-        />
-        <Route
-          render={() => {
-            if (classes.length > 0) {
-              return <Redirect to={`/c/${classes[0].id}`} />;
-            }
-          }}
-        />
-      </Switch>
+	if (isLoading) {
+		return null;
+	}
+	return (
+		<div
+			style={{
+				background: 'inherit',
+				display: 'flex',
+				flex: 1,
+			}}
+		>
+			<aside style={{ display: 'flex' }}>
+				<Sidebar classes={data} />
+			</aside>
 
-      {/* <div className='sider'>
+			<Switch>
+				<Route exact path={'/notifications'} component={NotificationsView} />
+				<Route exact path={'/messages'} component={MessagesView} />
+				<Route exact path={'/search'} component={SearchView} />
+				<Route
+					path={'/c/:courseId'}
+					render={() => <CourseView classes={data} />}
+				/>
+				<Route
+					render={() => {
+						if (data.length > 0) {
+							return <Redirect to={`/c/${data[0].id}`} />;
+						}
+					}}
+				/>
+			</Switch>
+
+			{/* <div className='sider'>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <div className='logo'>Curios</div>
             <Menu
@@ -96,7 +91,7 @@ function Main() {
           </div>
         </div> */}
 
-      {/* <Content
+			{/* <Content
         className='site-layout-background'
         style={{
           margin: '24px 16px',
@@ -106,8 +101,8 @@ function Main() {
       >
       
       </Content> */}
-    </div>
-  );
+		</div>
+	);
 }
 
 export default Main;

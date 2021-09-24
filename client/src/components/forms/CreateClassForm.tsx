@@ -8,7 +8,7 @@ import {
   Button,
   Select,
 } from '@chakra-ui/react';
-import { createClass } from 'lib/supabase/store';
+import useCreateClass from 'hooks/useCreateClass';
 
 interface Props {
   onSubmit: () => void;
@@ -19,11 +19,10 @@ const CreateClassForm = ({ onSubmit }: Props) => {
     register,
     formState: { errors, isSubmitting },
   } = useForm();
+  const createClassMutation = useCreateClass();
 
   const handleFormSubmit = async (values) => {
-    const { className, classNumber, classTerm } = values;
-    console.log(values);
-    await createClass(className, classNumber, classTerm);
+    createClassMutation.mutate(values);
     onSubmit();
   };
 
