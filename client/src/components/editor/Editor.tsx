@@ -3,6 +3,10 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
 import Typography from '@tiptap/extension-typography';
+import { Button, Flex, Spacer } from '@chakra-ui/react';
+
+import Icons from '../../assets/icons';
+
 import './styles.scss';
 
 const MenuBar = ({ editor }) => {
@@ -11,112 +15,123 @@ const MenuBar = ({ editor }) => {
   }
 
   return (
-    <>
-      <button
-        onClick={() => editor.chain().focus().toggleBold().run()}
-        className={editor.isActive('bold') ? 'is-active' : ''}
-      >
-        bold
-      </button>
-      <button
+    <Flex flexWrap='wrap'>
+      <Button
+        size='sm'
+        margin='1px'
+        isActive={editor.isActive('bold') ? true : false}
+        onClick={() => editor.chain().focus().toggleBold().run()}      >
+        <Icons.BoldIcon /> 
+      </Button>
+      <Button
+        size='sm' 
+        margin='1px'
+        isActive={editor.isActive('italic') ? true : false}
         onClick={() => editor.chain().focus().toggleItalic().run()}
-        className={editor.isActive('italic') ? 'is-active' : ''}
       >
-        italic
-      </button>
-      <button
+        <Icons.ItalicIcon />
+      </Button>
+      <Button
+        size='sm'
+        margin='1px'
+        isActive={editor.isActive('strike') ? true : false}
         onClick={() => editor.chain().focus().toggleStrike().run()}
-        className={editor.isActive('strike') ? 'is-active' : ''}
       >
-        strike
-      </button>
-      <button
+        <Icons.StrikethoughIcon />
+      </Button>
+      <Button
+        size='sm'
+        margin='1px'
+        isActive={editor.isActive('code') ? true : false}
         onClick={() => editor.chain().focus().toggleCode().run()}
-        className={editor.isActive('code') ? 'is-active' : ''}
       >
-        code
-      </button>
-      <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>
-        clear marks
-      </button>
-      <button onClick={() => editor.chain().focus().clearNodes().run()}>
-        clear nodes
-      </button>
-      <button
+        <Icons.CodeIcon />
+      </Button>
+      {/* <Button
+        size='sm'
+        margin='1px'
+        isActive={editor.isActive('paragraph') ? true : false}
         onClick={() => editor.chain().focus().setParagraph().run()}
-        className={editor.isActive('paragraph') ? 'is-active' : ''}
       >
-        paragraph
-      </button>
-      <button
+        <Icons.ParagraphIcon />
+      </Button> */}
+      <Button
+        size='sm'
+        margin='1px'
+        isActive={editor.isActive('heading', { level: 1 }) ? true : false}
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={editor.isActive('heading', { level: 1 }) ? 'is-active' : ''}
       >
-        h1
-      </button>
-      <button
+        <Icons.HeadingOneIcon />
+      </Button>
+      <Button
+        size='sm'
+        margin='1px'
+        isActive={editor.isActive('heading', { level: 2 }) ? true : false}
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={editor.isActive('heading', { level: 2 }) ? 'is-active' : ''}
       >
-        h2
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className={editor.isActive('heading', { level: 3 }) ? 'is-active' : ''}
-      >
-        h3
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-        className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
-      >
-        h4
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-        className={editor.isActive('heading', { level: 5 }) ? 'is-active' : ''}
-      >
-        h5
-      </button>
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-        className={editor.isActive('heading', { level: 6 }) ? 'is-active' : ''}
-      >
-        h6
-      </button>
-      <button
+        <Icons.HeadingTwoIcon />
+      </Button>
+      <Button
+        size='sm'
+        margin='1px'
+        isActive={editor.isActive('bulletList') ? true : false}
         onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={editor.isActive('bulletList') ? 'is-active' : ''}
       >
-        bullet list
-      </button>
-      <button
+        <Icons.BulletListIcon />
+      </Button>
+      <Button
+        size='sm'
+        margin='1px'
+        isActive={editor.isActive('orderedList') ? true : false}
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={editor.isActive('orderedList') ? 'is-active' : ''}
       >
-        ordered list
-      </button>
-      <button
+        <Icons.OrderedListIcon />
+      </Button>
+      <Button
+        size='sm'
+        margin='1px'
+        isActive={editor.isActive('codeBlock') ? true : false}
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        className={editor.isActive('codeBlock') ? 'is-active' : ''}
       >
-        code block
-      </button>
-      <button
+        <Icons.CodeBlockIcon />
+      </Button>
+      <Button
+        size='sm'
+        margin='1px'
+        isActive={editor.isActive('blockquote') ? true : false}
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        className={editor.isActive('blockquote') ? 'is-active' : ''}
       >
-        blockquote
-      </button>
-      <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
-        horizontal rule
-      </button>
-      <button onClick={() => editor.chain().focus().setHardBreak().run()}>
-        hard break
-      </button>
-      <button onClick={() => editor.chain().focus().undo().run()}>undo</button>
-      <button onClick={() => editor.chain().focus().redo().run()}>redo</button>
-    </>
+        <Icons.BlockquoteIcon />
+      </Button>
+      <Button 
+        size='sm' 
+        margin='1px' 
+        onClick={() => editor.chain().focus().setHorizontalRule().run()}
+      >
+        <Icons.HorizontalRuleIcon />
+      </Button>
+      <Button 
+        size='sm'
+        margin='1px'
+        onClick={() => editor.chain().focus().setHardBreak().run()}
+      >
+        <Icons.HardBreakIcon />
+      </Button>
+      <Button 
+        size='sm' 
+        margin='1px' 
+        onClick={() => editor.chain().focus().undo().run()}
+      >
+        <Icons.UndoIcon />
+      </Button>
+      <Button 
+        size='sm' 
+        margin='1px' 
+        onClick={() => editor.chain().focus().redo().run()}
+      >
+        <Icons.RedoIcon />
+      </Button>
+    </Flex>
   );
 };
 
