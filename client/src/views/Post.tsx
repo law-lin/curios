@@ -3,22 +3,38 @@ import { Stack, Box, Heading, Text, Button } from '@chakra-ui/react';
 import { Class } from 'types';
 import Preview from 'components/preview/Preview';
 
-const Post = ({ post }) => {
+const StudentInstructorAnswersTemplate = () => {
   return (
-    <Stack spacing={4} pt={5} px='22'>
-      <Box p={5} shadow='sm' borderWidth='1px'>
-        <Text>Question @{post?.number}</Text>
-        <Heading fontSize='xl'>{post?.title}</Heading>
-        <Preview content={post?.content} />
-      </Box>
+    <>
       <Box p={5} shadow='sm' borderWidth='1px'>
         <Heading fontSize='xl'>Instructor Answers</Heading>
         <Text mt={4}>I can help you.</Text>
-      </Box>
+        </Box>
       <Box p={5} shadow='sm' borderWidth='1px'>
         <Heading fontSize='xl'>Student Answers</Heading>
         <Text mt={4}>I can help you.</Text>
       </Box>
+    </>
+  )
+}
+
+const StudentInstructorAnswers = ( props ) => {
+  const isPostTypeNote = props.postType === 'note';
+  if(!isPostTypeNote) {
+    return <StudentInstructorAnswersTemplate />;
+  }
+  return null;
+}
+
+const Post = ({ post }) => {
+  return (
+    <Stack spacing={4} pt={5} px='22'>
+      <Box p={5} shadow='sm' borderWidth='1px'>
+        <Text>{post?.type} @{post?.number}</Text>
+        <Heading fontSize='xl'>{post?.title}</Heading>
+        <Preview content={post?.content} />
+      </Box>
+      <StudentInstructorAnswers postType={post?.type} />
     </Stack>
   );
 };
