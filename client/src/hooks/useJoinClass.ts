@@ -16,9 +16,5 @@ const joinClass = async (classId: string, userId: string) => {
 export default function useJoinClass(classId: string) {
   const queryClient = useQueryClient();
   const user = supabase.auth.user();
-  return useMutation(() => joinClass(classId, user?.id ?? ''), {
-    onSuccess: () => {
-      queryClient.refetchQueries('classes');
-    },
-  });
+  return useMutation(() => joinClass(classId, user?.id ?? ''));
 }
