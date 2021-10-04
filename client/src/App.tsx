@@ -13,6 +13,7 @@ import Landing from 'pages/Landing';
 import Login from 'pages/Login';
 import Register from 'pages/Register';
 import Main from 'pages/Main';
+import Join from 'pages/Join';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path='/login' component={Login} />
             <Route path='/register' component={Register} />
             <Route path='/verify-email' component={Register} />
+            <Route path='/join/:classId' component={Join} />
             <Main />
           </Switch>
         </AuthProvider>

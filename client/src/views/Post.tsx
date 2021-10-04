@@ -11,6 +11,10 @@ import { Class } from 'types';
 import { stringify } from 'querystring';
 import { ConsoleSqlOutlined } from '@ant-design/icons';
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 const Post = ({ post }) => {
   const [instructorAnswer, setInstructorAnswer] = useState('');
   const [studentAnswers, setStudentAnswers] = useState([]);
@@ -50,7 +54,9 @@ const Post = ({ post }) => {
   return (
     <Stack spacing={4} pt={5} px='22'>
       <Box p={5} shadow='sm' borderWidth='1px'>
-        <Text>Question @{post?.number}</Text>
+        <Text>
+          {capitalizeFirstLetter(post?.type)} @{post?.number}
+        </Text>
         <Heading fontSize='xl'>{post?.title}</Heading>
         <Preview content={post?.content} />
       </Box>
