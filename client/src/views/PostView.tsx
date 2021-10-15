@@ -12,14 +12,13 @@ interface Params {
 }
 
 interface Props {
-  classId: string;
   posts: Post[];
 }
 
-function PostView({ classId, posts }: Props) {
+function PostView({ posts }: Props) {
   const { courseId, postId } = useParams<Params>();
   const post = posts.find((post: Post) => post.id === parseInt(postId));
-  return <PostItem classId={classId} post={post} />;
+  return <PostItem post={post} />;
 }
 
 export default PostView;

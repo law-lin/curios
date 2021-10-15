@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import useCreateAnswer from '../hooks/useCreateAnswer';
+import useAnswers from '../hooks/useAnswers';
+
 import {
   Stack,
   Box,
@@ -21,11 +23,13 @@ import { Class } from 'types';
 import { stringify } from 'querystring';
 import { ConsoleSqlOutlined } from '@ant-design/icons';
 
+import StudentAnswersView from './StudentAnswersView';
+
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const Post = ({ classId, post }) => {
+const Post = ({ post }) => {
   const [instructorAnswer, setInstructorAnswer] = useState('');
   const [studentAnswers, setStudentAnswers] = useState([]);
   const [instructorAnswerEdit, setInstructorAnswerEdit] = useState(false);
@@ -33,12 +37,14 @@ const Post = ({ classId, post }) => {
   const [anonymous, setAnonymous] = useState(false);
   const [content, setContent] = useState('');
   const createAnswerMutation = useCreateAnswer(
-    classId,
+    post.id,
     'student',
     anonymous,
     '0',
     content
   );
+  const { data, isLoading } = useAnswers(post.id);
+  console.log(data);
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -71,6 +77,9 @@ const Post = ({ classId, post }) => {
     setStudentAnswerEdit(false);
   };
 
+  if (isLoading) {
+    return null;
+  }
   return (
     <Stack spacing={4} pt={5} px='22'>
       <Box p={5} shadow='sm' borderWidth='1px'>
@@ -131,6 +140,7 @@ const Post = ({ classId, post }) => {
             <Text>Click to contribute an answer.</Text>
           )}
         </Box>
+        <StudentAnswersView studentAnswers={data!} />
       </Box>
     </Stack>
   );

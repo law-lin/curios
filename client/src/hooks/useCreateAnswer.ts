@@ -1,14 +1,15 @@
 import { useMutation, useQueryClient } from 'react-query';
 import supabase from '../lib/supabase';
-import { Answer } from '../types/index';
+import { Answer } from '../types';
 
 const createAnswer = async (answer: Answer) => {
-  const { userID, classID, type, isAnonymous, upvotes, content } = answer;
+  const { userID, postID, type, isAnonymous, upvotes, content } = answer;
+  console.log(content);
 
   const { data, error } = await supabase.from('answers').insert([
     {
       created_by: userID,
-      class_id: classID,
+      post_id: postID,
       type: type,
       is_anonymous: isAnonymous,
       upvotes: upvotes,
@@ -22,7 +23,7 @@ const createAnswer = async (answer: Answer) => {
 };
 
 export default function useCreateAnswer(
-  classID: string,
+  postID: string,
   type: string,
   isAnonymous: boolean,
   upvotes: string,
@@ -32,13 +33,12 @@ export default function useCreateAnswer(
   const user = supabase.auth.user();
   const answer: Answer = {
     userID: user?.id ?? '',
-    classID: classID,
+    postID: postID,
     type: type,
     isAnonymous: isAnonymous,
     upvotes: upvotes,
     content: content,
   };
-  console.log(answer);
 
   return useMutation(() => createAnswer(answer), {
     onSuccess: () => {

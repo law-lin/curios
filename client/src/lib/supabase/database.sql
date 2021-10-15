@@ -73,7 +73,7 @@ comment on table public.posts is 'A post for a class';
 create table public.answers (
   id serial primary key,
   created_by uuid references public.users on delete cascade not null,
-  class_id bigint references public.classes on delete cascade not null,
+  post_id bigint references public.posts(id) on delete cascade not null,
   type answer_type,
   is_anonymous boolean,
   upvotes bigint,
