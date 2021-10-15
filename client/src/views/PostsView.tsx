@@ -162,7 +162,7 @@ function PostsView({ classItem }: Props) {
 
           <Route
             path={'/c/:courseId/p/:postId'}
-            render={() => <PostView posts={data} />}
+            render={() => <PostView classId={courseId} posts={data} />}
           />
         </Switch>
       </Box>

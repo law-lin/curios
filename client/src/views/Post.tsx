@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { Stack, Box, Heading, Text, Button } from '@chakra-ui/react';
+import useCreateAnswer from '../hooks/useCreateAnswer';
+import {
+  Stack,
+  Box,
+  Heading,
+  Text,
+  Button,
+  FormControl,
+  FormLabel,
+  Switch,
+} from '@chakra-ui/react';
 
 import Editor from 'components/editor/Editor';
 import Preview from 'components/preview/Preview';
@@ -15,12 +25,20 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const Post = ({ post }) => {
+const Post = ({ classId, post }) => {
   const [instructorAnswer, setInstructorAnswer] = useState('');
   const [studentAnswers, setStudentAnswers] = useState([]);
   const [instructorAnswerEdit, setInstructorAnswerEdit] = useState(false);
   const [studentAnswerEdit, setStudentAnswerEdit] = useState(false);
+  const [anonymous, setAnonymous] = useState(false);
   const [content, setContent] = useState('');
+  const createAnswerMutation = useCreateAnswer(
+    classId,
+    'student',
+    anonymous,
+    '0',
+    content
+  );
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -42,7 +60,9 @@ const Post = ({ post }) => {
     setInstructorAnswerEdit(false);
   };
 
-  const handleStudentAnswerPost = () => {};
+  const handleStudentAnswerPost = () => {
+    createAnswerMutation.mutate();
+  };
 
   const handleStudentAnswerCancel = (
     e: React.MouseEvent<HTMLButtonElement>
@@ -95,6 +115,12 @@ const Post = ({ post }) => {
         >
           {studentAnswerEdit ? (
             <Box p={5}>
+              <FormControl display='flex' alignItems='center' p={5}>
+                <FormLabel htmlFor='user-anonymous' mb='0'>
+                  Anonymous
+                </FormLabel>
+                <Switch onChange={() => setAnonymous(!anonymous)}></Switch>
+              </FormControl>
               <Editor onChange={onContentUpdate}></Editor>
               <Button mr={5} onClick={handleStudentAnswerPost}>
                 Post

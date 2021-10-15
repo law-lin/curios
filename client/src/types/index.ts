@@ -27,3 +27,12 @@ export interface Post {
   content: string;
   date: string;
 }
+
+export interface Answer {
+  userID: string;
+  classID: string;
+  type: string;
+  isAnonymous: boolean;
+  upvotes: string;
+  content: string;
+}
