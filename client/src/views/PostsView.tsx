@@ -129,7 +129,7 @@ function PostsView({ classItem }: Props) {
           <Heading size='lg'>{classNumber}</Heading>
           <Heading size='sm'>{className}</Heading>
           <Heading size='sm'>{classTerm}</Heading>
-          <Box>
+          <Box marginTop='10px' d='flex'>
             <Button
               onClick={() =>
                 history.push(`/c/${courseId}/p/new`, {
@@ -139,7 +139,10 @@ function PostsView({ classItem }: Props) {
             >
               Add Post
             </Button>
-            <Button onClick={() => history.replace(`/c/${courseId}/settings`)}>
+            <Button
+              marginLeft='10px'
+              onClick={() => history.replace(`/c/${courseId}/settings`)}
+            >
               Settings
             </Button>
           </Box>
