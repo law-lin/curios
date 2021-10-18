@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
   Stack,
   Box,
+  Heading,
   Button,
   FormLabel,
   Radio,
@@ -72,7 +73,7 @@ const NewPost = ({ classId }: Props) => {
           placeholder='Enter a title'
           onChange={(e) => setTitle(e.target.value)}
         />
-        <Grid h='200px' templateColumns='repeat(2, 1fr)' gap={4}>
+        <Grid mt={4} h='400px' templateColumns='repeat(2, 1fr)' gap={4}>
           <GridItem colSpan={1}>
             <Editor onChange={onContentUpdate} />
           </GridItem>
@@ -84,8 +85,6 @@ const NewPost = ({ classId }: Props) => {
         <Button onClick={handleCreate}>Create</Button>
         <Button onClick={handleCancel}>Cancel</Button>
       </Box>
-
-      <Box p={5} shadow='sm' borderWidth='1px'></Box>
     </Stack>
   );
 };

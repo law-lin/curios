@@ -14,7 +14,7 @@ drop function if exists public.handle_new_user() cascade;
 -- Custom types
 -- create type public.app_permission as enum ('classes.delete');
 -- create type public.app_role as enum ('admin', 'moderator');
-create type public.user_role as enum ('instructor', 'student', 'teaching assistant');
+create type public.user_role as enum ('class_creator', 'ta', 'instructor', 'student', );
 create type public.user_status as enum ('ONLINE', 'OFFLINE');
 create type public.post_type as enum ('question', 'note');
 -- USERS

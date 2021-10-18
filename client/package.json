@@ -71,6 +71,7 @@
   "devDependencies": {
     "@supabase/supabase-js": "^1.22.3",
     "react-icons": "^4.2.0",
+    "react-svg-loader": "^3.0.3",
     "react-view-slider": "^4.3.2"
   }
 }

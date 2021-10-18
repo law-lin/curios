@@ -3,11 +3,17 @@ import { Stack, Box, Heading, Text, Button } from '@chakra-ui/react';
 import { Class } from 'types';
 import Preview from 'components/preview/Preview';
 
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 const Post = ({ post }) => {
   return (
     <Stack spacing={4} pt={5} px='22'>
       <Box p={5} shadow='sm' borderWidth='1px'>
-        <Text>Question @{post?.number}</Text>
+        <Text>
+          {capitalizeFirstLetter(post?.type)} @{post?.number}
+        </Text>
         <Heading fontSize='xl'>{post?.title}</Heading>
         <Preview content={post?.content} />
       </Box>
