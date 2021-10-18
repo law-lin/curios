@@ -129,11 +129,7 @@ function PostsView({ classItem }: Props) {
           <Heading size='lg'>{classNumber}</Heading>
           <Heading size='sm'>{className}</Heading>
           <Heading size='sm'>{classTerm}</Heading>
-<<<<<<< HEAD
-          <Box marginTop='10px' d='flex'>
-=======
           <Box d='flex' paddingTop='6' justifyContent='space-evenly'>
->>>>>>> main
             <Button
               onClick={() =>
                 history.push(`/c/${courseId}/p/new`, {

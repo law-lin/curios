@@ -63,7 +63,13 @@ const Members = ({ classItem }: Props) => {
             <MenuList>
               {sort.map((field) => {
                 return (
-                  <MenuItem minH='48px'>
+                  <MenuItem
+                    minH='48px'
+                    // bg={sortBy == sort ?}
+                    onClick={() => {
+                      setSortBy(field);
+                    }}
+                  >
                     <span>{`Sort by ${field}`}</span>
                   </MenuItem>
                 );
