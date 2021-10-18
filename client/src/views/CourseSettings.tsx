@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import { Class } from 'types';
 import './CourseSettings.css';
 import Details from 'components/csettings/Details';
+import Invite from 'components/csettings/Invite';
 import { RiInformationFill } from 'react-icons/ri';
 import { IconContext } from 'react-icons/lib';
 import { IoExit } from 'react-icons/io5';
@@ -64,7 +65,7 @@ function CourseSettings({ classItem }: Props) {
 			label: 'Invite people',
 			description: 'Send invites for people to join this class',
 			icon: 'N/A',
-			component: <Details classItem={classItem} />,
+			component: <Invite classItem={classItem}/>,
 		},
 		{
 			label: 'Notification preferences',
