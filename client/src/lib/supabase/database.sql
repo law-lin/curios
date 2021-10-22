@@ -17,6 +17,7 @@ drop function if exists public.handle_new_user() cascade;
 create type public.user_role as enum ('class_creator', 'ta', 'instructor', 'student', );
 create type public.user_status as enum ('ONLINE', 'OFFLINE');
 create type public.post_type as enum ('question', 'note');
+create type public.post_visibility as enum ('public', 'private')
 -- USERS
 create table public.users (
   id          uuid not null primary key, -- UUID from auth.users
@@ -57,6 +58,7 @@ create table public.posts (
   created_by uuid references public.users on delete cascade not null,
   class_id bigint references public.classes on delete cascade not null,
   type post_type,
+  visibility post_visibility,
   title text,
   content text
 );
