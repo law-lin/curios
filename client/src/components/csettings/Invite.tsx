@@ -16,6 +16,7 @@ import {
   useClipboard,
   Button,
   Flex,
+  Textarea,
 } from '@chakra-ui/react';
 
 const LinkInvite = ({ classItem }) => {
@@ -41,11 +42,21 @@ const LinkInvite = ({ classItem }) => {
 };
 
 const EmailInvite = () => {
+  const [emails, setEmails] = React.useState("") 
+
+  let handleInputChange = (e) => {
+    let inputValue = e.target.value
+    setEmails(inputValue)
+  }
   return (
     <Box marginTop='5'>
       <FormControl id='email'>
         <FormLabel>Email address</FormLabel>
-        <Input type='email' />
+        <Textarea
+          value = {emails}
+          onChange = {handleInputChange}
+          placeholder = "zavala@email.com, ikora@email.com...."
+        />
         <FormHelperText>We'll never share your email.</FormHelperText>
       </FormControl>
     </Box>
