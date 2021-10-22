@@ -10,42 +10,42 @@ import CourseView from 'views/CourseView';
 import useClasses from 'hooks/useClasses';
 
 function Main() {
-	const { value } = useDarkMode(false);
-	const { data, isLoading } = useClasses();
+  const { value } = useDarkMode(false);
+  const { data, isLoading } = useClasses();
 
-	if (isLoading) {
-		return null;
-	}
-	return (
-		<div
-			style={{
-				background: 'inherit',
-				display: 'flex',
-				flex: 1,
-			}}
-		>
-			<aside style={{ display: 'flex' }}>
-				<Sidebar classes={data} />
-			</aside>
+  if (isLoading) {
+    return null;
+  }
+  return (
+    <div
+      style={{
+        background: 'inherit',
+        display: 'flex',
+        flex: 1,
+      }}
+    >
+      <aside style={{ display: 'flex' }}>
+        <Sidebar classes={data} />
+      </aside>
 
-			<Switch>
-				<Route exact path={'/notifications'} component={NotificationsView} />
-				<Route exact path={'/messages'} component={MessagesView} />
-				<Route exact path={'/search'} component={SearchView} />
-				<Route
-					path={'/c/:courseId'}
-					render={() => <CourseView classes={data} />}
-				/>
-				<Route
-					render={() => {
-						if (data.length > 0) {
-							return <Redirect to={`/c/${data[0].id}`} />;
-						}
-					}}
-				/>
-			</Switch>
+      <Switch>
+        <Route exact path={'/notifications'} component={NotificationsView} />
+        <Route exact path={'/messages'} component={MessagesView} />
+        <Route exact path={'/search'} component={SearchView} />
+        <Route
+          path={'/c/:courseId'}
+          component={() => <CourseView classes={data} />}
+        />
+        <Route
+          render={() => {
+            if (data.length > 0) {
+              return <Redirect to={`/c/${data[0].id}`} />;
+            }
+          }}
+        />
+      </Switch>
 
-			{/* <div className='sider'>
+      {/* <div className='sider'>
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <div className='logo'>Curios</div>
             <Menu
@@ -91,7 +91,7 @@ function Main() {
           </div>
         </div> */}
 
-			{/* <Content
+      {/* <Content
         className='site-layout-background'
         style={{
           margin: '24px 16px',
@@ -101,8 +101,8 @@ function Main() {
       >
       
       </Content> */}
-		</div>
-	);
+    </div>
+  );
 }
 
 export default Main;
