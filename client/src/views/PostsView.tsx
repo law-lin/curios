@@ -139,7 +139,10 @@ function PostsView({ classItem }: Props) {
             >
               Add Post
             </Button>
-            <Button onClick={() => history.push(`/c/${courseId}/settings`)}>
+            <Button
+              marginLeft='10px'
+              onClick={() => history.replace(`/c/${courseId}/settings`)}
+            >
               Settings
             </Button>
           </Box>
