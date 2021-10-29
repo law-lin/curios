@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import useCreateAnswer from '../hooks/useCreateAnswer';
+import useUpdateAnswer from '../hooks/useUpdateAnswer';
 import useAnswers from '../hooks/useAnswers';
+import useClasses from 'hooks/useClasses';
 
 import {
   Stack,
@@ -24,27 +26,39 @@ import { stringify } from 'querystring';
 import { ConsoleSqlOutlined } from '@ant-design/icons';
 
 import StudentAnswersView from './StudentAnswersView';
+import InstructorAnswerView from './InstructorAnswerView';
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const Post = ({ post }) => {
+const Post = ({ post, role }) => {
   const [instructorAnswer, setInstructorAnswer] = useState('');
   const [studentAnswers, setStudentAnswers] = useState([]);
+  const [instructorAnswerPost, setInstructorAnswerPost] = useState(false);
   const [instructorAnswerEdit, setInstructorAnswerEdit] = useState(false);
   const [studentAnswerEdit, setStudentAnswerEdit] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [content, setContent] = useState('');
   const createAnswerMutation = useCreateAnswer(
     post.id,
-    'student',
+    role,
     anonymous,
     '0',
     content
   );
-  const { data, isLoading } = useAnswers(post.id);
-  console.log(data);
+  const updateAnswerMutation = useUpdateAnswer(
+    post.id,
+    'instructor',
+    anonymous,
+    '0',
+    content
+  );
+  const { data, isLoading } = useAnswers(post.id, 'student');
+  const { data: instructorData, isLoading: instructorDataIsLoading } =
+    useAnswers(post.id, 'instructor');
+
+  const { data: classData, isLoading: classIsLoading } = useClasses();
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -57,12 +71,19 @@ const Post = ({ post }) => {
     preview?.commands.setContent(newContent);
   };
 
-  const handleInstructorAnswerPost = () => {};
+  const handleInstructorAnswerPost = () => {
+    createAnswerMutation.mutate();
+  };
+
+  const handleInstructorAnswerEdit = () => {
+    updateAnswerMutation.mutate();
+  };
 
   const handleInstructorAnswerCancel = (
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.stopPropagation();
+    setInstructorAnswerPost(false);
     setInstructorAnswerEdit(false);
   };
 
@@ -77,9 +98,12 @@ const Post = ({ post }) => {
     setStudentAnswerEdit(false);
   };
 
-  if (isLoading) {
+  if (isLoading || instructorDataIsLoading || classIsLoading) {
     return null;
   }
+
+  //setRole(classData[0].role);
+
   return (
     <Stack spacing={4} pt={5} px='22'>
       <Box p={5} shadow='sm' borderWidth='1px'>
@@ -91,55 +115,101 @@ const Post = ({ post }) => {
       </Box>
       <Box p={5} shadow='sm' borderWidth='1px'>
         <Heading pb={5} fontSize='xl'>
-          Instructor Answers
+          Instructor Answer
         </Heading>
-        <Box
-          p={5}
-          shadow='sm'
-          borderWidth='1px'
-          onClick={() => setInstructorAnswerEdit(true)}
-        >
-          {instructorAnswerEdit ? (
-            <Box p={5}>
-              <Editor onChange={onContentUpdate}></Editor>
-              <Button mr={5} onClick={handleInstructorAnswerPost}>
-                Post
-              </Button>
-              <Button onClick={handleInstructorAnswerCancel}>Cancel</Button>
+        {classData[0].role === 'instructor' ? (
+          instructorAnswerPost ? (
+            <Box p={5} shadow='sm' borderWidth='1px'>
+              <Box p={5}>
+                <Editor
+                  onChange={onContentUpdate}
+                  defaultContent={content}
+                ></Editor>
+                <Button mr={5} onClick={handleInstructorAnswerPost}>
+                  Post
+                </Button>
+                <Button onClick={handleInstructorAnswerCancel}>Cancel</Button>
+              </Box>
             </Box>
-          ) : (
-            <Text>Click to contribute an answer.</Text>
-          )}
-        </Box>
+          ) : instructorData!.length == 0 ? (
+            <Box
+              p={5}
+              shadow='sm'
+              borderWidth='1px'
+              onClick={() => setInstructorAnswerPost(true)}
+            >
+              <Text>Click to contribute an answer.</Text>
+            </Box>
+          ) : null
+        ) : null}
+        {classData[0].role === 'instructor' ? (
+          instructorAnswerEdit && instructorData!.length > 0 ? (
+            <Box
+              p={5}
+              shadow='sm'
+              borderWidth='1px'
+              onClick={() => setInstructorAnswerEdit(true)}
+            >
+              <Box p={5}>
+                <Editor
+                  onChange={onContentUpdate}
+                  defaultContent={content}
+                ></Editor>
+                <Button mr={5} onClick={handleInstructorAnswerEdit}>
+                  Update
+                </Button>
+                <Button onClick={handleInstructorAnswerCancel}>Cancel</Button>
+              </Box>
+            </Box>
+          ) : null
+        ) : null}
+
+        {classData[0].role === 'instructor' ? (
+          !instructorAnswerEdit && instructorData!.length > 0 ? (
+            <Box mt={5} p={5} shadow='sm' borderWidth='1px'>
+              <InstructorAnswerView instructorAnswer={instructorData![0]} />
+              <Button mt={5} onClick={() => setInstructorAnswerEdit(true)}>
+                Edit
+              </Button>
+            </Box>
+          ) : null
+        ) : null}
       </Box>
+
       <Box p={5} shadow='sm' borderWidth='1px'>
         <Heading pb={5} fontSize='xl'>
           Student Answers
         </Heading>
-        <Box
-          p={5}
-          shadow='sm'
-          borderWidth='1px'
-          onClick={() => setStudentAnswerEdit(true)}
-        >
-          {studentAnswerEdit ? (
-            <Box p={5}>
-              <FormControl display='flex' alignItems='center' p={5}>
-                <FormLabel htmlFor='user-anonymous' mb='0'>
-                  Anonymous
-                </FormLabel>
-                <Switch onChange={() => setAnonymous(!anonymous)}></Switch>
-              </FormControl>
-              <Editor onChange={onContentUpdate}></Editor>
-              <Button mr={5} onClick={handleStudentAnswerPost}>
-                Post
-              </Button>
-              <Button onClick={handleStudentAnswerCancel}>Cancel</Button>
+
+        {classData[0].role === 'student' ? (
+          studentAnswerEdit ? (
+            <Box
+              p={5}
+              shadow='sm'
+              borderWidth='1px'
+              onClick={() => setStudentAnswerEdit(true)}
+            >
+              <Box p={5}>
+                <FormControl display='flex' alignItems='center' p={5}>
+                  <FormLabel htmlFor='user-anonymous' mb='0'>
+                    Anonymous
+                  </FormLabel>
+                  <Switch onChange={() => setAnonymous(!anonymous)}></Switch>
+                </FormControl>
+                <Editor
+                  onChange={onContentUpdate}
+                  defaultContent={content}
+                ></Editor>
+                <Button mr={5} onClick={handleStudentAnswerPost}>
+                  Post
+                </Button>
+                <Button onClick={handleStudentAnswerCancel}>Cancel</Button>
+              </Box>
             </Box>
           ) : (
             <Text>Click to contribute an answer.</Text>
-          )}
-        </Box>
+          )
+        ) : null}
         <StudentAnswersView studentAnswers={data!} />
       </Box>
     </Stack>

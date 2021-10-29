@@ -75,7 +75,7 @@ const NewPost = ({ classId }: Props) => {
         />
         <Grid mt={4} h='400px' templateColumns='repeat(2, 1fr)' gap={4}>
           <GridItem colSpan={1}>
-            <Editor onChange={onContentUpdate} />
+            <Editor onChange={onContentUpdate} defaultContent={''} />
           </GridItem>
           <GridItem colSpan={1}>
             <Preview preview={preview} />

@@ -105,7 +105,7 @@ interface Props {
 }
 
 function PostsView({ classItem }: Props) {
-  const { classNumber, className, classTerm } = classItem;
+  const { role, classNumber, className, classTerm } = classItem;
   const { courseId, postId } = useParams<Params>();
   const location = useLocation();
   const history = useHistory();
@@ -162,7 +162,7 @@ function PostsView({ classItem }: Props) {
 
           <Route
             path={'/c/:courseId/p/:postId'}
-            render={() => <PostView posts={data} />}
+            render={() => <PostView posts={data} role={role} />}
           />
         </Switch>
       </Box>

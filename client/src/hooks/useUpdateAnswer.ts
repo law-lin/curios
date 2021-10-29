@@ -2,26 +2,28 @@ import { useMutation, useQueryClient } from 'react-query';
 import supabase from '../lib/supabase';
 import { Answer } from '../types';
 
-const createAnswer = async (answer: Answer) => {
+const updateAnswer = async (answer: Answer) => {
   const { userID, postID, type, isAnonymous, upvotes, content } = answer;
 
-  const { data, error } = await supabase.from('answers').insert([
-    {
+  const { data, error } = await supabase
+    .from('answers')
+    .update({
+      content: content,
+    })
+    .match({
       created_by: userID,
       post_id: postID,
       type: type,
       is_anonymous: isAnonymous,
       upvotes: upvotes,
-      content: content,
-    },
-  ]);
+    });
 
   if (error) throw error;
 
   return data;
 };
 
-export default function useCreateAnswer(
+export default function useUpdateAnswer(
   postID: string,
   type: string,
   isAnonymous: boolean,
@@ -39,7 +41,7 @@ export default function useCreateAnswer(
     content: content,
   };
 
-  return useMutation(() => createAnswer(answer), {
+  return useMutation(() => updateAnswer(answer), {
     onSuccess: () => {
       queryClient.refetchQueries('answers');
     },

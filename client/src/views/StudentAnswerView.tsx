@@ -9,7 +9,11 @@ const StudentAnswerView = ({ studentAnswer }: Props) => {
   return (
     <ListItem>
       <Box p={5} shadow='sm' borderWidth='1px'>
-        <Text>{studentAnswer?.content}</Text>
+        <Text
+          dangerouslySetInnerHTML={(() => ({
+            __html: studentAnswer?.content,
+          }))()}
+        />
       </Box>
     </ListItem>
   );
