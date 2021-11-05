@@ -117,7 +117,7 @@ const Post = ({ post, role }) => {
         <Heading pb={5} fontSize='xl'>
           Instructor Answer
         </Heading>
-        {classData[0].role === 'instructor' ? (
+        {role === 'instructor' ? (
           instructorAnswerPost ? (
             <Box p={5} shadow='sm' borderWidth='1px'>
               <Box p={5}>
@@ -142,7 +142,7 @@ const Post = ({ post, role }) => {
             </Box>
           ) : null
         ) : null}
-        {classData[0].role === 'instructor' ? (
+        {role === 'instructor' ? (
           instructorAnswerEdit && instructorData!.length > 0 ? (
             <Box
               p={5}
@@ -164,7 +164,7 @@ const Post = ({ post, role }) => {
           ) : null
         ) : null}
 
-        {classData[0].role === 'instructor' ? (
+        {role === 'instructor' ? (
           !instructorAnswerEdit && instructorData!.length > 0 ? (
             <Box mt={5} p={5} shadow='sm' borderWidth='1px'>
               <InstructorAnswerView instructorAnswer={instructorData![0]} />
@@ -181,7 +181,7 @@ const Post = ({ post, role }) => {
           Student Answers
         </Heading>
 
-        {classData[0].role === 'student' ? (
+        {role === 'student' ? (
           studentAnswerEdit ? (
             <Box
               p={5}
