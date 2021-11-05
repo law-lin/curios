@@ -12,7 +12,10 @@ import useClasses from 'hooks/useClasses';
 function Main() {
   const { value } = useDarkMode(false);
   const { data, isLoading } = useClasses();
+<<<<<<< HEAD
   console.log(data);
+=======
+>>>>>>> main
 
   if (isLoading) {
     return null;
@@ -35,7 +38,11 @@ function Main() {
         <Route exact path={'/search'} component={SearchView} />
         <Route
           path={'/c/:courseId'}
+<<<<<<< HEAD
           render={() => <CourseView classes={data} />}
+=======
+          component={() => <CourseView classes={data} />}
+>>>>>>> main
         />
         <Route
           render={() => {

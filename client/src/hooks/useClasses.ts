@@ -20,7 +20,6 @@ const fetchClasses = async (userId: string) => {
 `
     )
     .eq('user_id', userId);
-  console.log(data);
   if (error) {
     throw new Error(error.message);
   }
