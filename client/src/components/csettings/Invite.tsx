@@ -18,6 +18,7 @@ import {
   Flex,
   Textarea,
 } from '@chakra-ui/react';
+import { Formik, Form, Field } from 'formik';
 
 const LinkInvite = ({ classItem }) => {
   const [value, setValue] = useState(
@@ -41,27 +42,71 @@ const LinkInvite = ({ classItem }) => {
   );
 };
 
-const EmailInvite = () => {
-  const [emails, setEmails] = React.useState("") 
+function EmailInvite() {
+  const [emails, setEmails] = React.useState<string[]>([])
 
-  let handleInputChange = (e) => {
-    let inputValue = e.target.value
-    setEmails(inputValue)
+  function validateName(value) {
+    let error
+    if (!value) {
+      error = "Name is required"
+    } else {
+      const emails = value.toLowerCase().split(",")
+      for(let email of emails){
+        if(email.trim().indexOf("@") == -1 || email.trim().indexOf(" ") > -1) {
+          error = "Invalid Email!"
+          break
+        }
+      }
+    }
+    return error
   }
+
   return (
-    <Box marginTop='5'>
-      <FormControl id='email'>
-        <FormLabel>Email address</FormLabel>
-        <Textarea
-          value = {emails}
-          onChange = {handleInputChange}
-          placeholder = "zavala@email.com, ikora@email.com...."
-        />
-        <FormHelperText>We'll never share your email.</FormHelperText>
-      </FormControl>
+    <Box>
+    <Formik
+      initialValues={{ name: "kevin@gmail.com" }}
+      onSubmit={(values, actions) => {
+        setTimeout(() => {
+          //alert(JSON.stringify(values, null, 2))
+          setEmails(emails.concat(values['name'].toLowerCase().replaceAll(" ", "").split(",")))
+          
+          actions.setSubmitting(false)
+        }, 1000)
+      }}
+    >
+      {(props) => (
+        <Form>
+          <Field name="name" validate={validateName}>
+            {({ field, form }) => (
+              <FormControl isInvalid={form.errors.name && form.touched.name}>
+                <FormLabel htmlFor="name">Emails</FormLabel>
+                <Input {...field} id="name" placeholder="zavala@gmail.com, ikora@gmail.com..." />
+                <FormErrorMessage>{form.errors.name}</FormErrorMessage>
+                <FormHelperText>We'll never share your email.</FormHelperText>
+              </FormControl>
+            )}
+          </Field>
+          <Button
+            mt={4}
+            ml={1}
+            isLoading={props.isSubmitting}
+            type="submit"
+          >
+            Submit
+          </Button>
+        </Form>
+      )}
+    </Formik>
+    <Box marginTop = '3.5'>
+      <Textarea 
+        isDisabled 
+        value = {emails}
+        placeholder="Your invited emails will appear here" 
+      />
     </Box>
-  );
-};
+    </Box>
+  )
+}
 
 const Invite = ({ classItem }) => {
   return (
