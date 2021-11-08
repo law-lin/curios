@@ -59,8 +59,6 @@ const Post = ({ post, role }) => {
   const { data: instructorData, isLoading: instructorDataIsLoading } =
     useAnswers(post.id, 'instructor');
 
-  const { data: classData, isLoading: classIsLoading } = useClasses();
-
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
     content: ``,
@@ -100,7 +98,7 @@ const Post = ({ post, role }) => {
     setStudentAnswerEdit(false);
   };
 
-  if (isLoading || instructorDataIsLoading || classIsLoading) {
+  if (isLoading || instructorDataIsLoading) {
     return null;
   }
 
