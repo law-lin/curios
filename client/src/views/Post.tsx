@@ -37,6 +37,7 @@ const Post = ({ post, role }) => {
   const [studentAnswers, setStudentAnswers] = useState([]);
   const [instructorAnswerPost, setInstructorAnswerPost] = useState(false);
   const [instructorAnswerEdit, setInstructorAnswerEdit] = useState(false);
+  const [studentAnswerPost, setStudentAnswerPost] = useState(false);
   const [studentAnswerEdit, setStudentAnswerEdit] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [content, setContent] = useState('');
@@ -95,6 +96,7 @@ const Post = ({ post, role }) => {
     e: React.MouseEvent<HTMLButtonElement>
   ) => {
     e.stopPropagation();
+    setStudentAnswerPost(false);
     setStudentAnswerEdit(false);
   };
 
@@ -103,6 +105,7 @@ const Post = ({ post, role }) => {
   }
 
   //setRole(classData[0].role);
+  console.log(instructorAnswerPost);
 
   return (
     <Stack spacing={4} pt={5} px='22'>
@@ -117,6 +120,7 @@ const Post = ({ post, role }) => {
         <Heading pb={5} fontSize='xl'>
           Instructor Answer
         </Heading>
+
         {role === 'instructor' ? (
           instructorAnswerPost ? (
             <Box p={5} shadow='sm' borderWidth='1px'>
@@ -207,7 +211,14 @@ const Post = ({ post, role }) => {
               </Box>
             </Box>
           ) : (
-            <Text>Click to contribute an answer.</Text>
+            <Box
+              p={5}
+              shadow='sm'
+              borderWidth='1px'
+              onClick={() => setStudentAnswerPost(true)}
+            >
+              <Text>Click to contribute an answer.</Text>
+            </Box>
           )
         ) : null}
         <StudentAnswersView studentAnswers={data!} />
