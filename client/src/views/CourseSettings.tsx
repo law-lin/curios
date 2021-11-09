@@ -18,7 +18,7 @@ import { RiInformationFill } from 'react-icons/ri';
 import { IconContext } from 'react-icons/lib';
 import { IoExit } from 'react-icons/io5';
 import Members from 'components/csettings/Members';
-import Preferences from 'components/csettings/Preferences';
+import FeaturePreferences from 'components/csettings/FeaturePreferences';
 
 interface Params {
   courseId: string;
@@ -57,7 +57,7 @@ function CourseSettings({ classItem }: Props) {
       label: 'Feature preferences',
       description: 'Customize the class features to your liking',
       icon: 'N/A',
-      component: <Preferences classItem={classItem} />,
+      component: <FeaturePreferences classItem={classItem} />,
     },
     {
       label: 'Class Members',

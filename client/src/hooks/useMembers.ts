@@ -2,7 +2,11 @@ import { useQuery } from 'react-query';
 import toCamelCase from 'utils/toCamelCase';
 import supabase from '../lib/supabase';
 
-const fetchMembers = async (classId: string, filter: string) => {
+const fetchMembers = async (
+  classId: string,
+  filter: string,
+  sortBy: string
+) => {
   const { data, error } = await supabase
     .from('users_classes')
     .select(
@@ -27,18 +31,41 @@ const fetchMembers = async (classId: string, filter: string) => {
         return member;
       }
     });
+    if (sortBy == 'A-Z') {
+      members.sort((a, b) => {
+        if (a.users.name < b.users.name) return -1;
+        if (a.users.name > b.users.name) return 1;
+        return 0;
+      });
+    } else if (sortBy == 'Role') {
+      members.sort((a, b) => {
+        let a_weight =
+          a.role == 'instructor'
+            ? 2
+            : a.role == 'teaching assistant'
+            ? 1
+            : a.role == 'ta'
+            ? 1
+            : 0;
+        let b_weight =
+          b.role == 'instructor'
+            ? 2
+            : b.role == 'teaching assistant'
+            ? 1
+            : b.role == 'ta'
+            ? 1
+            : 0;
+        return b_weight - a_weight;
+      });
+    }
     return toCamelCase(members);
   }
-  // console.log(data);
-  // return toCamelCase(data);
-
-  // if (data) {
-  //   // const members = data.map((m)=> return({...m.users,...m.users_classes}));
-  //   const members = data;
-  //   return members;
-  // }
 };
 
-export default function useMembers(classId: string, filter: string) {
-  return useQuery('members', () => fetchMembers(classId, filter));
+export default function useMembers(
+  classId: string,
+  filter: string,
+  sortBy: string
+) {
+  return useQuery('members', () => fetchMembers(classId, filter, sortBy));
 }
