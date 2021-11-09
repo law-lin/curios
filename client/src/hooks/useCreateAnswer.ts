@@ -22,7 +22,7 @@ const createAnswer = async (answer: Answer) => {
 };
 
 export default function useCreateAnswer(
-  postID: string,
+  postID: number,
   type: string,
   isAnonymous: boolean,
   upvotes: string,

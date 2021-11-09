@@ -24,7 +24,7 @@ const updateAnswer = async (answer: Answer) => {
 };
 
 export default function useUpdateAnswer(
-  postID: string,
+  postID: number,
   type: string,
   isAnonymous: boolean,
   upvotes: string,

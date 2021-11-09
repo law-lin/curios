@@ -23,7 +23,7 @@ import Highlight from '@tiptap/extension-highlight';
 import Typography from '@tiptap/extension-typography';
 import { Class } from 'types';
 import { stringify } from 'querystring';
-import { ConsoleSqlOutlined } from '@ant-design/icons';
+import { ConsoleSqlOutlined, UserAddOutlined } from '@ant-design/icons';
 
 import StudentAnswersView from './StudentAnswersView';
 import InstructorAnswerView from './InstructorAnswerView';
@@ -38,7 +38,6 @@ const Post = ({ post, role }) => {
   const [instructorAnswerPost, setInstructorAnswerPost] = useState(false);
   const [instructorAnswerEdit, setInstructorAnswerEdit] = useState(false);
   const [studentAnswerPost, setStudentAnswerPost] = useState(false);
-  const [studentAnswerEdit, setStudentAnswerEdit] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [content, setContent] = useState('');
   const createAnswerMutation = useCreateAnswer(
@@ -50,7 +49,7 @@ const Post = ({ post, role }) => {
   );
   const updateAnswerMutation = useUpdateAnswer(
     post.id,
-    'instructor',
+    role,
     anonymous,
     '0',
     content
@@ -95,7 +94,6 @@ const Post = ({ post, role }) => {
   ) => {
     e.stopPropagation();
     setStudentAnswerPost(false);
-    setStudentAnswerEdit(false);
   };
 
   if (isLoading || instructorDataIsLoading) {
@@ -103,8 +101,6 @@ const Post = ({ post, role }) => {
   }
 
   //setRole(classData[0].role);
-  console.log(instructorAnswerPost);
-
   return (
     <Stack spacing={4} pt={5} px='22'>
       <Box p={5} shadow='sm' borderWidth='1px'>
@@ -146,12 +142,7 @@ const Post = ({ post, role }) => {
         ) : null}
         {role === 'instructor' ? (
           instructorAnswerEdit && instructorData!.length > 0 ? (
-            <Box
-              p={5}
-              shadow='sm'
-              borderWidth='1px'
-              onClick={() => setInstructorAnswerEdit(true)}
-            >
+            <Box p={5} shadow='sm' borderWidth='1px'>
               <Box p={5}>
                 <Editor
                   onChange={onContentUpdate}
@@ -184,13 +175,8 @@ const Post = ({ post, role }) => {
         </Heading>
 
         {role === 'student' ? (
-          studentAnswerEdit ? (
-            <Box
-              p={5}
-              shadow='sm'
-              borderWidth='1px'
-              onClick={() => setStudentAnswerEdit(true)}
-            >
+          studentAnswerPost ? (
+            <Box p={5} shadow='sm' borderWidth='1px'>
               <Box p={5}>
                 <FormControl display='flex' alignItems='center' p={5}>
                   <FormLabel htmlFor='user-anonymous' mb='0'>
@@ -219,7 +205,11 @@ const Post = ({ post, role }) => {
             </Box>
           )
         ) : null}
-        <StudentAnswersView studentAnswers={data!} />
+        <StudentAnswersView
+          studentAnswers={data!}
+          postId={post.id}
+          role={role}
+        />
       </Box>
     </Stack>
   );
