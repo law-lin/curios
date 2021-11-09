@@ -3,12 +3,12 @@ import supabase from '../lib/supabase';
 import { Answer } from '../types';
 
 const createAnswer = async (answer: Answer) => {
-  const { userID, postID, type, isAnonymous, upvotes, content } = answer;
+  const { userId, postId, type, isAnonymous, upvotes, content } = answer;
 
   const { data, error } = await supabase.from('answers').insert([
     {
-      created_by: userID,
-      post_id: postID,
+      created_by: userId,
+      post_id: postId,
       type: type,
       is_anonymous: isAnonymous,
       upvotes: upvotes,
@@ -22,7 +22,7 @@ const createAnswer = async (answer: Answer) => {
 };
 
 export default function useCreateAnswer(
-  postID: number,
+  postId: number,
   type: string,
   isAnonymous: boolean,
   upvotes: string,
@@ -31,8 +31,8 @@ export default function useCreateAnswer(
   const queryClient = useQueryClient();
   const user = supabase.auth.user();
   const answer: Answer = {
-    userID: user?.id ?? '',
-    postID: postID,
+    userId: user?.id ?? '',
+    postId: postId,
     type: type,
     isAnonymous: isAnonymous,
     upvotes: upvotes,

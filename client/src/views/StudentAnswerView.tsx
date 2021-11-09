@@ -50,6 +50,7 @@ const StudentAnswerView = ({ studentAnswer, postId, role }: Props) => {
     setContent(newContent);
     preview?.commands.setContent(newContent);
   };
+  if (user === null) return null;
 
   return (
     <ListItem>
@@ -72,7 +73,7 @@ const StudentAnswerView = ({ studentAnswer, postId, role }: Props) => {
             }))()}
           />
         )}
-        {!studentAnswerEdit ? (
+        {!studentAnswerEdit && user.id === studentAnswer.userId ? (
           <Button mt={5} onClick={() => setStudentAnswerEdit(true)}>
             Edit
           </Button>
