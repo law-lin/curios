@@ -30,7 +30,7 @@ export interface Post {
 }
 
 export interface Answer {
-  userId: string;
+  createdBy: string;
   postId: number;
   type: string;
   isAnonymous?: boolean;

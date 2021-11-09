@@ -3,7 +3,7 @@ import supabase from '../lib/supabase';
 import { Answer } from '../types';
 
 const updateAnswer = async (answer: Answer) => {
-  const { userId, postId, type, isAnonymous, upvotes, content } = answer;
+  const { createdBy, postId, type, isAnonymous, upvotes, content } = answer;
 
   const { data, error } = await supabase
     .from('answers')
@@ -11,7 +11,7 @@ const updateAnswer = async (answer: Answer) => {
       content: content,
     })
     .match({
-      created_by: userId,
+      created_by: createdBy,
       post_id: postId,
       type: type,
       is_anonymous: isAnonymous,
@@ -33,7 +33,7 @@ export default function useUpdateAnswer(
   const queryClient = useQueryClient();
   const user = supabase.auth.user();
   const answer: Answer = {
-    userId: user?.id ?? '',
+    createdBy: user?.id ?? '',
     postId: postId,
     type: type,
     isAnonymous: isAnonymous,

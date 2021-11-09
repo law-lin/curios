@@ -73,7 +73,8 @@ const StudentAnswerView = ({ studentAnswer, postId, role }: Props) => {
             }))()}
           />
         )}
-        {!studentAnswerEdit && user.id === studentAnswer.userId ? (
+        {console.log(user.id, studentAnswer.createdBy)}
+        {!studentAnswerEdit && user.id === studentAnswer.createdBy ? (
           <Button mt={5} onClick={() => setStudentAnswerEdit(true)}>
             Edit
           </Button>
