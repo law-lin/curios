@@ -22,7 +22,7 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/styled-components": "^5.1.9",
     "antd": "^4.14.0",
-    "formik": "^2.2.6",
+    "formik": "^2.2.9",
     "framer-motion": "^3.10.2",
     "lodash": "^4.17.21",
     "react": "^17.0.1",
