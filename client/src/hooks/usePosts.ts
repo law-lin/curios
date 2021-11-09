@@ -5,7 +5,11 @@ import supabase from '../lib/supabase';
 const fetchPosts = async (classId: string) => {
   const { data, error } = await supabase
     .from('posts')
-    .select('*')
+    .select(
+      `
+      *
+    `
+    )
     .eq('class_id', classId);
 
   if (error) {

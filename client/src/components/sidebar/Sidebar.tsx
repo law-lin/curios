@@ -30,7 +30,7 @@ const Sidebar = ({ classes }) => {
   const Courses = () => (
     <>
       {classes.map((classItem: Class) => (
-        <MenuItem>
+        <MenuItem key={classItem.id}>
           <Link to={`/c/${classItem.id}`}>
             {classItem.classNumber} ({classItem.classTerm})
           </Link>
