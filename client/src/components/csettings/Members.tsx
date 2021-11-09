@@ -6,6 +6,7 @@ import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/table';
 import { useEffect, useState } from 'react';
 import useMembers from 'hooks/useMembers';
 import { Button, Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react';
+import MemberList from './MemberList';
 
 interface Props {
   classItem: Class;
@@ -16,20 +17,17 @@ const sort = ['A-Z', 'Role'];
 const Members = ({ classItem }: Props) => {
   const [value, setValue] = useState('');
   const [sortBy, setSortBy] = useState(sort[0]);
-  const [members, setMembers] = useState();
-  const { data, isLoading, refetch } = useMembers(
+  let { data, isLoading, isFetching, refetch } = useMembers(
     classItem.id.toString(),
-    value
+    value,
+    sortBy
   );
-  // console.log(data);
-  // useEffect(() => {
-  //   setMembers(data);
-  // }, [isLoading]);
+
+  // const [members, setMembers] = useState(data);
+
   useEffect(() => {
     refetch();
-    // console.log(data);
-    // console.log(isLoading);
-  }, [value]);
+  }, [value, sortBy]);
 
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -40,7 +38,7 @@ const Members = ({ classItem }: Props) => {
   return (
     <Box padding='50px'>
       <Box marginBottom='30px'>
-        <Heading size='md'>Class members {`(${data.length})`}</Heading>
+        <Heading size='md'>Class members</Heading>
       </Box>
       <Box d='flex' marginBottom='30px'>
         <InputGroup>
@@ -77,19 +75,6 @@ const Members = ({ classItem }: Props) => {
             </MenuList>
           </Menu>
         </Box>
-        {/* <Button
-          variant='ghost'
-          d='flex'
-          // justifyContent='center'
-          alignItems='center'
-          p='0 25px 0 15px'
-          w='122px'
-          border='1px solid #E0E0E0'
-          borderRadius='100px'
-          marginLeft='10'
-        >
-          Sort: A-Z
-        </Button> */}
       </Box>
       <Box>
         <Table
@@ -104,6 +89,7 @@ const Members = ({ classItem }: Props) => {
             <Th width='112px'> Actions </Th>
           </Thead>
           <Tbody>
+            {/* <MemberList value={value} sortBy={sortBy} classItem={classItem} /> */}
             {data.map((member) => {
               if (member !== undefined) {
                 return (
