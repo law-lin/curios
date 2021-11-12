@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import useCreateAnswer from '../hooks/useCreateAnswer';
-import useUpdateAnswer from '../hooks/useUpdateAnswer';
 import useAnswers from '../hooks/useAnswers';
-import useClasses from 'hooks/useClasses';
 
 import {
   Stack,
+  HStack,
   Box,
   Heading,
   Text,
@@ -33,27 +32,19 @@ function capitalizeFirstLetter(string) {
 }
 
 const Post = ({ post, role }) => {
-  const [instructorAnswer, setInstructorAnswer] = useState('');
-  const [studentAnswers, setStudentAnswers] = useState([]);
   const [instructorAnswerPost, setInstructorAnswerPost] = useState(false);
-  const [instructorAnswerEdit, setInstructorAnswerEdit] = useState(false);
   const [studentAnswerPost, setStudentAnswerPost] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
+  const [upvotes, setUpvotes] = useState('0');
   const [content, setContent] = useState('');
   const createAnswerMutation = useCreateAnswer(
     post.id,
     role,
     anonymous,
-    '0',
+    upvotes,
     content
   );
-  const updateAnswerMutation = useUpdateAnswer(
-    post.id,
-    role,
-    anonymous,
-    '0',
-    content
-  );
+
   const { data, isLoading } = useAnswers(post.id, 'student');
   const { data: instructorData, isLoading: instructorDataIsLoading } =
     useAnswers(post.id, 'instructor');
@@ -70,11 +61,8 @@ const Post = ({ post, role }) => {
   };
 
   const handleInstructorAnswerPost = () => {
+    setAnonymous(false);
     createAnswerMutation.mutate();
-  };
-
-  const handleInstructorAnswerEdit = () => {
-    updateAnswerMutation.mutate();
   };
 
   const handleInstructorAnswerCancel = (
@@ -82,7 +70,6 @@ const Post = ({ post, role }) => {
   ) => {
     e.stopPropagation();
     setInstructorAnswerPost(false);
-    setInstructorAnswerEdit(false);
   };
 
   const handleStudentAnswerPost = () => {
@@ -115,7 +102,7 @@ const Post = ({ post, role }) => {
           Instructor Answer
         </Heading>
 
-        {role === 'instructor' ? (
+        {role === 'instructor' && instructorData!.length == 0 ? (
           instructorAnswerPost ? (
             <Box p={5} shadow='sm' borderWidth='1px'>
               <Box p={5}>
@@ -129,7 +116,7 @@ const Post = ({ post, role }) => {
                 <Button onClick={handleInstructorAnswerCancel}>Cancel</Button>
               </Box>
             </Box>
-          ) : instructorData!.length == 0 ? (
+          ) : (
             <Box
               p={5}
               shadow='sm'
@@ -138,34 +125,16 @@ const Post = ({ post, role }) => {
             >
               <Text>Click to contribute an answer.</Text>
             </Box>
-          ) : null
-        ) : null}
-        {role === 'instructor' ? (
-          instructorAnswerEdit && instructorData!.length > 0 ? (
-            <Box p={5} shadow='sm' borderWidth='1px'>
-              <Box p={5}>
-                <Editor
-                  onChange={onContentUpdate}
-                  defaultContent={content}
-                ></Editor>
-                <Button mr={5} onClick={handleInstructorAnswerEdit}>
-                  Update
-                </Button>
-                <Button onClick={handleInstructorAnswerCancel}>Cancel</Button>
-              </Box>
-            </Box>
-          ) : null
+          )
         ) : null}
 
-        {role === 'instructor' ? (
-          !instructorAnswerEdit && instructorData!.length > 0 ? (
-            <Box mt={5} p={5} shadow='sm' borderWidth='1px'>
-              <InstructorAnswerView instructorAnswer={instructorData![0]} />
-              <Button mt={5} onClick={() => setInstructorAnswerEdit(true)}>
-                Edit
-              </Button>
-            </Box>
-          ) : null
+        {instructorData!.length > 0 ? (
+          <Box mt={5} p={5} shadow='sm' borderWidth='1px'>
+            <InstructorAnswerView
+              instructorAnswer={instructorData![0]}
+              role={role}
+            />
+          </Box>
         ) : null}
       </Box>
 
@@ -205,11 +174,7 @@ const Post = ({ post, role }) => {
             </Box>
           )
         ) : null}
-        <StudentAnswersView
-          studentAnswers={data!}
-          postId={post.id}
-          role={role}
-        />
+        <StudentAnswersView studentAnswers={data!} role={role} />
       </Box>
     </Stack>
   );

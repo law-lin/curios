@@ -5,20 +5,22 @@ import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Editor from 'components/editor/Editor';
 import useUpdateAnswer from 'hooks/useUpdateAnswer';
+import useDeleteAnswer from 'hooks/useDeleteAnswer';
 import { useUser } from 'providers/AuthProvider';
 import { useState } from 'react';
 import { Answer } from '../types';
 
 interface Props {
   studentAnswer: Answer;
-  postId: number;
   role: string;
 }
 
-const StudentAnswerView = ({ studentAnswer, postId, role }: Props) => {
+const StudentAnswerView = ({ studentAnswer, role }: Props) => {
   const { user } = useUser();
+  const { id, createdBy, postId } = studentAnswer;
   const [studentAnswerEdit, setStudentAnswerEdit] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
+  const [upvotes, setUpvotes] = useState('0');
   const [content, setContent] = useState('');
 
   const preview = useEditor({
@@ -28,10 +30,20 @@ const StudentAnswerView = ({ studentAnswer, postId, role }: Props) => {
   });
 
   const updateAnswerMutation = useUpdateAnswer(
+    id,
     postId,
     role,
     anonymous,
-    '0',
+    upvotes,
+    content
+  );
+
+  const deleteAnswerMutation = useDeleteAnswer(
+    id,
+    postId,
+    role,
+    anonymous,
+    upvotes,
     content
   );
 
@@ -67,18 +79,19 @@ const StudentAnswerView = ({ studentAnswer, postId, role }: Props) => {
             <Button onClick={handleStudentAnswerCancel}>Cancel</Button>
           </Box>
         ) : (
-          <Text
-            dangerouslySetInnerHTML={(() => ({
-              __html: studentAnswer?.content,
-            }))()}
-          />
+          <>
+            <Text
+              dangerouslySetInnerHTML={(() => ({
+                __html: studentAnswer?.content,
+              }))()}
+            />
+            {user.id === createdBy ? (
+              <Button mt={5} onClick={() => setStudentAnswerEdit(true)}>
+                Edit
+              </Button>
+            ) : null}
+          </>
         )}
-        {console.log(user.id, studentAnswer.createdBy)}
-        {!studentAnswerEdit && user.id === studentAnswer.createdBy ? (
-          <Button mt={5} onClick={() => setStudentAnswerEdit(true)}>
-            Edit
-          </Button>
-        ) : null}
       </Box>
     </ListItem>
   );

@@ -2,29 +2,27 @@ import { useMutation, useQueryClient } from 'react-query';
 import supabase from '../lib/supabase';
 import { Answer } from '../types';
 
-const updateAnswer = async (answer: Answer) => {
+const deleteAnswer = async (answer: Answer) => {
   const { id, createdBy, postId, type, isAnonymous, upvotes, content } = answer;
 
-  const { data, error } = await supabase
-    .from('answers')
-    .update({
-      content: content,
-    })
-    .match({
-      id: id,
-      created_by: createdBy,
-      post_id: postId,
-      type: type,
-      is_anonymous: isAnonymous,
-      upvotes: upvotes,
-    });
+  const { data, error } = await supabase.from('answers').delete().match({
+    id: id,
+    created_by: createdBy,
+    post_id: postId,
+    type: type,
+    is_anonymous: isAnonymous,
+    upvotes: upvotes,
+    content: content,
+  });
+
+  console.log(data);
 
   if (error) throw error;
 
   return data;
 };
 
-export default function useUpdateAnswer(
+export default function useDeleteAnswer(
   id: number,
   postId: number,
   type: string,
@@ -44,7 +42,7 @@ export default function useUpdateAnswer(
     content: content,
   };
 
-  return useMutation(() => updateAnswer(answer), {
+  return useMutation(() => deleteAnswer(answer), {
     onSuccess: () => {
       queryClient.refetchQueries('answers');
     },

@@ -30,6 +30,7 @@ export interface Post {
 }
 
 export interface Answer {
+  id: number;
   createdBy: string;
   postId: number;
   type: string;

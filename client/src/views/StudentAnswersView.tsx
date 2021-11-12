@@ -4,22 +4,15 @@ import StudentAnswerView from './StudentAnswerView';
 
 interface Props {
   studentAnswers: Answer[];
-  postId: number;
   role: string;
 }
 
-const StudentAnswersView = ({ studentAnswers, postId, role }: Props) => {
+const StudentAnswersView = ({ studentAnswers, role }: Props) => {
   console.log(studentAnswers);
   return (
     <List mt={5}>
       {studentAnswers.map((studentAnswer) => {
-        return (
-          <StudentAnswerView
-            studentAnswer={studentAnswer}
-            postId={postId}
-            role={role}
-          />
-        );
+        return <StudentAnswerView studentAnswer={studentAnswer} role={role} />;
       })}
     </List>
   );
