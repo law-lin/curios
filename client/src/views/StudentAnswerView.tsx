@@ -38,14 +38,7 @@ const StudentAnswerView = ({ studentAnswer, role }: Props) => {
     content
   );
 
-  const deleteAnswerMutation = useDeleteAnswer(
-    id,
-    postId,
-    role,
-    anonymous,
-    upvotes,
-    content
-  );
+  const deleteAnswerMutation = useDeleteAnswer(id, postId);
 
   const handleStudentAnswerEdit = () => {
     updateAnswerMutation.mutate();

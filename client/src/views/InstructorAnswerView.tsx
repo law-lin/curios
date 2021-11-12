@@ -33,14 +33,7 @@ const InstructorAnswerView = ({ instructorAnswer, role }: Props) => {
     content
   );
 
-  const deleteAnswerMutation = useDeleteAnswer(
-    id,
-    postId,
-    role,
-    anonymous,
-    upvotes,
-    content
-  );
+  const deleteAnswerMutation = useDeleteAnswer(id, postId);
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
