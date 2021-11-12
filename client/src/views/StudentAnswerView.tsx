@@ -1,4 +1,4 @@
-import { Box, Text, Button, ListItem } from '@chakra-ui/react';
+import { Box, Text, Button, ListItem, HStack } from '@chakra-ui/react';
 import Highlight from '@tiptap/extension-highlight';
 import Typography from '@tiptap/extension-typography';
 import { useEditor } from '@tiptap/react';
@@ -51,6 +51,10 @@ const StudentAnswerView = ({ studentAnswer, role }: Props) => {
     setStudentAnswerEdit(false);
   };
 
+  const handleStudentAnswerDelete = () => {
+    deleteAnswerMutation.mutate();
+  };
+
   const onContentUpdate = (newContent: string) => {
     setContent(newContent);
     preview?.commands.setContent(newContent);
@@ -79,9 +83,10 @@ const StudentAnswerView = ({ studentAnswer, role }: Props) => {
               }))()}
             />
             {user.id === createdBy ? (
-              <Button mt={5} onClick={() => setStudentAnswerEdit(true)}>
-                Edit
-              </Button>
+              <HStack p={5} mt={5}>
+                <Button onClick={() => setStudentAnswerEdit(true)}>Edit</Button>
+                <Button onClick={handleStudentAnswerDelete}>Delete</Button>
+              </HStack>
             ) : null}
           </>
         )}
