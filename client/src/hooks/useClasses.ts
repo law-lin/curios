@@ -6,7 +6,7 @@ const fetchClasses = async (userId: string) => {
   const { data, error } = await supabase
     .from('users_classes')
     .select(
-      `
+      `role,
     classes (
       id,
       class_name,
@@ -24,7 +24,10 @@ const fetchClasses = async (userId: string) => {
     throw new Error(error.message);
   }
   if (data) {
-    const classes = data.map((d) => d.classes);
+    const classes = data.map((d) => ({
+      role: d.role,
+      ...d.classes,
+    }));
     return toCamelCase(classes);
   }
 };

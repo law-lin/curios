@@ -16,6 +16,7 @@ export interface Class {
   privatePosts: boolean;
   studentPolls: boolean;
   description: string;
+  role: string;
 }
 
 export interface Post {
@@ -26,4 +27,14 @@ export interface Post {
   title: string;
   content: string;
   date: string;
+}
+
+export interface Answer {
+  id: number;
+  createdBy: string;
+  postId: number;
+  type: string;
+  isAnonymous?: boolean;
+  upvotes: string;
+  content: string;
 }

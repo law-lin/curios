@@ -2,6 +2,7 @@ drop table if exists public.users cascade;
 drop table if exists public.classes cascade;
 drop table if exists public.users_classes cascade;
 drop table if exists public.posts cascade;
+drop table if exists public.answers cascade;
 -- drop type if exists public.app_permission cascade;
 -- drop type if exists public.app_role cascade;
 drop type if exists public.user_role cascade;
@@ -17,6 +18,8 @@ drop function if exists public.handle_new_user() cascade;
 create type public.user_role as enum ('class_creator', 'ta', 'instructor', 'student', );
 create type public.user_status as enum ('ONLINE', 'OFFLINE');
 create type public.post_type as enum ('question', 'note');
+create type public.answer_type as enum('instructor', 'student');
+
 -- USERS
 create table public.users (
   id          uuid not null primary key, -- UUID from auth.users
@@ -57,10 +60,25 @@ create table public.posts (
   created_by uuid references public.users on delete cascade not null,
   class_id bigint references public.classes on delete cascade not null,
   type post_type,
+  is_anonymous boolean,
+  is_private boolean,
+  tags text[],
+  upvotes bigint,
   title text,
   content text
 );
 comment on table public.posts is 'A post for a class';
+
+-- ANSWERS
+create table public.answers (
+  id serial primary key,
+  created_by uuid references public.users on delete cascade not null,
+  post_id bigint references public.posts(id) on delete cascade not null,
+  type answer_type,
+  is_anonymous boolean,
+  upvotes bigint,
+  content text
+)
 
 -- -- USER ROLES
 -- create table public.user_roles (

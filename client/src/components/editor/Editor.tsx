@@ -20,11 +20,12 @@ const MenuBar = ({ editor }) => {
         size='sm'
         margin='1px'
         isActive={editor.isActive('bold') ? true : false}
-        onClick={() => editor.chain().focus().toggleBold().run()}      >
-        <Icons.BoldIcon /> 
+        onClick={() => editor.chain().focus().toggleBold().run()}
+      >
+        <Icons.BoldIcon />
       </Button>
       <Button
-        size='sm' 
+        size='sm'
         margin='1px'
         isActive={editor.isActive('italic') ? true : false}
         onClick={() => editor.chain().focus().toggleItalic().run()}
@@ -103,30 +104,30 @@ const MenuBar = ({ editor }) => {
       >
         <Icons.BlockquoteIcon />
       </Button>
-      <Button 
-        size='sm' 
-        margin='1px' 
+      <Button
+        size='sm'
+        margin='1px'
         onClick={() => editor.chain().focus().setHorizontalRule().run()}
       >
         <Icons.HorizontalRuleIcon />
       </Button>
-      <Button 
+      <Button
         size='sm'
         margin='1px'
         onClick={() => editor.chain().focus().setHardBreak().run()}
       >
         <Icons.HardBreakIcon />
       </Button>
-      <Button 
-        size='sm' 
-        margin='1px' 
+      <Button
+        size='sm'
+        margin='1px'
         onClick={() => editor.chain().focus().undo().run()}
       >
         <Icons.UndoIcon />
       </Button>
-      <Button 
-        size='sm' 
-        margin='1px' 
+      <Button
+        size='sm'
+        margin='1px'
         onClick={() => editor.chain().focus().redo().run()}
       >
         <Icons.RedoIcon />
@@ -137,12 +138,13 @@ const MenuBar = ({ editor }) => {
 
 interface Props {
   onChange: (newContent: string) => void;
+  defaultContent: string;
 }
 
-const Editor = ({ onChange }: Props) => {
+const Editor = ({ onChange, defaultContent }: Props) => {
   const editor = useEditor({
     extensions: [StarterKit, Highlight, Typography],
-    content: ``,
+    content: defaultContent,
     onUpdate({ editor }) {
       onChange(editor.getHTML());
     },
