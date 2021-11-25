@@ -38,10 +38,11 @@ const StudentAnswerView = ({ studentAnswer, role }: Props) => {
     content
   );
 
-  const deleteAnswerMutation = useDeleteAnswer(id, postId);
+  const deleteAnswerMutation = useDeleteAnswer(id, postId, role);
 
   const handleStudentAnswerEdit = () => {
     updateAnswerMutation.mutate();
+    setStudentAnswerEdit(false);
   };
 
   const handleStudentAnswerCancel = (

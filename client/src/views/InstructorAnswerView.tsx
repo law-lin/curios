@@ -33,7 +33,7 @@ const InstructorAnswerView = ({ instructorAnswer, role }: Props) => {
     content
   );
 
-  const deleteAnswerMutation = useDeleteAnswer(id, postId);
+  const deleteAnswerMutation = useDeleteAnswer(id, postId, role);
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -48,6 +48,7 @@ const InstructorAnswerView = ({ instructorAnswer, role }: Props) => {
 
   const handleInstructorAnswerEdit = () => {
     setAnonymous(false);
+    setInstructorAnswerEdit(false);
     updateAnswerMutation.mutate();
   };
 

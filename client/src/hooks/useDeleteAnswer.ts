@@ -16,13 +16,17 @@ const deleteAnswer = async (id, createdBy, postId) => {
   return data;
 };
 
-export default function useDeleteAnswer(id: number, postId: number) {
+export default function useDeleteAnswer(
+  id: number,
+  postId: number,
+  type: string
+) {
   const queryClient = useQueryClient();
   const user = supabase.auth.user();
 
   return useMutation(() => deleteAnswer(id, user?.id ?? '', postId), {
     onSuccess: () => {
-      queryClient.refetchQueries('answers');
+      queryClient.refetchQueries(`answers-${type}`);
     },
   });
 }

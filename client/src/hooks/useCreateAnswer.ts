@@ -40,7 +40,7 @@ export default function useCreateAnswer(
       createAnswer(user?.id ?? '', postId, type, isAnonymous, upvotes, content),
     {
       onSuccess: () => {
-        queryClient.refetchQueries('answers');
+        queryClient.refetchQueries(`answers-${type}`);
       },
     }
   );
