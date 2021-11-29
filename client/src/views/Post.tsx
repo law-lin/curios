@@ -61,6 +61,7 @@ const Post = ({ post, role }) => {
   };
 
   const handleInstructorAnswerPost = () => {
+    setContent('');
     setAnonymous(false);
     setInstructorAnswerPost(false);
     createAnswerMutation.mutate();

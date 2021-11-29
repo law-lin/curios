@@ -21,7 +21,7 @@ const StudentAnswerView = ({ studentAnswer, role }: Props) => {
   const [studentAnswerEdit, setStudentAnswerEdit] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [upvotes, setUpvotes] = useState('0');
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(studentAnswer?.content);
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],

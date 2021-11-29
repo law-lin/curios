@@ -22,7 +22,7 @@ const InstructorAnswerView = ({ instructorAnswer, role }: Props) => {
   const [instructorAnswerEdit, setInstructorAnswerEdit] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [upvotes, setUpvotes] = useState('0');
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(instructorAnswer?.content);
 
   const updateAnswerMutation = useUpdateAnswer(
     id,
@@ -60,6 +60,7 @@ const InstructorAnswerView = ({ instructorAnswer, role }: Props) => {
   };
 
   const handleInstructorAnswerDelete = () => {
+    setContent('');
     setAnonymous(false);
     deleteAnswerMutation.mutate();
   };
