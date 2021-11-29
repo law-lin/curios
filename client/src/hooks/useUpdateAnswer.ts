@@ -46,7 +46,7 @@ export default function useUpdateAnswer(
 
   return useMutation(() => updateAnswer(answer), {
     onSuccess: () => {
-      queryClient.refetchQueries('answers');
+      queryClient.refetchQueries(`answers-${type}`);
     },
   });
 }

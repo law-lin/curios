@@ -62,6 +62,7 @@ const Post = ({ post, role }) => {
 
   const handleInstructorAnswerPost = () => {
     setAnonymous(false);
+    setInstructorAnswerPost(false);
     createAnswerMutation.mutate();
   };
 
@@ -73,6 +74,8 @@ const Post = ({ post, role }) => {
   };
 
   const handleStudentAnswerPost = () => {
+    setContent('');
+    setStudentAnswerPost(false);
     createAnswerMutation.mutate();
   };
 
