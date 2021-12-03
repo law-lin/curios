@@ -51,7 +51,7 @@ const Members = ({ classItem }: Props) => {
   /*
     disabled supabase policies to make role changes work
   */
-  const changeRole = (targetId, targetRole, currentClassId) => {
+  const changeRole = (targetId, targetCurrentRole, targetFutureRole, currentClassId) => {
     // if the target user is current user, cannot change role 
     const currentUser = supabase.auth.user();
     const currentUserId = currentUser?.id;
@@ -61,12 +61,17 @@ const Members = ({ classItem }: Props) => {
     else if (currentRole != null) {
       const thisRole = currentRole[0].role;
       const currentRoleIndex = roles.indexOf(thisRole); 
-      const targetRoleIndex = roles.indexOf(targetRole);
-      if (currentRoleIndex > targetRoleIndex) {
-        console.log('Cannot change role of higher index');
+      const targetCurrentRoleIndex = roles.indexOf(targetCurrentRole);
+      const targetFutureRoleIndex = roles.indexOf(targetFutureRole);
+      if (currentRoleIndex > targetFutureRoleIndex) {
+        console.log('Cannot change role to higher authority than own');
         return;
       }
-      handleRoleChange({ targetRole, targetId, currentClassId });
+      if (currentRoleIndex > targetCurrentRoleIndex) {
+        console.log('Cannot change roles of higher authority users');
+        return;
+      }
+      handleRoleChange({ targetFutureRole, targetId, currentClassId });
     } 
   }
 
@@ -140,7 +145,7 @@ const Members = ({ classItem }: Props) => {
                   <MenuItem
                     minH="48px"
                     onClick={ () => {
-                      changeRole(member.users.id, role, classItem.id.toString());
+                      changeRole(member.users.id, member.role, role, classItem.id.toString());
                     }}
                   >
                     <span>{role}</span>

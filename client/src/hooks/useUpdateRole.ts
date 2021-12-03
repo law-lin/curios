@@ -19,7 +19,7 @@ const updateRole = async (classId: string, userId: string, targetRole: string) =
   };
 
   export default function useUpdateRole() {
-    return useMutation('updateRole', ({ targetRole, targetId, currentClassId } : { targetRole:string, targetId:string, currentClassId:string }) => updateRole(currentClassId, targetId, targetRole), {
+    return useMutation('updateRole', ({ targetFutureRole, targetId, currentClassId } : { targetFutureRole:string, targetId:string, currentClassId:string }) => updateRole(currentClassId, targetId, targetFutureRole), {
       onSuccess: () => {
         console.log('Successfully updated role');
       }
