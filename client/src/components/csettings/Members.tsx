@@ -5,9 +5,9 @@ import { AiOutlineDown, AiOutlineSearch } from "react-icons/ai";
 import { Table, Tbody, Td, Th, Thead, Tr } from "@chakra-ui/table";
 import { useEffect, useState } from "react";
 import useMembers from "hooks/useMembers";
-import useCurrentRole from "hooks/useCurrentRole";
 import { Button, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import useUpdateRole from "hooks/useUpdateRole";
+import useCurrentRole from "hooks/useCurrentRole";
 import { couldStartTrivia } from "typescript";
 import supabase from '../../lib/supabase';
 
@@ -25,11 +25,7 @@ const Members = ({ classItem }: Props) => {
     classItem.id.toString(),
     value
   );
-  const { data:currentRole } = useCurrentRole(
-    classItem.id.toString()
-  );
-  const [targetRoleState, setTargetRoleState] = useState('');
-  const [targetUserId, setTargetUserId] = useState('');
+  const { data: currentRole } = useCurrentRole(classItem.id.toString());
   const updateRoleMutation = useUpdateRole();
 
   const handleRoleChange = (values) => {
@@ -52,27 +48,7 @@ const Members = ({ classItem }: Props) => {
     disabled supabase policies to make role changes work
   */
   const changeRole = (targetId, targetCurrentRole, targetFutureRole, currentClassId) => {
-    // if the target user is current user, cannot change role 
-    const currentUser = supabase.auth.user();
-    const currentUserId = currentUser?.id;
-    if (currentUserId === targetId) {
-      console.log('Cannot change own role.');
-    }
-    else if (currentRole != null) {
-      const thisRole = currentRole[0].role;
-      const currentRoleIndex = roles.indexOf(thisRole); 
-      const targetCurrentRoleIndex = roles.indexOf(targetCurrentRole);
-      const targetFutureRoleIndex = roles.indexOf(targetFutureRole);
-      if (currentRoleIndex > targetFutureRoleIndex) {
-        console.log('Cannot change role to higher authority than own');
-        return;
-      }
-      if (currentRoleIndex > targetCurrentRoleIndex) {
-        console.log('Cannot change roles of higher authority users');
-        return;
-      }
-      handleRoleChange({ targetFutureRole, targetId, currentClassId });
-    } 
+    handleRoleChange({ currentRole, targetCurrentRole, targetFutureRole, targetId, currentClassId });
   }
 
   return (
