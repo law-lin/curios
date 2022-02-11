@@ -32,9 +32,10 @@ const NewPost = ({ classId }: Props) => {
   const [type, setType] = useState('question');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [visibility, setVisibility] = useState('public');
   const location = useLocation<Location>();
   const history = useHistory();
-  const createPostMutation = useCreatePost(classId, type, title, content);
+  const createPostMutation = useCreatePost(classId, type, title, visibility, content);
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -65,6 +66,12 @@ const NewPost = ({ classId }: Props) => {
           <Stack direction='row'>
             <Radio value='question'>Question</Radio>
             <Radio value='note'>Note</Radio>
+          </Stack>
+        </RadioGroup>
+        <RadioGroup onChange={setVisibility} value={visibility}>
+          <Stack direction='row'>
+            <Radio value='public'>Public</Radio>
+            <Radio value='private'>Private</Radio>
           </Stack>
         </RadioGroup>
         <FormLabel htmlFor='title'>Title</FormLabel>

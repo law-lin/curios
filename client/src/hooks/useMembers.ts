@@ -11,8 +11,10 @@ const fetchMembers = async (
     .from('users_classes')
     .select(
       `
+        class_id,
         role,
         users (
+          id,
           name,
           status
         )

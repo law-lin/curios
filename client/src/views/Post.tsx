@@ -181,6 +181,14 @@ const Post = ({ post, role }) => {
         <StudentAnswersView studentAnswers={data!} role={role} />
       </Box>
     </Stack>
-  );
-};
+  )
+}
+
+// const StudentInstructorAnswers = ( props ) => {
+//   const isPostTypeNote = props.postType === 'note';
+//   if(!isPostTypeNote) {
+//     return <StudentInstructorAnswersTemplate />;
+//   }
+//   return null;
+// }
 export default Post;

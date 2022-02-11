@@ -3,7 +3,7 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
 import Typography from '@tiptap/extension-typography';
-import { Button, Flex, Spacer } from '@chakra-ui/react';
+import { Button, Flex, Grid, GridItem, Spacer, Textarea } from '@chakra-ui/react';
 
 import Icons from '../../assets/icons';
 
@@ -151,10 +151,14 @@ const Editor = ({ onChange, defaultContent }: Props) => {
   });
 
   return (
-    <div>
-      <MenuBar editor={editor} />
-      <EditorContent editor={editor} />
-    </div>
+    <Grid templateRows='repeat(2, 1fr)' gap={2}>
+      <GridItem rowSpan={1}>
+        <MenuBar editor={editor} />
+      </GridItem>
+      <GridItem border='1px' rowSpan={1}>
+        <EditorContent editor={editor} />
+      </GridItem>
+    </Grid>
   );
 };
 
