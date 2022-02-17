@@ -33,9 +33,10 @@ const NewPost = ({ classId }: Props) => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [visibility, setVisibility] = useState('public');
+  const [archived, setArchived] = useState(false);
   const location = useLocation<Location>();
   const history = useHistory();
-  const createPostMutation = useCreatePost(classId, type, title, visibility, content);
+  const createPostMutation = useCreatePost(classId, type, title, archived, visibility, content);
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
