@@ -50,7 +50,7 @@ const Post = ({ post, role }) => {
   const { data, isLoading } = useAnswers(post.id, 'student');
   const { data: instructorData, isLoading: instructorDataIsLoading } =
     useAnswers(post.id, 'instructor');
-  const updateArchiveMutation = useUpdateArchive(post.id);
+  const updateArchiveMutation = useUpdateArchive(post.id, post.isArchived);
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -94,10 +94,6 @@ const Post = ({ post, role }) => {
     updateArchiveMutation.mutate();
   }
 
-  const handleUndoArchive = () => {
-    console.log('what');
-  }
-
   if (isLoading || instructorDataIsLoading) {
     return null;
   }
@@ -121,7 +117,7 @@ const Post = ({ post, role }) => {
           ) : null}
           {role === 'instructor' && post?.isArchived ? (
             <Box>
-              <Button onClick={handleUndoArchive}>Undo Archive</Button>
+              <Button onClick={handleArchive}>Undo Archive</Button>
             </Box>
           ) : null}
         </Flex>
