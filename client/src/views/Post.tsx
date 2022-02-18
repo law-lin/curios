@@ -12,6 +12,7 @@ import {
   FormControl,
   FormLabel,
   Switch,
+  Flex,
 } from '@chakra-ui/react';
 
 import Editor from 'components/editor/Editor';
@@ -95,11 +96,20 @@ const Post = ({ post, role }) => {
   return (
     <Stack spacing={4} pt={5} px='22'>
       <Box p={5} shadow='sm' borderWidth='1px'>
-        <Text>
-          {capitalizeFirstLetter(post?.type)} @{post?.number}
-        </Text>
-        <Heading fontSize='xl'>{post?.title}</Heading>
-        <Preview content={post?.content} />
+        <Flex justifyContent='space-between'>
+          <Box>
+            <Text>
+              {capitalizeFirstLetter(post?.type)} @{post?.number}
+            </Text>
+            <Heading fontSize='xl'>{post?.title}</Heading>
+            <Preview content={post?.content} />
+          </Box>
+          {role === 'instructor' ? (
+            <Box>
+              <Button>Archive</Button>
+            </Box>
+          ) : null}
+        </Flex>
       </Box>
       <Box p={5} shadow='sm' borderWidth='1px'>
         <Heading pb={5} fontSize='xl'>
