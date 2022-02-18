@@ -11,8 +11,9 @@ interface Props {
   courseId: string;
   posts: Post[];
   handleClick: (post: Post) => void;
+  isArchived: boolean;
 }
-const PostList = ({ courseId, posts, handleClick }: Props) => {
+const PostList = ({ courseId, posts, handleClick, isArchived }: Props) => {
   const location = useLocation();
 
   const PostCard = (index, key, handleClick) => {
@@ -21,35 +22,40 @@ const PostList = ({ courseId, posts, handleClick }: Props) => {
       `/c/${courseId}/p/${posts[index].id}`
     );
 
-    return !posts[index].isArchived ? (
-      <div
-        className={`post-card ${isActive ? 'active' : ''}`}
-        key={key}
-        onClick={() => handleClick(posts[index])}
-      >
-        <div style={{ float: 'right' }}>{posts[index].date}</div>
-        <div style={{ marginRight: '75px' }}>
-          <Heading
-            size='sm'
-            whiteSpace='nowrap'
-            overflow='hidden'
-            textOverflow='ellipsis'
-          >
-            {posts[index].title}
-          </Heading>
+    const showArchivedPosts = isArchived && posts[index].isArchived;
+    const showPosts = !isArchived && !posts[index].isArchived;
+    
+    if (showPosts || showArchivedPosts) {
+      return (
+        <div
+          className={`post-card ${isActive ? 'active' : ''}`}
+          key={key}
+          onClick={() => handleClick(posts[index])}
+        >
+          <div style={{ float: 'right' }}>{posts[index].date}</div>
+          <div style={{ marginRight: '75px' }}>
+            <Heading
+              size='sm'
+              whiteSpace='nowrap'
+              overflow='hidden'
+              textOverflow='ellipsis'
+            >
+              {posts[index].title}
+            </Heading>
 
-          <Text
-            maxH={12}
-            fontSize={11}
-            overflow='hidden'
-            textOverflow='ellipsis'
-          >
-            <div dangerouslySetInnerHTML={{ __html: posts[index].content }} />
-            {/* <Preview content={posts[index].content} /> */}
-          </Text>
+            <Text
+              maxH={12}
+              fontSize={11}
+              overflow='hidden'
+              textOverflow='ellipsis'
+            >
+              <div dangerouslySetInnerHTML={{ __html: posts[index].content }} />
+              {/* <Preview content={posts[index].content} /> */}
+            </Text>
+          </div>
         </div>
-      </div>
-    ) : null;
+      );
+    }
   };
 
   return (

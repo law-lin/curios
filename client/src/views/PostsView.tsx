@@ -107,6 +107,7 @@ interface Props {
 function PostsView({ classItem }: Props) {
   const { role, classNumber, className, classTerm } = classItem;
   const { courseId, postId } = useParams<Params>();
+  const [archived, setArchived] = useState(false);
   const location = useLocation();
   const history = useHistory();
   const { data, isLoading } = usePosts(courseId);
@@ -145,11 +146,20 @@ function PostsView({ classItem }: Props) {
             >
               Settings
             </Button>
+            { role === 'instructor'  ? (
+              <Button
+                marginLeft='10px'
+                onClick={() => setArchived(true)}
+              >
+                Archived
+              </Button>
+            ) : null}
           </Box>
         </Box>
         <PostList
           courseId={courseId}
           posts={data}
+          isArchived={archived}
           handleClick={(post: Post) =>
             history.push(`/c/${courseId}/p/${post.id}`)
           }
@@ -165,7 +175,7 @@ function PostsView({ classItem }: Props) {
 
           <Route
             path={'/c/:courseId/p/:postId'}
-            render={() => <PostView posts={data} role={role} />}
+            render={() => <PostView posts={data} role={role}/>}
           />
         </Switch>
       </Box>

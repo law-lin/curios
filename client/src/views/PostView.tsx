@@ -19,7 +19,7 @@ interface Props {
 function PostView({ posts, role }: Props) {
   const { courseId, postId } = useParams<Params>();
   const post = posts.find((post: Post) => post.id === parseInt(postId));
-  return !post?.isArchived ? <PostItem post={post} role={role} /> : null;
+  return <PostItem post={post} role={role} />;
 }
 
 export default PostView;

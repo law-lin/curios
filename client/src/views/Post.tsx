@@ -94,6 +94,10 @@ const Post = ({ post, role }) => {
     updateArchiveMutation.mutate();
   }
 
+  const handleUndoArchive = () => {
+    console.log('what');
+  }
+
   if (isLoading || instructorDataIsLoading) {
     return null;
   }
@@ -110,9 +114,14 @@ const Post = ({ post, role }) => {
             <Heading fontSize='xl'>{post?.title}</Heading>
             <Preview content={post?.content} />
           </Box>
-          {role === 'instructor' ? (
+          {role === 'instructor' && !post?.isArchived ? (
             <Box>
               <Button onClick={handleArchive}>Archive</Button>
+            </Box>
+          ) : null}
+          {role === 'instructor' && post?.isArchived ? (
+            <Box>
+              <Button onClick={handleUndoArchive}>Undo Archive</Button>
             </Box>
           ) : null}
         </Flex>
