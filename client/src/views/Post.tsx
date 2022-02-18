@@ -27,6 +27,7 @@ import { ConsoleSqlOutlined, UserAddOutlined } from '@ant-design/icons';
 
 import StudentAnswersView from './StudentAnswersView';
 import InstructorAnswerView from './InstructorAnswerView';
+import useUpdateArchive from 'hooks/useUpdateArchive';
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -49,6 +50,7 @@ const Post = ({ post, role }) => {
   const { data, isLoading } = useAnswers(post.id, 'student');
   const { data: instructorData, isLoading: instructorDataIsLoading } =
     useAnswers(post.id, 'instructor');
+  const updateArchiveMutation = useUpdateArchive(post.id);
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -89,7 +91,7 @@ const Post = ({ post, role }) => {
   };
 
   const handleArchive = () => {
-    console.log('potato');
+    updateArchiveMutation.mutate();
   }
 
   if (isLoading || instructorDataIsLoading) {
