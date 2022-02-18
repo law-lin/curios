@@ -18,12 +18,9 @@ drop function if exists public.handle_new_user() cascade;
 create type public.user_role as enum ('class_creator', 'ta', 'instructor', 'student', );
 create type public.user_status as enum ('ONLINE', 'OFFLINE');
 create type public.post_type as enum ('question', 'note');
-<<<<<<< HEAD
 create type public.answer_type as enum('instructor', 'student');
 
-=======
 create type public.post_visibility as enum ('public', 'private')
->>>>>>> add-post
 -- USERS
 create table public.users (
   id          uuid not null primary key, -- UUID from auth.users
@@ -54,6 +51,7 @@ create table public.users_classes (
   user_id uuid references public.users on delete cascade not null,
   class_id bigint references public.classes on delete cascade not null,
   role user_role,  -- defines what kind of role that user has in a particular class
+  contributions bigint,
   unique (user_id, class_id)
 );
 comment on table public.users_classes is 'Role a user has for a particular class';

@@ -19,6 +19,7 @@ import { IconContext } from 'react-icons/lib';
 import { IoExit } from 'react-icons/io5';
 import Members from 'components/csettings/Members';
 import FeaturePreferences from 'components/csettings/FeaturePreferences';
+import StatisticsView from 'views/StatisticsView';
 
 interface Params {
   courseId: string;
@@ -76,6 +77,12 @@ function CourseSettings({ classItem }: Props) {
       description: 'Choose what notifications you want to receive',
       icon: 'N/A',
       component: <Details classItem={classItem} />,
+    },
+    {
+      label: 'View Statistics',
+      description: 'See who has contributed what in the class',
+      icon: 'N/A',
+      component: <StatisticsView classItem={classItem} />,
     },
   ];
 
