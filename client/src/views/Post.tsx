@@ -88,6 +88,10 @@ const Post = ({ post, role }) => {
     setStudentAnswerPost(false);
   };
 
+  const handleArchive = () => {
+    console.log('potato');
+  }
+
   if (isLoading || instructorDataIsLoading) {
     return null;
   }
@@ -106,7 +110,7 @@ const Post = ({ post, role }) => {
           </Box>
           {role === 'instructor' ? (
             <Box>
-              <Button>Archive</Button>
+              <Button onClick={handleArchive}>Archive</Button>
             </Box>
           ) : null}
         </Flex>
