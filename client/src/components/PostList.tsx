@@ -21,7 +21,7 @@ const PostList = ({ courseId, posts, handleClick }: Props) => {
       `/c/${courseId}/p/${posts[index].id}`
     );
 
-    return (
+    return !posts[index].isArchived ? (
       <div
         className={`post-card ${isActive ? 'active' : ''}`}
         key={key}
@@ -49,7 +49,7 @@ const PostList = ({ courseId, posts, handleClick }: Props) => {
           </Text>
         </div>
       </div>
-    );
+    ) : null;
   };
 
   return (
