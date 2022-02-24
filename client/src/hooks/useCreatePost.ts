@@ -15,7 +15,7 @@ const createPost = async (
     visibility,
     type,
     title,
-    content,
+    content
   });
 
   if (error) {

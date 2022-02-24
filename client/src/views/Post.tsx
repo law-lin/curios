@@ -12,6 +12,7 @@ import {
   FormControl,
   FormLabel,
   Switch,
+  Flex,
 } from '@chakra-ui/react';
 
 import Editor from 'components/editor/Editor';
@@ -26,6 +27,7 @@ import { ConsoleSqlOutlined, UserAddOutlined } from '@ant-design/icons';
 
 import StudentAnswersView from './StudentAnswersView';
 import InstructorAnswerView from './InstructorAnswerView';
+import useUpdateArchive from 'hooks/useUpdateArchive';
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -48,6 +50,7 @@ const Post = ({ post, role }) => {
   const { data, isLoading } = useAnswers(post.id, 'student');
   const { data: instructorData, isLoading: instructorDataIsLoading } =
     useAnswers(post.id, 'instructor');
+  const updateArchiveMutation = useUpdateArchive(post.id, post.isArchived);
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -87,6 +90,10 @@ const Post = ({ post, role }) => {
     setStudentAnswerPost(false);
   };
 
+  const handleArchive = () => {
+    updateArchiveMutation.mutate();
+  }
+
   if (isLoading || instructorDataIsLoading) {
     return null;
   }
@@ -95,11 +102,25 @@ const Post = ({ post, role }) => {
   return (
     <Stack spacing={4} pt={5} px='22'>
       <Box p={5} shadow='sm' borderWidth='1px'>
-        <Text>
-          {capitalizeFirstLetter(post?.type)} @{post?.number}
-        </Text>
-        <Heading fontSize='xl'>{post?.title}</Heading>
-        <Preview content={post?.content} />
+        <Flex justifyContent='space-between'>
+          <Box>
+            <Text>
+              {capitalizeFirstLetter(post?.type)} @{post?.number}
+            </Text>
+            <Heading fontSize='xl'>{post?.title}</Heading>
+            <Preview content={post?.content} />
+          </Box>
+          {role === 'instructor' && !post?.isArchived ? (
+            <Box>
+              <Button onClick={handleArchive}>Archive</Button>
+            </Box>
+          ) : null}
+          {role === 'instructor' && post?.isArchived ? (
+            <Box>
+              <Button onClick={handleArchive}>Undo Archive</Button>
+            </Box>
+          ) : null}
+        </Flex>
       </Box>
       <Box p={5} shadow='sm' borderWidth='1px'>
         <Heading pb={5} fontSize='xl'>

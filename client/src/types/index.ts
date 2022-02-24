@@ -24,6 +24,7 @@ export interface Post {
   createdBy: string;
   classId: number;
   postType: 'question' | 'note';
+  isArchived: boolean;
   title: string;
   content: string;
   date: string;

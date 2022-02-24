@@ -64,6 +64,7 @@ create table public.posts (
   type post_type,
   is_anonymous boolean,
   is_private boolean,
+  is_archived boolean,
   tags text[],
   upvotes bigint,
   visibility post_visibility,
