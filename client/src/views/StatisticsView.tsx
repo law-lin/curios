@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -10,6 +10,9 @@ import {
   Td,
   VStack,
   Tbody,
+  Menu,
+  MenuButton,
+  Select,
 } from '@chakra-ui/react';
 import { Heading, Text } from '@chakra-ui/react';
 
@@ -25,6 +28,11 @@ const StatisticsView = ({ classItem }: Props) => {
   const { user } = useUser();
   const { id } = classItem;
   const { data, isLoading } = useMembers(id.toString(), '', 'A-Z');
+  const [topContributorRole, setTopContributorRole] = useState('student');
+
+  // const getTopContributors = () => {
+  //   top
+  // }
 
   if (isLoading || user === null) return null;
 
@@ -32,52 +40,57 @@ const StatisticsView = ({ classItem }: Props) => {
     users: { name: userName, email: userEmail },
     contributions: userContributions,
   } = data.filter((d) => d.users.id === user!.id.toString())[0];
+
   return (
     <Box padding='50px'>
       <Box marginBottom='30px'>
         <Heading size='md' marginBottom='15px'>
           Statistics
         </Heading>
-        <VStack>
-          <HStack align='start'>
-            <Box p={5} shadow='sm' borderWidth='1px'>
-              <Heading size='sm'>Your Report</Heading>
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Th>Name</Th>
-                    <Th>Email</Th>
-                    <Th>Days Online</Th>
-                    <Th>Posts Viewed</Th>
-                    <Th>Contributions</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  <Tr>
-                    <Td>
-                      <Text>{userName}</Text>
-                    </Td>
-                    <Td>
-                      <Text>{userEmail}</Text>
-                    </Td>
-                    <Td>
-                      <Text>N/A</Text>
-                    </Td>
-                    <Td>
-                      <Text>N/A</Text>
-                    </Td>
-                    <Td>
-                      <Text>{userContributions}</Text>
-                    </Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </Box>
-            <Box p={5} shadow='sm' borderWidth='1px'>
-              <Heading size='sm'>Top Student Contributors</Heading>
-              <Text>Student 1</Text>
-            </Box>
-          </HStack>
+        <VStack align='start'>
+          <Box p={5} shadow='sm' borderWidth='1px'>
+            <Heading size='sm'>Your Report</Heading>
+            <Table>
+              <Thead>
+                <Tr>
+                  <Th>Name</Th>
+                  <Th>Email</Th>
+                  <Th>Days Online</Th>
+                  <Th>Posts Viewed</Th>
+                  <Th>Contributions</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Td>
+                    <Text>{userName}</Text>
+                  </Td>
+                  <Td>
+                    <Text>{userEmail}</Text>
+                  </Td>
+                  <Td>
+                    <Text>N/A</Text>
+                  </Td>
+                  <Td>
+                    <Text>N/A</Text>
+                  </Td>
+                  <Td>
+                    <Text>{userContributions}</Text>
+                  </Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </Box>
+          <Box p={5} shadow='sm' borderWidth='1px'>
+            <HStack align='start'>
+              <Heading size='sm'>Top Contributors</Heading>
+              <Select placeholder='Choose a role'>
+                <option value='student'>Student</option>
+                <option value='instructor'>Instructor</option>
+              </Select>
+            </HStack>
+            <Text>Student 1</Text>
+          </Box>
         </VStack>
       </Box>
     </Box>
