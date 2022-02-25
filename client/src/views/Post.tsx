@@ -62,7 +62,7 @@ const Post = ({ classId, post, role }) => {
   const updateArchiveMutation = useUpdateArchive(post.id, post.isArchived);
   const updateContributionsMutation = useUpdateContributions(
     classId,
-    contributionsData![0].contributions + 1
+    contributionsData ? contributionsData[0].contributions + 1 : 0
   );
 
   const preview = useEditor({
