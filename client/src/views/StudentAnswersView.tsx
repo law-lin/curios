@@ -8,7 +8,6 @@ interface Props {
 }
 
 const StudentAnswersView = ({ studentAnswers, role }: Props) => {
-  console.log(studentAnswers);
   return (
     <List mt={5}>
       {studentAnswers.map((studentAnswer) => {

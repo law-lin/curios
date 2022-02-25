@@ -82,14 +82,17 @@ const StatisticsView = ({ classItem }: Props) => {
             </Table>
           </Box>
           <Box p={5} shadow='sm' borderWidth='1px'>
-            <HStack align='start'>
-              <Heading size='sm'>Top Contributors</Heading>
-              <Select placeholder='Choose a role'>
-                <option value='student'>Student</option>
-                <option value='instructor'>Instructor</option>
-              </Select>
-            </HStack>
-            <Text>Student 1</Text>
+            <VStack>
+              <HStack p={5} align='start'>
+                <Heading size='sm'>Top Contributors</Heading>
+                <Select>
+                  <option value='student'>Student</option>
+                  <option value='instructor'>Instructor</option>
+                  <option value='teaching assistant'>Teaching Assistant</option>
+                </Select>
+              </HStack>
+              <Text>Student 1</Text>
+            </VStack>
           </Box>
         </VStack>
       </Box>

@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import useCreateAnswer from '../hooks/useCreateAnswer';
 import useAnswers from '../hooks/useAnswers';
+import useContributions from 'hooks/useContributions';
+import useUpdateContributions from 'hooks/useUpdateContributions';
+
+import supabase from 'lib/supabase';
 
 import {
   Stack,
@@ -33,7 +37,7 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-const Post = ({ post, role }) => {
+const Post = ({ classId, post, role }) => {
   const [instructorAnswerPost, setInstructorAnswerPost] = useState(false);
   const [studentAnswerPost, setStudentAnswerPost] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
@@ -47,10 +51,19 @@ const Post = ({ post, role }) => {
     content
   );
 
+  const user = supabase.auth.user();
+
   const { data, isLoading } = useAnswers(post.id, 'student');
   const { data: instructorData, isLoading: instructorDataIsLoading } =
     useAnswers(post.id, 'instructor');
+  const { data: contributionsData, isLoading: contributionsDataIsLoading } =
+    useContributions(user!.id, classId);
+
   const updateArchiveMutation = useUpdateArchive(post.id, post.isArchived);
+  const updateContributionsMutation = useUpdateContributions(
+    classId,
+    contributionsData![0].contributions + 1
+  );
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -68,6 +81,7 @@ const Post = ({ post, role }) => {
     setAnonymous(false);
     setInstructorAnswerPost(false);
     createAnswerMutation.mutate();
+    updateContributionsMutation.mutate();
   };
 
   const handleInstructorAnswerCancel = (
@@ -81,6 +95,7 @@ const Post = ({ post, role }) => {
     setContent('');
     setStudentAnswerPost(false);
     createAnswerMutation.mutate();
+    updateContributionsMutation.mutate();
   };
 
   const handleStudentAnswerCancel = (
@@ -92,11 +107,13 @@ const Post = ({ post, role }) => {
 
   const handleArchive = () => {
     updateArchiveMutation.mutate();
-  }
+  };
 
-  if (isLoading || instructorDataIsLoading) {
+  if (isLoading || instructorDataIsLoading || contributionsDataIsLoading) {
     return null;
   }
+
+  // setContributions(contributionsData![0].contributions);
 
   //setRole(classData[0].role);
   return (
@@ -202,8 +219,8 @@ const Post = ({ post, role }) => {
         <StudentAnswersView studentAnswers={data!} role={role} />
       </Box>
     </Stack>
-  )
-}
+  );
+};
 
 // const StudentInstructorAnswers = ( props ) => {
 //   const isPostTypeNote = props.postType === 'note';

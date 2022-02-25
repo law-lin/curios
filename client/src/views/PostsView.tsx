@@ -146,11 +146,8 @@ function PostsView({ classItem }: Props) {
             >
               Settings
             </Button>
-            { role === 'instructor'  ? (
-              <Button
-                marginLeft='10px'
-                onClick={() => setArchived(true)}
-              >
+            {role === 'instructor' ? (
+              <Button marginLeft='10px' onClick={() => setArchived(true)}>
                 Archived
               </Button>
             ) : null}
@@ -175,7 +172,7 @@ function PostsView({ classItem }: Props) {
 
           <Route
             path={'/c/:courseId/p/:postId'}
-            render={() => <PostView posts={data} role={role}/>}
+            render={() => <PostView posts={data} role={role} />}
           />
         </Switch>
       </Box>
