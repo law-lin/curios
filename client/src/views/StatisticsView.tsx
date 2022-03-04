@@ -30,9 +30,19 @@ const StatisticsView = ({ classItem }: Props) => {
   const { data, isLoading } = useMembers(id.toString(), '', 'A-Z');
   const [topContributorRole, setTopContributorRole] = useState('student');
 
-  // const getTopContributors = () => {
-  //   top
-  // }
+  const handleSelectTopContributorRole = (e) => {
+    setTopContributorRole(e.target.value);
+  };
+
+  const getMembersByRole = (members, role) => {
+    return members.filter((member) => member.role === role);
+  };
+
+  const sortMembersByContributions = (members) => {
+    return members.sort((a, b) =>
+      a.posts + a.answers + a.edits < b.posts + b.answers + b.edits ? 1 : -1
+    );
+  };
 
   if (isLoading || user === null) return null;
 
@@ -43,6 +53,18 @@ const StatisticsView = ({ classItem }: Props) => {
     edits: userEditsCount,
   } = data.filter((d) => d.users.id === user!.id.toString())[0];
   const userContributions = userPostsCount + userAnswersCount + userEditsCount;
+
+  const members = {
+    instructor: sortMembersByContributions(
+      getMembersByRole(data, 'instructor')
+    ),
+    'teaching assistant': sortMembersByContributions(
+      getMembersByRole(data, 'teaching assistant')
+    ),
+    student: sortMembersByContributions(getMembersByRole(data, 'student')),
+  };
+
+  console.log(members);
 
   return (
     <Box padding='50px'>
@@ -88,13 +110,29 @@ const StatisticsView = ({ classItem }: Props) => {
             <VStack align='start'>
               <HStack p={5} align='start'>
                 <Heading size='sm'>Top Contributors</Heading>
-                <Select>
+                <Select onChange={handleSelectTopContributorRole}>
                   <option value='student'>Student</option>
                   <option value='instructor'>Instructor</option>
                   <option value='teaching assistant'>Teaching Assistant</option>
                 </Select>
               </HStack>
-              <Text p={5}>Student 1</Text>
+              {members[topContributorRole]
+                .slice(0, Math.min(members[topContributorRole].length, 5))
+                .map((topContributor) => {
+                  return (
+                    <HStack p={5}>
+                      <Text>{topContributor.users.name}</Text>
+                      <Text>
+                        {`${
+                          topContributor.posts +
+                          topContributor.answers +
+                          topContributor.edits
+                        }
+                        Contributions`}
+                      </Text>
+                    </HStack>
+                  );
+                })}
             </VStack>
           </Box>
         </VStack>

@@ -6,6 +6,8 @@ import StarterKit from '@tiptap/starter-kit';
 import Editor from 'components/editor/Editor';
 import useUpdateAnswer from 'hooks/useUpdateAnswer';
 import useDeleteAnswer from 'hooks/useDeleteAnswer';
+import useStatistic from 'hooks/useStatistic';
+import useUpdateStatistic from 'hooks/useUpdateStatistic';
 import { useUser } from 'providers/AuthProvider';
 import { useState } from 'react';
 import { Answer } from '../types';
@@ -13,15 +15,19 @@ import { Answer } from '../types';
 interface Props {
   studentAnswer: Answer;
   role: string;
+  classId: string;
 }
 
-const StudentAnswerView = ({ studentAnswer, role }: Props) => {
+const StudentAnswerView = ({ studentAnswer, role, classId }: Props) => {
   const { user } = useUser();
   const { id, createdBy, postId } = studentAnswer;
   const [studentAnswerEdit, setStudentAnswerEdit] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [upvotes, setUpvotes] = useState('0');
   const [content, setContent] = useState(studentAnswer?.content);
+
+  const { data: editsCountData, isLoading: editsCountDataIsLoading } =
+    useStatistic('edits', user!.id, classId);
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -40,9 +46,16 @@ const StudentAnswerView = ({ studentAnswer, role }: Props) => {
 
   const deleteAnswerMutation = useDeleteAnswer(id, postId, role);
 
+  const updateEditsCountMutation = useUpdateStatistic(
+    'edits',
+    classId,
+    editsCountData ? editsCountData[0].edits + 1 : 0
+  );
+
   const handleStudentAnswerEdit = () => {
     updateAnswerMutation.mutate();
     setStudentAnswerEdit(false);
+    updateEditsCountMutation.mutate();
   };
 
   const handleStudentAnswerCancel = (
@@ -60,7 +73,7 @@ const StudentAnswerView = ({ studentAnswer, role }: Props) => {
     setContent(newContent);
     preview?.commands.setContent(newContent);
   };
-  if (user === null) return null;
+  if (user === null || editsCountDataIsLoading) return null;
 
   return (
     <ListItem>

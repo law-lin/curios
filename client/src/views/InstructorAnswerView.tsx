@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { Box, Text, Button, HStack } from '@chakra-ui/react';
 import useUpdateAnswer from '../hooks/useUpdateAnswer';
 import useDeleteAnswer from '../hooks/useDeleteAnswer';
+import { useUser } from 'providers/AuthProvider';
+import useStatistic from 'hooks/useStatistic';
+import useUpdateStatistic from 'hooks/useUpdateStatistic';
 
 import { Answer } from '../types';
 
@@ -15,14 +18,19 @@ import Typography from '@tiptap/extension-typography';
 interface Props {
   instructorAnswer: Answer;
   role: string;
+  classId: string;
 }
 
-const InstructorAnswerView = ({ instructorAnswer, role }: Props) => {
+const InstructorAnswerView = ({ instructorAnswer, role, classId }: Props) => {
+  const { user } = useUser();
   const { id, postId } = instructorAnswer;
   const [instructorAnswerEdit, setInstructorAnswerEdit] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [upvotes, setUpvotes] = useState('0');
   const [content, setContent] = useState(instructorAnswer?.content);
+
+  const { data: editsCountData, isLoading: editsCountDataIsLoading } =
+    useStatistic('edits', user!.id, classId);
 
   const updateAnswerMutation = useUpdateAnswer(
     id,
@@ -34,6 +42,12 @@ const InstructorAnswerView = ({ instructorAnswer, role }: Props) => {
   );
 
   const deleteAnswerMutation = useDeleteAnswer(id, postId, role);
+
+  const updateEditsCountMutation = useUpdateStatistic(
+    'edits',
+    classId,
+    editsCountData ? editsCountData[0].edits + 1 : 0
+  );
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -50,6 +64,7 @@ const InstructorAnswerView = ({ instructorAnswer, role }: Props) => {
     setAnonymous(false);
     setInstructorAnswerEdit(false);
     updateAnswerMutation.mutate();
+    updateEditsCountMutation.mutate();
   };
 
   const handleInstructorAnswerCancel = (
@@ -64,6 +79,8 @@ const InstructorAnswerView = ({ instructorAnswer, role }: Props) => {
     setAnonymous(false);
     deleteAnswerMutation.mutate();
   };
+
+  if (user === null || editsCountDataIsLoading) return null;
 
   return (
     <>

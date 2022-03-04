@@ -62,19 +62,12 @@ const Post = ({ classId, post, role }) => {
     useStatistic('posts', user!.id, classId);
   const { data: answersCountData, isLoading: answersCountDataIsLoading } =
     useStatistic('answers', user!.id, classId);
-  const { data: editsCountData, isLoading: editsCountDataIsLoading } =
-    useStatistic('edits', user!.id, classId);
 
   const updateArchiveMutation = useUpdateArchive(post.id, post.isArchived);
   const updateAnswersCountMutation = useUpdateStatistic(
     'answers',
     classId,
     answersCountData ? answersCountData[0].answers + 1 : 0
-  );
-  const updateEditsCountMutation = useUpdateStatistic(
-    'edits',
-    classId,
-    editsCountData ? editsCountData[0].edits + 1 : 0
   );
 
   const preview = useEditor({
@@ -184,6 +177,7 @@ const Post = ({ classId, post, role }) => {
             <InstructorAnswerView
               instructorAnswer={instructorData![0]}
               role={role}
+              classId={classId}
             />
           </Box>
         ) : null}
@@ -225,7 +219,11 @@ const Post = ({ classId, post, role }) => {
             </Box>
           )
         ) : null}
-        <StudentAnswersView studentAnswers={data!} role={role} />
+        <StudentAnswersView
+          studentAnswers={data!}
+          role={role}
+          classId={classId}
+        />
       </Box>
     </Stack>
   );
