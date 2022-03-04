@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import useCreateAnswer from '../hooks/useCreateAnswer';
 import useAnswers from '../hooks/useAnswers';
-import useContributions from 'hooks/useContributions';
-import useUpdateContributions from 'hooks/useUpdateContributions';
+// import usePostsCount from 'hooks/usePostsCount';
+// import useUpdatePostsCount from 'hooks/useUpdatePostsCount';
+import useStatistic from 'hooks/useStatistic';
+import useUpdateStatistic from 'hooks/useUpdateStatistic';
 
 import supabase from 'lib/supabase';
 
@@ -56,13 +58,23 @@ const Post = ({ classId, post, role }) => {
   const { data, isLoading } = useAnswers(post.id, 'student');
   const { data: instructorData, isLoading: instructorDataIsLoading } =
     useAnswers(post.id, 'instructor');
-  const { data: contributionsData, isLoading: contributionsDataIsLoading } =
-    useContributions(user!.id, classId);
+  const { data: postsCountData, isLoading: postsCountDataIsLoading } =
+    useStatistic('posts', user!.id, classId);
+  const { data: answersCountData, isLoading: answersCountDataIsLoading } =
+    useStatistic('answers', user!.id, classId);
+  const { data: editsCountData, isLoading: editsCountDataIsLoading } =
+    useStatistic('edits', user!.id, classId);
 
   const updateArchiveMutation = useUpdateArchive(post.id, post.isArchived);
-  const updateContributionsMutation = useUpdateContributions(
+  const updateAnswersCountMutation = useUpdateStatistic(
+    'answers',
     classId,
-    contributionsData ? contributionsData[0].contributions + 1 : 0
+    answersCountData ? answersCountData[0].answers + 1 : 0
+  );
+  const updateEditsCountMutation = useUpdateStatistic(
+    'edits',
+    classId,
+    editsCountData ? editsCountData[0].edits + 1 : 0
   );
 
   const preview = useEditor({
@@ -81,7 +93,7 @@ const Post = ({ classId, post, role }) => {
     setAnonymous(false);
     setInstructorAnswerPost(false);
     createAnswerMutation.mutate();
-    updateContributionsMutation.mutate();
+    updateAnswersCountMutation.mutate();
   };
 
   const handleInstructorAnswerCancel = (
@@ -95,7 +107,7 @@ const Post = ({ classId, post, role }) => {
     setContent('');
     setStudentAnswerPost(false);
     createAnswerMutation.mutate();
-    updateContributionsMutation.mutate();
+    updateAnswersCountMutation.mutate();
   };
 
   const handleStudentAnswerCancel = (
@@ -109,13 +121,10 @@ const Post = ({ classId, post, role }) => {
     updateArchiveMutation.mutate();
   };
 
-  if (isLoading || instructorDataIsLoading || contributionsDataIsLoading) {
+  if (isLoading || instructorDataIsLoading || answersCountDataIsLoading) {
     return null;
   }
 
-  // setContributions(contributionsData![0].contributions);
-
-  //setRole(classData[0].role);
   return (
     <Stack spacing={4} pt={5} px='22'>
       <Box p={5} shadow='sm' borderWidth='1px'>

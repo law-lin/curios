@@ -13,7 +13,9 @@ const fetchMembers = async (
       `
         class_id,
         role,
-        contributions,
+        posts,
+        answers,
+        edits,
         users (
           id,
           name,

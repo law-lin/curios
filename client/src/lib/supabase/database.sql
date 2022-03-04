@@ -51,7 +51,9 @@ create table public.users_classes (
   user_id uuid references public.users on delete cascade not null,
   class_id bigint references public.classes on delete cascade not null,
   role user_role,  -- defines what kind of role that user has in a particular class
-  contributions bigint,
+  posts bigint,
+  answers bigint,
+  edits bigint,
   unique (user_id, class_id)
 );
 comment on table public.users_classes is 'Role a user has for a particular class';

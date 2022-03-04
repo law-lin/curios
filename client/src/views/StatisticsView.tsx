@@ -38,8 +38,11 @@ const StatisticsView = ({ classItem }: Props) => {
 
   const {
     users: { name: userName, email: userEmail },
-    contributions: userContributions,
+    posts: userPostsCount,
+    answers: userAnswersCount,
+    edits: userEditsCount,
   } = data.filter((d) => d.users.id === user!.id.toString())[0];
+  const userContributions = userPostsCount + userAnswersCount + userEditsCount;
 
   return (
     <Box padding='50px'>
@@ -82,7 +85,7 @@ const StatisticsView = ({ classItem }: Props) => {
             </Table>
           </Box>
           <Box p={5} shadow='sm' borderWidth='1px'>
-            <VStack>
+            <VStack align='start'>
               <HStack p={5} align='start'>
                 <Heading size='sm'>Top Contributors</Heading>
                 <Select>
@@ -91,7 +94,7 @@ const StatisticsView = ({ classItem }: Props) => {
                   <option value='teaching assistant'>Teaching Assistant</option>
                 </Select>
               </HStack>
-              <Text>Student 1</Text>
+              <Text p={5}>Student 1</Text>
             </VStack>
           </Box>
         </VStack>
