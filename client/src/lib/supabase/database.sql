@@ -3,6 +3,7 @@ drop table if exists public.classes cascade;
 drop table if exists public.users_classes cascade;
 drop table if exists public.posts cascade;
 drop table if exists public.answers cascade;
+drop table if exists public.users_posts;
 -- drop type if exists public.app_permission cascade;
 -- drop type if exists public.app_role cascade;
 drop type if exists public.user_role cascade;
@@ -84,6 +85,14 @@ create table public.answers (
   is_anonymous boolean,
   upvotes bigint,
   content text
+)
+
+-- USERS POSTS
+create table public.users_posts (
+  user_id uuid references public.users on delete cascade not null,
+  post_id bigint references public.posts on delete cascade not null,
+  class_id bigint references public.classes on delete cascade not null,
+  viewed boolean,
 )
 
 -- -- USER ROLES

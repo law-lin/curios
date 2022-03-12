@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useCreateAnswer from '../hooks/useCreateAnswer';
 import useAnswers from '../hooks/useAnswers';
 // import usePostsCount from 'hooks/usePostsCount';
 // import useUpdatePostsCount from 'hooks/useUpdatePostsCount';
-import useStatistic from 'hooks/useStatistic';
-import useUpdateStatistic from 'hooks/useUpdateStatistic';
+import useUserClassStatistic from 'hooks/useUserClassStatistic';
+import useUpdateUserClassStatistic from 'hooks/useUpdateUserClassStatistic';
 
 import supabase from 'lib/supabase';
 
@@ -34,6 +34,7 @@ import { ConsoleSqlOutlined, UserAddOutlined } from '@ant-design/icons';
 import StudentAnswersView from './StudentAnswersView';
 import InstructorAnswerView from './InstructorAnswerView';
 import useUpdateArchive from 'hooks/useUpdateArchive';
+import useUpdatePostsViewed from 'hooks/useUpdatePostsViewed';
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -59,12 +60,12 @@ const Post = ({ classId, post, role }) => {
   const { data: instructorData, isLoading: instructorDataIsLoading } =
     useAnswers(post.id, 'instructor');
   const { data: postsCountData, isLoading: postsCountDataIsLoading } =
-    useStatistic('posts', user!.id, classId);
+    useUserClassStatistic('posts', user!.id, classId);
   const { data: answersCountData, isLoading: answersCountDataIsLoading } =
-    useStatistic('answers', user!.id, classId);
+    useUserClassStatistic('answers', user!.id, classId);
 
   const updateArchiveMutation = useUpdateArchive(post.id, post.isArchived);
-  const updateAnswersCountMutation = useUpdateStatistic(
+  const updateAnswersCountMutation = useUpdateUserClassStatistic(
     'answers',
     classId,
     answersCountData ? answersCountData[0].answers + 1 : 0
@@ -113,6 +114,8 @@ const Post = ({ classId, post, role }) => {
   const handleArchive = () => {
     updateArchiveMutation.mutate();
   };
+
+  useUpdatePostsViewed(user!.id, post.id, classId);
 
   if (isLoading || instructorDataIsLoading || answersCountDataIsLoading) {
     return null;

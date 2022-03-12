@@ -3,8 +3,8 @@ import { Box, Text, Button, HStack } from '@chakra-ui/react';
 import useUpdateAnswer from '../hooks/useUpdateAnswer';
 import useDeleteAnswer from '../hooks/useDeleteAnswer';
 import { useUser } from 'providers/AuthProvider';
-import useStatistic from 'hooks/useStatistic';
-import useUpdateStatistic from 'hooks/useUpdateStatistic';
+import useUserClassStatistic from 'hooks/useUserClassStatistic';
+import useUpdateUserClassStatistic from 'hooks/useUpdateUserClassStatistic';
 
 import { Answer } from '../types';
 
@@ -30,7 +30,7 @@ const InstructorAnswerView = ({ instructorAnswer, role, classId }: Props) => {
   const [content, setContent] = useState(instructorAnswer?.content);
 
   const { data: editsCountData, isLoading: editsCountDataIsLoading } =
-    useStatistic('edits', user!.id, classId);
+    useUserClassStatistic('edits', user!.id, classId);
 
   const updateAnswerMutation = useUpdateAnswer(
     id,
@@ -43,7 +43,7 @@ const InstructorAnswerView = ({ instructorAnswer, role, classId }: Props) => {
 
   const deleteAnswerMutation = useDeleteAnswer(id, postId, role);
 
-  const updateEditsCountMutation = useUpdateStatistic(
+  const updateEditsCountMutation = useUpdateUserClassStatistic(
     'edits',
     classId,
     editsCountData ? editsCountData[0].edits + 1 : 0

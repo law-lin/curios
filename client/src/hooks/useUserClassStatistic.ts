@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import supabase from '../lib/supabase';
 
-const fetchStatistic = async (
+const fetchUserClassStatistic = async (
   type: string,
   userId: string,
   classId: string
@@ -18,12 +18,12 @@ const fetchStatistic = async (
   return data;
 };
 
-export default function useStatistic(
+export default function useUserClassStatistic(
   type: string,
   userId: string,
   classId: string
 ) {
   return useQuery(`${type}-${userId}`, () =>
-    fetchStatistic(type, userId, classId)
+    fetchUserClassStatistic(type, userId, classId)
   );
 }

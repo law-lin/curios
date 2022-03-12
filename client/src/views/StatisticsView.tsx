@@ -19,6 +19,7 @@ import { Heading, Text } from '@chakra-ui/react';
 import { Class } from 'types';
 import { useUser } from 'providers/AuthProvider';
 import useMembers from 'hooks/useMembers';
+import usePostsViewed from 'hooks/usePostsViewed';
 
 interface Props {
   classItem: Class;
@@ -27,7 +28,13 @@ interface Props {
 const StatisticsView = ({ classItem }: Props) => {
   const { user } = useUser();
   const { id } = classItem;
-  const { data, isLoading } = useMembers(id.toString(), '', 'A-Z');
+  const { data: membersData, isLoading: isMembersLoading } = useMembers(
+    id.toString(),
+    '',
+    'A-Z'
+  );
+  const { data: postsViewedData, isLoading: isPostsViewedLoading } =
+    usePostsViewed(id.toString());
   const [topContributorRole, setTopContributorRole] = useState('student');
 
   const handleSelectTopContributorRole = (e) => {
@@ -44,24 +51,32 @@ const StatisticsView = ({ classItem }: Props) => {
     );
   };
 
-  if (isLoading || user === null) return null;
+  if (isMembersLoading || isPostsViewedLoading || user === null) return null;
 
+  console.log(postsViewedData);
+
+  // User statistics
   const {
     users: { name: userName, email: userEmail },
     posts: userPostsCount,
     answers: userAnswersCount,
     edits: userEditsCount,
-  } = data.filter((d) => d.users.id === user!.id.toString())[0];
+  } = membersData.filter((d) => d.users.id === user!.id.toString())[0];
   const userContributions = userPostsCount + userAnswersCount + userEditsCount;
+  const userPostsViewed = postsViewedData!.filter(
+    (d) => d.user_id === user!.id.toString()
+  ).length;
 
   const members = {
     instructor: sortMembersByContributions(
-      getMembersByRole(data, 'instructor')
+      getMembersByRole(membersData, 'instructor')
     ),
     'teaching assistant': sortMembersByContributions(
-      getMembersByRole(data, 'teaching assistant')
+      getMembersByRole(membersData, 'teaching assistant')
     ),
-    student: sortMembersByContributions(getMembersByRole(data, 'student')),
+    student: sortMembersByContributions(
+      getMembersByRole(membersData, 'student')
+    ),
   };
 
   console.log(members);
@@ -97,7 +112,7 @@ const StatisticsView = ({ classItem }: Props) => {
                     <Text>N/A</Text>
                   </Td>
                   <Td>
-                    <Text>N/A</Text>
+                    <Text>{userPostsViewed}</Text>
                   </Td>
                   <Td>
                     <Text>{userContributions}</Text>
@@ -108,7 +123,8 @@ const StatisticsView = ({ classItem }: Props) => {
           </Box>
           <Box p={5} shadow='sm' borderWidth='1px'>
             <VStack align='start'>
-              <HStack p={5} align='start'>
+              {/* User report */}
+              <HStack align='start'>
                 <Heading size='sm'>Top Contributors</Heading>
                 <Select onChange={handleSelectTopContributorRole}>
                   <option value='student'>Student</option>
@@ -116,21 +132,30 @@ const StatisticsView = ({ classItem }: Props) => {
                   <option value='teaching assistant'>Teaching Assistant</option>
                 </Select>
               </HStack>
+              {/* Top contributors */}
               {members[topContributorRole]
                 .slice(0, Math.min(members[topContributorRole].length, 5))
                 .map((topContributor) => {
                   return (
-                    <HStack p={5}>
-                      <Text>{topContributor.users.name}</Text>
-                      <Text>
-                        {`${
-                          topContributor.posts +
-                          topContributor.answers +
-                          topContributor.edits
-                        }
+                    <Table p={5}>
+                      <Tbody>
+                        <Tr>
+                          <Td>
+                            <Text>{topContributor.users.name}</Text>
+                          </Td>
+                          <Td>
+                            <Text>
+                              {`${
+                                topContributor.posts +
+                                topContributor.answers +
+                                topContributor.edits
+                              }
                         Contributions`}
-                      </Text>
-                    </HStack>
+                            </Text>
+                          </Td>
+                        </Tr>
+                      </Tbody>
+                    </Table>
                   );
                 })}
             </VStack>
