@@ -14,6 +14,7 @@ const Register: React.FC<{}> = () => {
   const handleRegister = async (values) => {
     // await register(email, password, name);
     createUserMutation.mutate(values);
+    history.push('/verify-email');
   };
 
   const renderError = () => {

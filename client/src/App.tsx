@@ -12,6 +12,7 @@ import { AuthProvider } from 'providers/AuthProvider';
 import Landing from 'pages/Landing';
 import Login from 'pages/Login';
 import Register from 'pages/Register';
+import VerifyEmail from 'pages/VerifyEmail';
 import Main from 'pages/Main';
 import Join from 'pages/Join';
 
@@ -27,7 +28,7 @@ function App() {
             <PrivateRoute path='/c' component={Main} />
             <Route path='/login' component={Login} />
             <Route path='/register' component={Register} />
-            <Route path='/verify-email' component={Register} />
+            <Route path='/verify-email' component={VerifyEmail} />
             <Route path='/join/:classId' component={Join} />
             <Main />
           </Switch>
