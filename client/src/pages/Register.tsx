@@ -12,9 +12,11 @@ const Register: React.FC<{}> = () => {
   const createUserMutation = useCreateUser();
 
   const handleRegister = async (values) => {
-    // await register(email, password, name);
-    createUserMutation.mutate(values);
-    history.push('/verify-email');
+    createUserMutation.mutate(values, {
+      onSuccess: (data, variables, context) => {
+        history.push('/verify-email');
+      },
+    });
   };
 
   const renderError = () => {
