@@ -26,7 +26,7 @@ const Register: React.FC<{}> = () => {
     return null;
   };
 
-  function validateName(value) {
+  const validateName = (value) => {
     let error;
     if (!value) {
       error = 'Name is required';
@@ -34,7 +34,7 @@ const Register: React.FC<{}> = () => {
     return error;
   }
 
-  function validateEmail(value) {
+  const validateEmail = (value) => {
     let error;
     if (!value) {
       error = 'Email is required';
