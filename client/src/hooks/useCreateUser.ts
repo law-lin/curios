@@ -35,11 +35,11 @@ export default function useCreateUser() {
   return useMutation((user: User) => createUser(user), {
     onSuccess: async (data, user) => {
       const { name } = user;
-      if (data && 'user' in data && data.user) {
+      if (data && 'id' in data && data.id) {
         const { data: updateData, error: updateError } = await supabase
           .from('users')
           .update({ name })
-          .eq('id', data.user.id);
+          .eq('id', data.id);
         if (updateError) {
           throw updateError;
         }

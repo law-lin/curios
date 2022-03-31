@@ -1,12 +1,13 @@
 import React from 'react';
 import { Wrapper } from '../components/Wrapper';
 
-const Landing: React.FC<{}> = () => {
+const VerifyEmail: React.FC<{}> = () => {
   return (
     <Wrapper variant='small'>
-      <div>Please verify your email.</div>
+      Please verify your email. Click the link sent to your email then proceed
+      to login.
     </Wrapper>
   );
 };
 
-export default Landing;
+export default VerifyEmail;

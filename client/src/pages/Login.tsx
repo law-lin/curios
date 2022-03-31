@@ -14,6 +14,13 @@ const Login: React.FC<{}> = () => {
     loginMutation.mutate(values);
   };
 
+  const renderError = () => {
+    if (loginMutation.isError) {
+      return (loginMutation.error as Error).message;
+    }
+    return null;
+  };
+
   return (
     <Wrapper variant='small'>
       <Formik
@@ -41,7 +48,9 @@ const Login: React.FC<{}> = () => {
                 Forgot Password?
               </Link>
             </Flex>
-            <Button type='submit' colorScheme='teal'>
+            {renderError()}
+            <br />
+            <Button mt={4} type='submit' colorScheme='teal'>
               Login
             </Button>
           </Form>

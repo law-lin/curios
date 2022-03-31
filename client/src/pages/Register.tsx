@@ -12,8 +12,11 @@ const Register: React.FC<{}> = () => {
   const createUserMutation = useCreateUser();
 
   const handleRegister = async (values) => {
-    // await register(email, password, name);
-    createUserMutation.mutate(values);
+    createUserMutation.mutate(values, {
+      onSuccess: (data, variables, context) => {
+        history.push('/verify-email');
+      },
+    });
   };
 
   const renderError = () => {
@@ -21,6 +24,34 @@ const Register: React.FC<{}> = () => {
       return (createUserMutation.error as Error).message;
     }
     return null;
+  };
+
+  const validateName = (value) => {
+    let error;
+    if (!value) {
+      error = 'Name is required';
+    }
+    return error;
+  }
+
+  const validateEmail = (value) => {
+    let error;
+    if (!value) {
+      error = 'Email is required';
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value)) {
+      error = 'Invalid email address';
+    }
+    return error;
+  }
+
+  const validatePassword = (value) => {
+    let error;
+    if (!value) {
+      error = 'Password is required';
+    } else if (value.length < 6) {
+      error = 'Password must be at least 6 characters';
+    }
+    return error;
   };
 
   return (
@@ -36,6 +67,7 @@ const Register: React.FC<{}> = () => {
               placeholder='Name'
               label='Name'
               type='name'
+              validate={validateName}
             />
             <Box mt={4}>
               <InputField
@@ -43,6 +75,7 @@ const Register: React.FC<{}> = () => {
                 placeholder='Email'
                 label='Email'
                 type='email'
+                validate={validateEmail}
               />
             </Box>
             <Box mt={4}>
@@ -51,10 +84,11 @@ const Register: React.FC<{}> = () => {
                 placeholder='Password'
                 label='Password'
                 type='password'
+                validate={validatePassword}
               />
             </Box>
             {renderError()}
-            <p>ok</p>
+            <br />
             <Button mt={4} type='submit' colorScheme='teal'>
               Register
             </Button>
