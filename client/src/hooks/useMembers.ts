@@ -32,29 +32,30 @@ const fetchMembers = async (
       if (member.users.name.match(new RegExp(`${filter}`, 'gi'))) {
         return member;
       }
+      return null;
     });
-    if (sortBy == 'A-Z') {
+    if (sortBy === 'A-Z') {
       members.sort((a, b) => {
         if (a.users.name < b.users.name) return -1;
         if (a.users.name > b.users.name) return 1;
         return 0;
       });
-    } else if (sortBy == 'Role') {
+    } else if (sortBy === 'Role') {
       members.sort((a, b) => {
         let a_weight =
-          a.role == 'instructor'
+          a.role === 'instructor'
             ? 2
-            : a.role == 'teaching assistant'
+            : a.role === 'teaching assistant'
             ? 1
-            : a.role == 'ta'
+            : a.role === 'ta'
             ? 1
             : 0;
         let b_weight =
-          b.role == 'instructor'
+          b.role === 'instructor'
             ? 2
-            : b.role == 'teaching assistant'
+            : b.role === 'teaching assistant'
             ? 1
-            : b.role == 'ta'
+            : b.role === 'ta'
             ? 1
             : 0;
         return b_weight - a_weight;

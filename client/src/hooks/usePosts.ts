@@ -12,6 +12,10 @@ const fetchPosts = async (classId: string) => {
     )
     .eq('class_id', classId);
 
+  if (!data) {
+    return [];
+  }
+
   if (error) {
     throw new Error(error.message);
   }

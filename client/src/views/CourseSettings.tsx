@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import {
-  Stack,
   Box,
   Heading,
-  Text,
-  Button,
-  HStack,
   VStack,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useParams } from 'react-router-dom';
 import { Class } from 'types';
 import './CourseSettings.css';
 import Details from 'components/csettings/Details';
@@ -20,9 +15,6 @@ import { IoExit } from 'react-icons/io5';
 import Members from 'components/csettings/Members';
 import FeaturePreferences from 'components/csettings/FeaturePreferences';
 
-interface Params {
-  courseId: string;
-}
 interface Props {
   classItem: Class;
 }

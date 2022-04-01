@@ -4,7 +4,6 @@ import useAnswers from '../hooks/useAnswers';
 
 import {
   Stack,
-  HStack,
   Box,
   Heading,
   Text,
@@ -17,13 +16,10 @@ import {
 
 import Editor from 'components/editor/Editor';
 import Preview from 'components/preview/Preview';
-import { useEditor, EditorContent } from '@tiptap/react';
+import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
 import Typography from '@tiptap/extension-typography';
-import { Class } from 'types';
-import { stringify } from 'querystring';
-import { ConsoleSqlOutlined, UserAddOutlined } from '@ant-design/icons';
 
 import StudentAnswersView from './StudentAnswersView';
 import InstructorAnswerView from './InstructorAnswerView';
@@ -37,7 +33,7 @@ const Post = ({ post, role }) => {
   const [instructorAnswerPost, setInstructorAnswerPost] = useState(false);
   const [studentAnswerPost, setStudentAnswerPost] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
-  const [upvotes, setUpvotes] = useState('0');
+  const [upvotes] = useState('0');
   const [content, setContent] = useState('');
   const createAnswerMutation = useCreateAnswer(
     post.id,
@@ -105,7 +101,7 @@ const Post = ({ post, role }) => {
         <Flex justifyContent='space-between'>
           <Box>
             <Text>
-              {capitalizeFirstLetter(post?.type)} @{post?.number}
+              {capitalizeFirstLetter(post?.type)} @{post?.id} {post?.visibility}
             </Text>
             <Heading fontSize='xl'>{post?.title}</Heading>
             <Preview content={post?.content} />
@@ -127,7 +123,7 @@ const Post = ({ post, role }) => {
           Instructor Answer
         </Heading>
 
-        {role === 'instructor' && instructorData!.length == 0 ? (
+        {role === 'instructor' && instructorData!.length === 0 ? (
           instructorAnswerPost ? (
             <Box p={5} shadow='sm' borderWidth='1px'>
               <Box p={5}>

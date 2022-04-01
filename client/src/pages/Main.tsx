@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import 'pages/mainpage.css';
-import useDarkMode from 'use-dark-mode';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import NotificationsView from 'views/NotificationsView';
 import MessagesView from 'views/MessagesView';
@@ -10,7 +9,6 @@ import CourseView from 'views/CourseView';
 import useClasses from 'hooks/useClasses';
 
 function Main() {
-  const { value } = useDarkMode(false);
   const { data, isLoading } = useClasses();
 
   if (isLoading) {

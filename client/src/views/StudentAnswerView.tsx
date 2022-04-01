@@ -19,8 +19,8 @@ const StudentAnswerView = ({ studentAnswer, role }: Props) => {
   const { user } = useUser();
   const { id, createdBy, postId } = studentAnswer;
   const [studentAnswerEdit, setStudentAnswerEdit] = useState(false);
-  const [anonymous, setAnonymous] = useState(false);
-  const [upvotes, setUpvotes] = useState('0');
+  const [anonymous] = useState(false);
+  const [upvotes] = useState('0');
   const [content, setContent] = useState(studentAnswer?.content);
 
   const preview = useEditor({

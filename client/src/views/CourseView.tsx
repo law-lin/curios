@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
 import {
-  useHistory,
   useParams,
-  useRouteMatch,
   Switch,
   Route,
   Redirect,
 } from 'react-router-dom';
-import MessagesView from 'views/MessagesView';
 import SearchView from 'views/SearchView';
 import PostsView from './PostsView';
 import { Class } from 'types';
@@ -24,7 +20,6 @@ interface Props {
 
 function CourseView({ classes, match }: Props) {
   const { courseId } = useParams<Params>();
-  const { url } = useRouteMatch();
 
   const classItem = classes.find(
     (classes) => classes.id === parseInt(courseId)

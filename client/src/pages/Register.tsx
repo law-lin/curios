@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Button } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputField } from '../components/InputField';
 import { Wrapper } from '../components/Wrapper';
-import { useHistory } from 'react-router-dom';
 import useCreateUser from 'hooks/useCreateUser';
 
 const Register: React.FC<{}> = () => {
-  const history = useHistory();
 
   const createUserMutation = useCreateUser();
 

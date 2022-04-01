@@ -1,4 +1,3 @@
-import UserSettings from 'components/UserSettings';
 import React from 'react';
 
 function NotificationsView() {

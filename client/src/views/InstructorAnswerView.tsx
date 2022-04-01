@@ -6,7 +6,6 @@ import useDeleteAnswer from '../hooks/useDeleteAnswer';
 import { Answer } from '../types';
 
 import Editor from 'components/editor/Editor';
-import Preview from 'components/preview/Preview';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
@@ -21,7 +20,7 @@ const InstructorAnswerView = ({ instructorAnswer, role }: Props) => {
   const { id, postId } = instructorAnswer;
   const [instructorAnswerEdit, setInstructorAnswerEdit] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
-  const [upvotes, setUpvotes] = useState('0');
+  const [upvotes] = useState('0');
   const [content, setContent] = useState(instructorAnswer?.content);
 
   const updateAnswerMutation = useUpdateAnswer(

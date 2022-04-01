@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import PostList from 'components/PostList';
 import {
   useParams,
@@ -106,7 +106,7 @@ interface Props {
 
 function PostsView({ classItem }: Props) {
   const { role, classNumber, className, classTerm } = classItem;
-  const { courseId, postId } = useParams<Params>();
+  const { courseId } = useParams<Params>();
   const [archived, setArchived] = useState(false);
   const location = useLocation();
   const history = useHistory();

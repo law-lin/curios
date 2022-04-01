@@ -2,16 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {
   useColorMode,
-  Modal,
   useDisclosure,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  Box,
-  Divider,
-  Center,
 } from '@chakra-ui/react';
 import CreateModal from './CreateModal';
 

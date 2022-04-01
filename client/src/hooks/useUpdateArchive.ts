@@ -5,9 +5,10 @@ const updateArchive = async (
 	id: string,
 	isArchived: boolean
 ) => {
+	const visibility = isArchived ? 'public' : 'private';
 	const { data, error } = await supabase
 		.from('posts')
-		.update({ is_archived: !isArchived })
+		.update({ is_archived: !isArchived, visibility })
 		.match({ id: id });
 
 	if (data) {

@@ -1,10 +1,7 @@
-import PostList from 'components/PostList';
-import React, { useState } from 'react';
-import { useParams, useHistory, Route } from 'react-router-dom';
-import { Stack, Box, Heading, Text, Button } from '@chakra-ui/react';
-import { Class, Post } from 'types';
+import React  from 'react';
+import { useParams } from 'react-router-dom';
+import { Post } from 'types';
 import PostItem from './Post';
-import NewPost from './NewPost';
 
 interface Params {
   courseId: string;
@@ -17,9 +14,9 @@ interface Props {
 }
 
 function PostView({ posts, role }: Props) {
-  const { courseId, postId } = useParams<Params>();
+  const { postId } = useParams<Params>();
   const post = posts.find((post: Post) => post.id === parseInt(postId));
-  return <PostItem post={post} role={role} />;
+  return post ? <PostItem post={post} role={role} /> : null;
 }
 
 export default PostView;
