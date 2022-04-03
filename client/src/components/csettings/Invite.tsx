@@ -67,9 +67,16 @@ function EmailInvite() {
       initialValues={{ name: "kevin@gmail.com" }}
       onSubmit={(values, actions) => {
         setTimeout(() => {
-          //alert(JSON.stringify(values, null, 2))
+          alert(JSON.stringify(values, null, 2))
           setEmails(emails.concat(values['name'].toLowerCase().replaceAll(" ", "").split(",")))
-          
+          // TODO specify port 9999?
+          let url = "https://curiossbu.netlify.app/.netlify/functions/send-invite"
+          var xhr = new XMLHttpRequest()
+          xhr.open("POST", url, true)
+          xhr.setRequestHeader("Accept", "application/json")
+          xhr.setRequestHeader("Content-Type", "application/json")
+          xhr.send(JSON.stringify(values, null, 2))
+
           actions.setSubmitting(false)
         }, 1000)
       }}
