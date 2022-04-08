@@ -15,6 +15,8 @@ import Register from 'pages/Register';
 import Main from 'pages/Main';
 import Join from 'pages/Join';
 
+const trackingId = 'UA-224418608-1';
+
 function App() {
   return (
     <div className='App'>

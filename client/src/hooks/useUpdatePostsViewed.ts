@@ -11,7 +11,6 @@ const updatePostsViewed = async (
       user_id: userId,
       post_id: postId,
       class_id: classId,
-      viewed: true,
     },
     { ignoreDuplicates: true }
   );

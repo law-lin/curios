@@ -16,7 +16,7 @@ const fetchPostsViewed = async (classId: string, postId?: string) => {
 
   const { data, error } = await supabase
     .from('users_posts')
-    .select('user_id, post_id, viewed')
+    .select('user_id, post_id')
     .eq('class_id', classId)
     .order('user_id');
   if (error) {

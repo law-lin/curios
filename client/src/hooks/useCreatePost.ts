@@ -6,6 +6,7 @@ const createPost = async (
   type: string,
   title: string,
   visibility: string,
+  isAnonymous: boolean,
   content: string,
   userId: string
 ) => {
@@ -13,9 +14,10 @@ const createPost = async (
     class_id: classId,
     created_by: userId,
     visibility,
+    is_anonymous: isAnonymous,
     type,
     title,
-    content
+    content,
   });
 
   if (error) {
@@ -30,12 +32,22 @@ export default function useCreatePost(
   type: string,
   title: string,
   visibility: string,
+  isAnonymous: boolean,
   content: string
 ) {
   const queryClient = useQueryClient();
   const user = supabase.auth.user();
   return useMutation(
-    () => createPost(classId, type, title, visibility, content, user?.id ?? ''),
+    () =>
+      createPost(
+        classId,
+        type,
+        title,
+        visibility,
+        isAnonymous,
+        content,
+        user?.id ?? ''
+      ),
     {
       onSuccess: () => {
         queryClient.refetchQueries('posts');

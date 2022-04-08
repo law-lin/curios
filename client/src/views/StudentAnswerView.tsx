@@ -1,4 +1,4 @@
-import { Box, Text, Button, ListItem, HStack } from '@chakra-ui/react';
+import { Box, Text, Button, ListItem, Flex, HStack } from '@chakra-ui/react';
 import Highlight from '@tiptap/extension-highlight';
 import Typography from '@tiptap/extension-typography';
 import { useEditor } from '@tiptap/react';
@@ -8,9 +8,10 @@ import useUpdateAnswer from 'hooks/useUpdateAnswer';
 import useDeleteAnswer from 'hooks/useDeleteAnswer';
 import useUserClassStatistic from 'hooks/useUserClassStatistic';
 import useUpdateUserClassStatistic from 'hooks/useUpdateUserClassStatistic';
-import { useUser } from 'providers/AuthProvider';
+import { useUser as useUserAuth } from 'providers/AuthProvider';
 import { useState } from 'react';
 import { Answer } from '../types';
+import useUser from 'hooks/useUser';
 
 interface Props {
   studentAnswer: Answer;
@@ -19,7 +20,7 @@ interface Props {
 }
 
 const StudentAnswerView = ({ studentAnswer, role, classId }: Props) => {
-  const { user } = useUser();
+  const { user } = useUserAuth();
   const { id, createdBy, postId } = studentAnswer;
   const [studentAnswerEdit, setStudentAnswerEdit] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
@@ -28,6 +29,9 @@ const StudentAnswerView = ({ studentAnswer, role, classId }: Props) => {
 
   const { data: editsCountData, isLoading: editsCountDataIsLoading } =
     useUserClassStatistic('edits', user!.id, classId);
+  const { data: answererData, isLoading: answererDataIsLoading } = useUser(
+    id.toString()
+  );
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -73,13 +77,16 @@ const StudentAnswerView = ({ studentAnswer, role, classId }: Props) => {
     setContent(newContent);
     preview?.commands.setContent(newContent);
   };
-  if (user === null || editsCountDataIsLoading) return null;
+  if (user === null || editsCountDataIsLoading || answererDataIsLoading)
+    return null;
+
+  const answerer = answererData[0];
 
   return (
     <ListItem>
-      <Box p={5} shadow='sm' borderWidth='1px'>
+      <Box p={5} shadow='sm' borderWidth='1px' borderRadius='5'>
         {studentAnswerEdit ? (
-          <Box p={5}>
+          <>
             <Editor
               onChange={onContentUpdate}
               defaultContent={content}
@@ -88,7 +95,7 @@ const StudentAnswerView = ({ studentAnswer, role, classId }: Props) => {
               Update
             </Button>
             <Button onClick={handleStudentAnswerCancel}>Cancel</Button>
-          </Box>
+          </>
         ) : (
           <>
             <Text
@@ -105,6 +112,10 @@ const StudentAnswerView = ({ studentAnswer, role, classId }: Props) => {
           </>
         )}
       </Box>
+      <Flex pt={0} px={5} justify='end' bg='whiteAlpha.300'>
+        Updated on {answerer.createdAt} By
+        {answerer.isAnonymous ? ' Anonymous Pizza' : ` ${answerer.name}`}
+      </Flex>
     </ListItem>
   );
 };

@@ -35,6 +35,7 @@ import StudentAnswersView from './StudentAnswersView';
 import InstructorAnswerView from './InstructorAnswerView';
 import useUpdateArchive from 'hooks/useUpdateArchive';
 import useUpdatePostsViewed from 'hooks/useUpdatePostsViewed';
+import useUser from 'hooks/useUser';
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -63,6 +64,9 @@ const Post = ({ classId, post, role }) => {
     useUserClassStatistic('posts', user!.id, classId);
   const { data: answersCountData, isLoading: answersCountDataIsLoading } =
     useUserClassStatistic('answers', user!.id, classId);
+  const { data: posterData, isLoading: posterDataIsLoading } = useUser(
+    post.createdBy
+  );
 
   const updateArchiveMutation = useUpdateArchive(post.id, post.isArchived);
   const updateAnswersCountMutation = useUpdateUserClassStatistic(
@@ -117,42 +121,53 @@ const Post = ({ classId, post, role }) => {
 
   useUpdatePostsViewed(user!.id, post.id, classId);
 
-  if (isLoading || instructorDataIsLoading || answersCountDataIsLoading) {
+  if (
+    isLoading ||
+    instructorDataIsLoading ||
+    answersCountDataIsLoading ||
+    posterDataIsLoading
+  )
     return null;
-  }
 
+  const poster = posterData[0];
   return (
     <Stack spacing={4} pt={5} px='22'>
-      <Box p={5} shadow='sm' borderWidth='1px'>
-        <Flex justifyContent='space-between'>
-          <Box>
-            <Text>
-              {capitalizeFirstLetter(post?.type)} @{post?.number}
-            </Text>
-            <Heading fontSize='xl'>{post?.title}</Heading>
-            <Preview content={post?.content} />
-          </Box>
-          {role === 'instructor' && !post?.isArchived ? (
-            <Box>
-              <Button onClick={handleArchive}>Archive</Button>
+      <Box pt={5} shadow='sm' borderWidth='1px' borderRadius='5'>
+        <Flex flexDirection='column' justifyContent='space-between'>
+          <Flex px={5} justifyContent='space-between'>
+            <Box borderRadius='5'>
+              <Text>
+                {capitalizeFirstLetter(post?.type)} @{post?.number}
+              </Text>
+              <Heading fontSize='xl'>{post?.title}</Heading>
+              <Preview content={post?.content} />
             </Box>
-          ) : null}
-          {role === 'instructor' && post?.isArchived ? (
-            <Box>
-              <Button onClick={handleArchive}>Undo Archive</Button>
-            </Box>
-          ) : null}
+            {role === 'instructor' && !post?.isArchived ? (
+              <Box borderRadius='5'>
+                <Button onClick={handleArchive}>Archive</Button>
+              </Box>
+            ) : null}
+            {role === 'instructor' && post?.isArchived ? (
+              <Box borderRadius='5'>
+                <Button onClick={handleArchive}>Undo Archive</Button>
+              </Box>
+            ) : null}
+          </Flex>
+          <Flex pt={0} px={5} justify='end' bg='whiteAlpha.300'>
+            Updated on {post.createdAt} By
+            {post.isAnonymous ? ' Anonymous Pizza' : ` ${poster.name}`}
+          </Flex>
         </Flex>
       </Box>
-      <Box p={5} shadow='sm' borderWidth='1px'>
+      <Box p={5} shadow='sm' borderWidth='1px' borderRadius='5'>
         <Heading pb={5} fontSize='xl'>
           Instructor Answer
         </Heading>
 
         {role === 'instructor' && instructorData!.length == 0 ? (
           instructorAnswerPost ? (
-            <Box p={5} shadow='sm' borderWidth='1px'>
-              <Box p={5}>
+            <Box p={5} shadow='sm' borderWidth='1px' borderRadius='5'>
+              <Box p={5} borderRadius='5'>
                 <Editor
                   onChange={onContentUpdate}
                   defaultContent={content}
@@ -168,6 +183,7 @@ const Post = ({ classId, post, role }) => {
               p={5}
               shadow='sm'
               borderWidth='1px'
+              borderRadius='5'
               onClick={() => setInstructorAnswerPost(true)}
             >
               <Text>Click to contribute an answer.</Text>
@@ -176,7 +192,7 @@ const Post = ({ classId, post, role }) => {
         ) : null}
 
         {instructorData!.length > 0 ? (
-          <Box mt={5} p={5} shadow='sm' borderWidth='1px'>
+          <Box mt={5} pt={5} shadow='sm' borderWidth='1px' borderRadius='5'>
             <InstructorAnswerView
               instructorAnswer={instructorData![0]}
               role={role}
@@ -186,20 +202,20 @@ const Post = ({ classId, post, role }) => {
         ) : null}
       </Box>
 
-      <Box p={5} shadow='sm' borderWidth='1px'>
+      <Box p={5} shadow='sm' borderWidth='1px' borderRadius='5'>
         <Heading pb={5} fontSize='xl'>
           Student Answers
         </Heading>
 
         {role === 'student' ? (
           studentAnswerPost ? (
-            <Box p={5} shadow='sm' borderWidth='1px'>
-              <Box p={5}>
+            <Box p={5} shadow='sm' borderWidth='1px' borderRadius='5'>
+              <Box p={5} borderRadius='5'>
                 <FormControl display='flex' alignItems='center' p={5}>
                   <FormLabel htmlFor='user-anonymous' mb='0'>
                     Anonymous
                   </FormLabel>
-                  <Switch onChange={() => setAnonymous(!anonymous)}></Switch>
+                  <Switch onChange={(e) => setAnonymous(!anonymous)}></Switch>
                 </FormControl>
                 <Editor
                   onChange={onContentUpdate}
@@ -216,6 +232,7 @@ const Post = ({ classId, post, role }) => {
               p={5}
               shadow='sm'
               borderWidth='1px'
+              borderRadius='5'
               onClick={() => setStudentAnswerPost(true)}
             >
               <Text>Click to contribute an answer.</Text>

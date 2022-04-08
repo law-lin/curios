@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Stack,
+  HStack,
   Box,
   Heading,
   Button,
@@ -10,6 +11,7 @@ import {
   Input,
   Grid,
   GridItem,
+  Switch,
 } from '@chakra-ui/react';
 import Editor from 'components/editor/Editor';
 import Preview from 'components/preview/Preview';
@@ -32,10 +34,18 @@ const NewPost = ({ classId }: Props) => {
   const [type, setType] = useState('question');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [anonymous, setAnonymous] = useState(false);
   const [visibility, setVisibility] = useState('public');
   const location = useLocation<Location>();
   const history = useHistory();
-  const createPostMutation = useCreatePost(classId, type, title, visibility, content);
+  const createPostMutation = useCreatePost(
+    classId,
+    type,
+    title,
+    visibility,
+    anonymous,
+    content
+  );
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -75,6 +85,12 @@ const NewPost = ({ classId }: Props) => {
           </Stack>
         </RadioGroup>
         <FormLabel htmlFor='title'>Title</FormLabel>
+        <HStack pb={5}>
+          <FormLabel htmlFor='anonymous' mb='0'>
+            Anonymous
+          </FormLabel>
+          <Switch id='anonymous' onChange={() => setAnonymous(!anonymous)} />
+        </HStack>
         <Input
           id='title'
           placeholder='Enter a title'

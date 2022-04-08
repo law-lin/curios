@@ -15,6 +15,18 @@ import {
   Select,
 } from '@chakra-ui/react';
 import { Heading, Text } from '@chakra-ui/react';
+import { Line } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import Zoom from 'chartjs-plugin-zoom';
 
 import { Class } from 'types';
 import { useUser } from 'providers/AuthProvider';
@@ -51,9 +63,65 @@ const StatisticsView = ({ classItem }: Props) => {
     );
   };
 
-  if (isMembersLoading || isPostsViewedLoading || user === null) return null;
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+    Zoom
+  );
 
-  console.log(postsViewedData);
+  const usersOnlineConfig = {
+    data: {
+      labels: ['Mar 22, 2022', 'Mar 23, 2022', 'Mar 24, 2022', 'Mar 25, 2022'],
+      datasets: [
+        {
+          label: 'Unique Users Online',
+          data: [50, 20, 35, 40],
+          fill: false,
+          borderColor: 'rgb(75, 192, 192)',
+          tension: 0.1,
+        },
+      ],
+    },
+    options: {
+      plugins: {
+        zoom: {
+          zoom: {
+            wheel: {
+              enabled: true,
+            },
+            pinch: {
+              enabled: true,
+            },
+            mode: 'xy',
+          },
+        },
+      },
+    },
+  };
+
+  console.log(usersOnlineConfig.options);
+  console.log({
+    plugins: {
+      zoom: {
+        zoom: {
+          wheel: {
+            enabled: true,
+          },
+          pinch: {
+            enabled: true,
+          },
+          mode: 'xy',
+        },
+      },
+    },
+  });
+
+  if (isMembersLoading || isPostsViewedLoading || user === null) return null;
 
   // User statistics
   const {
@@ -79,8 +147,6 @@ const StatisticsView = ({ classItem }: Props) => {
     ),
   };
 
-  console.log(members);
-
   return (
     <Box padding='50px'>
       <Box marginBottom='30px'>
@@ -88,6 +154,25 @@ const StatisticsView = ({ classItem }: Props) => {
           Statistics
         </Heading>
         <VStack align='start'>
+          <Line
+            data={usersOnlineConfig.data}
+            // options={usersOnlineConfig.options}
+            options={{
+              plugins: {
+                zoom: {
+                  zoom: {
+                    wheel: {
+                      enabled: true,
+                    },
+                    pinch: {
+                      enabled: true,
+                    },
+                    mode: 'xy',
+                  },
+                },
+              },
+            }}
+          />
           <Box p={5} shadow='sm' borderWidth='1px'>
             <Heading size='sm'>Your Report</Heading>
             <Table>
@@ -133,31 +218,33 @@ const StatisticsView = ({ classItem }: Props) => {
                 </Select>
               </HStack>
               {/* Top contributors */}
-              {members[topContributorRole]
-                .slice(0, Math.min(members[topContributorRole].length, 5))
-                .map((topContributor) => {
-                  return (
-                    <Table p={5}>
-                      <Tbody>
-                        <Tr>
-                          <Td>
-                            <Text>{topContributor.users.name}</Text>
-                          </Td>
-                          <Td>
-                            <Text>
-                              {`${
-                                topContributor.posts +
-                                topContributor.answers +
-                                topContributor.edits
-                              }
-                        Contributions`}
-                            </Text>
-                          </Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
-                  );
-                })}
+              {
+                <Table p={5}>
+                  <Tbody>
+                    {' '}
+                    {members[topContributorRole]
+                      .slice(0, Math.min(members[topContributorRole].length, 5))
+                      .map((topContributor) => {
+                        return (
+                          <Tr>
+                            <Td>
+                              <Text>{topContributor.users.name}</Text>
+                            </Td>
+                            <Td isNumeric>
+                              <Text>
+                                {`${
+                                  topContributor.posts +
+                                  topContributor.answers +
+                                  topContributor.edits
+                                } Contributions`}
+                              </Text>
+                            </Td>
+                          </Tr>
+                        );
+                      })}
+                  </Tbody>
+                </Table>
+              }
             </VStack>
           </Box>
         </VStack>

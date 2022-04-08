@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Box, Text, Button, HStack } from '@chakra-ui/react';
+import { Box, Text, Button, Flex, HStack } from '@chakra-ui/react';
 import useUpdateAnswer from '../hooks/useUpdateAnswer';
 import useDeleteAnswer from '../hooks/useDeleteAnswer';
-import { useUser } from 'providers/AuthProvider';
+import { useUser as useUserAuth } from 'providers/AuthProvider';
 import useUserClassStatistic from 'hooks/useUserClassStatistic';
 import useUpdateUserClassStatistic from 'hooks/useUpdateUserClassStatistic';
+import useUser from 'hooks/useUser';
 
 import { Answer } from '../types';
 
@@ -22,7 +23,7 @@ interface Props {
 }
 
 const InstructorAnswerView = ({ instructorAnswer, role, classId }: Props) => {
-  const { user } = useUser();
+  const { user } = useUserAuth();
   const { id, postId } = instructorAnswer;
   const [instructorAnswerEdit, setInstructorAnswerEdit] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
@@ -31,6 +32,9 @@ const InstructorAnswerView = ({ instructorAnswer, role, classId }: Props) => {
 
   const { data: editsCountData, isLoading: editsCountDataIsLoading } =
     useUserClassStatistic('edits', user!.id, classId);
+  const { data: answererData, isLoading: answererDataIsLoading } = useUser(
+    id.toString()
+  );
 
   const updateAnswerMutation = useUpdateAnswer(
     id,
@@ -80,13 +84,16 @@ const InstructorAnswerView = ({ instructorAnswer, role, classId }: Props) => {
     deleteAnswerMutation.mutate();
   };
 
-  if (user === null || editsCountDataIsLoading) return null;
+  if (user === null || editsCountDataIsLoading || answererDataIsLoading)
+    return null;
+
+  const answerer = answererData[0];
 
   return (
     <>
-      {instructorAnswerEdit ? (
-        <Box p={5} shadow='sm' borderWidth='1px'>
-          <Box p={5}>
+      <Box px={5}>
+        {instructorAnswerEdit ? (
+          <>
             <Editor
               onChange={onContentUpdate}
               defaultContent={content}
@@ -95,25 +102,29 @@ const InstructorAnswerView = ({ instructorAnswer, role, classId }: Props) => {
               Update
             </Button>
             <Button onClick={handleInstructorAnswerCancel}>Cancel</Button>
-          </Box>
-        </Box>
-      ) : (
-        <>
-          <Text
-            dangerouslySetInnerHTML={(() => ({
-              __html: instructorAnswer?.content,
-            }))()}
-          />
-          {!instructorAnswerEdit && role === 'instructor' ? (
-            <HStack p={5} mt={5}>
-              <Button onClick={() => setInstructorAnswerEdit(true)}>
-                Edit
-              </Button>
-              <Button onClick={handleInstructorAnswerDelete}>Delete</Button>
-            </HStack>
-          ) : null}
-        </>
-      )}
+          </>
+        ) : (
+          <>
+            <Text
+              dangerouslySetInnerHTML={(() => ({
+                __html: instructorAnswer?.content,
+              }))()}
+            />
+            {!instructorAnswerEdit && role === 'instructor' ? (
+              <HStack p={5} mt={5}>
+                <Button onClick={() => setInstructorAnswerEdit(true)}>
+                  Edit
+                </Button>
+                <Button onClick={handleInstructorAnswerDelete}>Delete</Button>
+              </HStack>
+            ) : null}
+          </>
+        )}
+      </Box>
+      <Flex pt={0} px={5} justify='end' bg='whiteAlpha.300'>
+        Updated on {answerer.createdAt} By
+        {answerer.isAnonymous ? ' Anonymous Pizza' : ` ${answerer.name}`}
+      </Flex>
     </>
   );
 };
