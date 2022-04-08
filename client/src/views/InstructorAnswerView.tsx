@@ -24,7 +24,7 @@ interface Props {
 
 const InstructorAnswerView = ({ instructorAnswer, role, classId }: Props) => {
   const { user } = useUserAuth();
-  const { id, postId } = instructorAnswer;
+  const { id, postId, createdBy } = instructorAnswer;
   const [instructorAnswerEdit, setInstructorAnswerEdit] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [upvotes, setUpvotes] = useState('0');
@@ -32,9 +32,8 @@ const InstructorAnswerView = ({ instructorAnswer, role, classId }: Props) => {
 
   const { data: editsCountData, isLoading: editsCountDataIsLoading } =
     useUserClassStatistic('edits', user!.id, classId);
-  const { data: answererData, isLoading: answererDataIsLoading } = useUser(
-    id.toString()
-  );
+  const { data: answererData, isLoading: answererDataIsLoading } =
+    useUser(createdBy);
 
   const updateAnswerMutation = useUpdateAnswer(
     id,
@@ -123,7 +122,9 @@ const InstructorAnswerView = ({ instructorAnswer, role, classId }: Props) => {
       </Box>
       <Flex pt={0} px={5} justify='end' bg='whiteAlpha.300'>
         Updated on {answerer.createdAt} By
-        {answerer.isAnonymous ? ' Anonymous Pizza' : ` ${answerer.name}`}
+        {instructorAnswer.isAnonymous
+          ? ' Anonymous Pizza'
+          : ` ${answerer.name}`}
       </Flex>
     </>
   );

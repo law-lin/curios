@@ -22,6 +22,7 @@ interface Props {
 const StudentAnswerView = ({ studentAnswer, role, classId }: Props) => {
   const { user } = useUserAuth();
   const { id, createdBy, postId } = studentAnswer;
+
   const [studentAnswerEdit, setStudentAnswerEdit] = useState(false);
   const [anonymous, setAnonymous] = useState(false);
   const [upvotes, setUpvotes] = useState('0');
@@ -29,9 +30,8 @@ const StudentAnswerView = ({ studentAnswer, role, classId }: Props) => {
 
   const { data: editsCountData, isLoading: editsCountDataIsLoading } =
     useUserClassStatistic('edits', user!.id, classId);
-  const { data: answererData, isLoading: answererDataIsLoading } = useUser(
-    id.toString()
-  );
+  const { data: answererData, isLoading: answererDataIsLoading } =
+    useUser(createdBy);
 
   const preview = useEditor({
     extensions: [StarterKit, Highlight, Typography],
@@ -114,7 +114,7 @@ const StudentAnswerView = ({ studentAnswer, role, classId }: Props) => {
       </Box>
       <Flex pt={0} px={5} justify='end' bg='whiteAlpha.300'>
         Updated on {answerer.createdAt} By
-        {answerer.isAnonymous ? ' Anonymous Pizza' : ` ${answerer.name}`}
+        {studentAnswer.isAnonymous ? ' Anonymous Pizza' : ` ${answerer.name}`}
       </Flex>
     </ListItem>
   );

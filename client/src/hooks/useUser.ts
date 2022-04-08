@@ -20,5 +20,5 @@ const fetchUser = async (userId: string) => {
 };
 
 export default function useUser(userId: string) {
-  return useQuery('user', () => fetchUser(userId));
+  return useQuery(`user-${userId}`, () => fetchUser(userId));
 }
