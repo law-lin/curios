@@ -1,13 +1,8 @@
 import React, { useState } from 'react';
-// import { Heading, Input, Button } from '@chakra-ui/react';
 import {
   Heading,
-  Avatar,
   Box,
   Center,
-  Image,
-  Flex,
-  Text,
   Stack,
   Button,
   useColorModeValue,
