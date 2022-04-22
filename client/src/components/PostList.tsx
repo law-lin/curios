@@ -6,6 +6,8 @@ import { useLocation } from 'react-router-dom';
 import Preview from './preview/Preview';
 import './post.css';
 import { Post } from 'types';
+import { useUser } from 'providers/AuthProvider';
+import usePostsViewed from 'hooks/usePostsViewed';
 
 interface Props {
   courseId: string;
@@ -15,6 +17,9 @@ interface Props {
 }
 const PostList = ({ courseId, posts, handleClick, isArchived }: Props) => {
   const location = useLocation();
+  const { user } = useUser();
+  const { data: postsViewedData, isLoading: postsViewedIsLoading } =
+    usePostsViewed(courseId, undefined, user!.id);
 
   const PostCard = (index, key, handleClick) => {
     const isActive = !!matchPath(
@@ -24,11 +29,20 @@ const PostList = ({ courseId, posts, handleClick, isArchived }: Props) => {
 
     const showArchivedPosts = isArchived && posts[index].isArchived;
     const showPosts = !isArchived && !posts[index].isArchived;
-    
-    if (showPosts || showArchivedPosts) {
+
+    if (showPosts || (showArchivedPosts && !postsViewedIsLoading)) {
+      const viewed = postsViewedData?.filter(
+        (d) => d.post_id === posts[index].id
+      );
+      console.log(viewed);
+
       return (
         <div
-          className={`post-card ${isActive ? 'active' : ''}`}
+          className={`post-card ${isActive ? 'active' : ''} ${
+            viewed !== undefined && viewed.length === 0 && !isActive
+              ? 'unread'
+              : ''
+          }`}
           key={key}
           onClick={() => handleClick(posts[index])}
         >

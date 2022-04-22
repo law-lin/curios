@@ -12,3 +12,7 @@
   color: white;
   background-color: #16243e;
 }
+
+.post-card.unread {
+  background-color: #8f220e;
+}
