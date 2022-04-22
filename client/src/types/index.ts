@@ -21,6 +21,7 @@ export interface Class {
 
 export interface Post {
   id: number;
+  createdAt: string;
   createdBy: string;
   classId: number;
   postType: 'question' | 'note';

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactList from 'react-list';
-import { Box, Heading, Text } from '@chakra-ui/react';
+import { Box, Heading, Text, VStack } from '@chakra-ui/react';
+import { WarningIcon } from '@chakra-ui/icons';
 import { matchPath } from 'react-router';
 import { useLocation } from 'react-router-dom';
 import Preview from './preview/Preview';
@@ -34,19 +35,25 @@ const PostList = ({ courseId, posts, handleClick, isArchived }: Props) => {
       const viewed = postsViewedData?.filter(
         (d) => d.post_id === posts[index].id
       );
-      console.log(viewed);
+      const unread = viewed !== undefined && viewed.length === 0 && !isActive;
+      const createdAt = new Date(posts[index].createdAt);
 
       return (
         <div
           className={`post-card ${isActive ? 'active' : ''} ${
-            viewed !== undefined && viewed.length === 0 && !isActive
-              ? 'unread'
-              : ''
+            unread ? 'unread' : ''
           }`}
           key={key}
           onClick={() => handleClick(posts[index])}
         >
-          <div style={{ float: 'right' }}>{posts[index].date}</div>
+          <div style={{ float: 'right' }}>
+            <VStack align='flex-end'>
+              <div>{`${
+                createdAt.getMonth() + 1
+              }/${createdAt.getDate()}/${createdAt.getUTCFullYear()}`}</div>
+              <div>{unread ? <WarningIcon /> : null}</div>
+            </VStack>
+          </div>
           <div style={{ marginRight: '75px' }}>
             <Heading
               size='sm'

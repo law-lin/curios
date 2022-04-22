@@ -14,5 +14,5 @@
 }
 
 .post-card.unread {
-  background-color: #8f220e;
+  background-color: var(--chakra-colors-whiteAlpha-300);
 }
