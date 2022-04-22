@@ -2,8 +2,17 @@ import { useMutation, useQueryClient } from 'react-query';
 import supabase from '../lib/supabase';
 import { Answer } from '../types';
 
-const updateAnswer = async (answer: Answer) => {
-  const { id, createdBy, postId, type, isAnonymous, upvotes, content } = answer;
+const updateAnswer = async (answer) => {
+  const {
+    id,
+    createdAt,
+    createdBy,
+    postId,
+    type,
+    isAnonymous,
+    upvotes,
+    content,
+  } = answer;
 
   const { data, error } = await supabase
     .from('answers')
@@ -12,6 +21,7 @@ const updateAnswer = async (answer: Answer) => {
     })
     .match({
       id: id,
+      created_at: createdAt,
       created_by: createdBy,
       post_id: postId,
       type: type,
@@ -34,7 +44,7 @@ export default function useUpdateAnswer(
 ) {
   const queryClient = useQueryClient();
   const user = supabase.auth.user();
-  const answer: Answer = {
+  const answer = {
     id: id,
     createdBy: user?.id ?? '',
     postId: postId,

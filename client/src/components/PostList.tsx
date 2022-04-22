@@ -9,6 +9,7 @@ import './post.css';
 import { Post } from 'types';
 import { useUser } from 'providers/AuthProvider';
 import usePostsViewed from 'hooks/usePostsViewed';
+import moment from 'moment';
 
 interface Props {
   courseId: string;
@@ -37,6 +38,7 @@ const PostList = ({ courseId, posts, handleClick, isArchived }: Props) => {
       );
       const unread = viewed !== undefined && viewed.length === 0 && !isActive;
       const createdAt = new Date(posts[index].createdAt);
+      const createdAtFormatted = moment(createdAt).format('M/DD/YY');
 
       return (
         <div
@@ -48,9 +50,7 @@ const PostList = ({ courseId, posts, handleClick, isArchived }: Props) => {
         >
           <div style={{ float: 'right' }}>
             <VStack align='flex-end'>
-              <div>{`${
-                createdAt.getMonth() + 1
-              }/${createdAt.getDate()}/${createdAt.getUTCFullYear()}`}</div>
+              <div>{createdAtFormatted}</div>
               <div>{unread ? <WarningIcon /> : null}</div>
             </VStack>
           </div>

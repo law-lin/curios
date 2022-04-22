@@ -80,6 +80,7 @@ comment on table public.posts is 'A post for a class';
 -- ANSWERS
 create table public.answers (
   id serial primary key,
+  created_at timestamp,
   created_by uuid references public.users on delete cascade not null,
   post_id bigint references public.posts(id) on delete cascade not null,
   type answer_type,

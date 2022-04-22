@@ -12,6 +12,7 @@ import { useUser as useUserAuth } from 'providers/AuthProvider';
 import { useState } from 'react';
 import { Answer } from '../types';
 import useUser from 'hooks/useUser';
+import moment from 'moment';
 
 interface Props {
   studentAnswer: Answer;
@@ -81,6 +82,10 @@ const StudentAnswerView = ({ studentAnswer, role, classId }: Props) => {
     return null;
 
   const answerer = answererData[0];
+  const createdAt = new Date(studentAnswer.createdAt);
+  const createdAtFormatted = moment(createdAt).format(
+    'MMMM Do, YYYY [at] h:mm a'
+  );
 
   return (
     <ListItem>
@@ -113,7 +118,7 @@ const StudentAnswerView = ({ studentAnswer, role, classId }: Props) => {
         )}
       </Box>
       <Flex pt={0} px={5} justify='end' bg='whiteAlpha.300'>
-        Updated on {answerer.createdAt} By
+        Updated on {createdAtFormatted} By
         {studentAnswer.isAnonymous ? ' Anonymous Pizza' : ` ${answerer.name}`}
       </Flex>
     </ListItem>

@@ -36,6 +36,7 @@ import InstructorAnswerView from './InstructorAnswerView';
 import useUpdateArchive from 'hooks/useUpdateArchive';
 import useUpdatePostsViewed from 'hooks/useUpdatePostsViewed';
 import useUser from 'hooks/useUser';
+import moment from 'moment';
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -130,6 +131,10 @@ const Post = ({ classId, post, role }) => {
     return null;
 
   const poster = posterData[0];
+  const createdAt = new Date(post.createdAt);
+  const createdAtFormatted = moment(createdAt).format(
+    'MMMM Do, YYYY [at] h:mm a'
+  );
   return (
     <Stack spacing={4} pt={5} px='22'>
       <Box pt={5} shadow='sm' borderWidth='1px' borderRadius='5'>
@@ -154,7 +159,7 @@ const Post = ({ classId, post, role }) => {
             ) : null}
           </Flex>
           <Flex pt={0} px={5} justify='end' bg='whiteAlpha.300'>
-            Updated on {post.createdAt} By
+            Updated on {createdAtFormatted} By
             {post.isAnonymous ? ' Anonymous Pizza' : ` ${poster.name}`}
           </Flex>
         </Flex>

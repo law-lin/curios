@@ -15,6 +15,7 @@ import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Highlight from '@tiptap/extension-highlight';
 import Typography from '@tiptap/extension-typography';
+import moment from 'moment';
 
 interface Props {
   instructorAnswer: Answer;
@@ -88,6 +89,11 @@ const InstructorAnswerView = ({ instructorAnswer, role, classId }: Props) => {
 
   const answerer = answererData[0];
 
+  const createdAt = new Date(instructorAnswer.createdAt);
+  const createdAtFormatted = moment(createdAt).format(
+    'MMMM Do, YYYY [at] h:mm a'
+  );
+
   return (
     <>
       <Box px={5}>
@@ -121,7 +127,7 @@ const InstructorAnswerView = ({ instructorAnswer, role, classId }: Props) => {
         )}
       </Box>
       <Flex pt={0} px={5} justify='end' bg='whiteAlpha.300'>
-        Updated on {answerer.createdAt} By
+        Updated on {createdAtFormatted} By
         {instructorAnswer.isAnonymous
           ? ' Anonymous Pizza'
           : ` ${answerer.name}`}
