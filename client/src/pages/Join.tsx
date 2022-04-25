@@ -36,6 +36,7 @@ function Join() {
         boxShadow='xl'
         rounded='xl'
         overflow='hidden'
+        border='1px #40444D solid'
       >
         <Box p={6}>
           <Stack spacing={3} align='center' mb={5}>
@@ -48,7 +49,11 @@ function Join() {
           </Stack>
           <Stack spacing={0} my={20} px={10}>
             <FormLabel htmlFor='passcode'>Enter Passcode</FormLabel>
-            <Input onChange={(e) => setEmail(e.target.value)} id='passcode' />
+            <Input
+              onChange={(e) => setEmail(e.target.value)}
+              id='passcode'
+              placeholder='passcode'
+            />
           </Stack>
           <Center>
             <Button
@@ -59,6 +64,7 @@ function Join() {
               _hover={{
                 transform: 'translateY(-2px)',
                 boxShadow: 'lg',
+                backgroundColor: 'teal.500',
               }}
             >
               Join

@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
-import { Box, Button } from '@chakra-ui/react';
+import {
+  Heading,
+  Box,
+  Center,
+  Stack,
+  Button,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { InputField } from '../components/InputField';
-import { Wrapper } from '../components/Wrapper';
 import { useHistory } from 'react-router-dom';
 import useCreateUser from 'hooks/useCreateUser';
 
@@ -32,7 +38,7 @@ const Register: React.FC<{}> = () => {
       error = 'Name is required';
     }
     return error;
-  }
+  };
 
   const validateEmail = (value) => {
     let error;
@@ -42,7 +48,7 @@ const Register: React.FC<{}> = () => {
       error = 'Invalid email address';
     }
     return error;
-  }
+  };
 
   const validatePassword = (value) => {
     let error;
@@ -55,47 +61,77 @@ const Register: React.FC<{}> = () => {
   };
 
   return (
-    <Wrapper variant='small'>
-      <Formik
-        initialValues={{ email: '', password: '', name: '' }}
-        onSubmit={handleRegister}
+    <Center py={20}>
+      <Box
+        w='50%'
+        minW='350px'
+        maxW='600px'
+        py={10}
+        bg={useColorModeValue('white', 'gray.800')}
+        boxShadow='xl'
+        rounded='xl'
+        overflow='hidden'
+        border='1px #40444D solid'
       >
-        {() => (
-          <Form>
-            <InputField
-              name='name'
-              placeholder='Name'
-              label='Name'
-              type='name'
-              validate={validateName}
-            />
-            <Box mt={4}>
-              <InputField
-                name='email'
-                placeholder='Email'
-                label='Email'
-                type='email'
-                validate={validateEmail}
-              />
-            </Box>
-            <Box mt={4}>
-              <InputField
-                name='password'
-                placeholder='Password'
-                label='Password'
-                type='password'
-                validate={validatePassword}
-              />
-            </Box>
-            {renderError()}
-            <br />
-            <Button mt={4} type='submit' colorScheme='teal'>
-              Register
-            </Button>
-          </Form>
-        )}
-      </Formik>
-    </Wrapper>
+        <Box p={6}>
+          <Heading fontSize='3xl' fontWeight='bold' textAlign='center'>
+            Register
+          </Heading>
+          <Formik
+            initialValues={{ email: '', password: '', name: '' }}
+            onSubmit={handleRegister}
+          >
+            {() => (
+              <Form>
+                <Stack spacing={5} my={10} px={10}>
+                  <InputField
+                    name='name'
+                    placeholder='Name'
+                    label='Name'
+                    type='name'
+                    validate={validateName}
+                  />
+                  <Box mt={4}>
+                    <InputField
+                      name='email'
+                      placeholder='Email'
+                      label='Email'
+                      type='email'
+                      validate={validateEmail}
+                    />
+                  </Box>
+                  <Box mt={4}>
+                    <InputField
+                      name='password'
+                      placeholder='Password'
+                      label='Password'
+                      type='password'
+                      validate={validatePassword}
+                    />
+                  </Box>
+                </Stack>
+                {renderError()}
+                <Center>
+                  <Button
+                    type='submit'
+                    w='30%'
+                    colorScheme='teal'
+                    rounded='md'
+                    _hover={{
+                      transform: 'translateY(-2px)',
+                      boxShadow: 'lg',
+                      backgroundColor: 'teal.500',
+                    }}
+                  >
+                    Register
+                  </Button>
+                </Center>
+              </Form>
+            )}
+          </Formik>
+        </Box>
+      </Box>
+    </Center>
   );
 };
 
