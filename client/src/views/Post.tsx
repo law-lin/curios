@@ -139,7 +139,7 @@ const Post = ({ classId, post, role }) => {
     <Stack spacing={4} pt={5} px='22'>
       <Box pt={5} shadow='sm' borderWidth='1px' borderRadius='5'>
         <Flex flexDirection='column' justifyContent='space-between'>
-          <Flex px={5} justifyContent='space-between'>
+          <Flex px={5} pb={5} justifyContent='space-between'>
             <Box borderRadius='5'>
               <Text>
                 {capitalizeFirstLetter(post?.type)} @{post?.number}
@@ -158,7 +158,13 @@ const Post = ({ classId, post, role }) => {
               </Box>
             ) : null}
           </Flex>
-          <Flex pt={0} px={5} justify='end' bg='whiteAlpha.300'>
+          <Flex
+            pt={0}
+            px={5}
+            justify='end'
+            bg='whiteAlpha.300'
+            borderRadius='5'
+          >
             Updated on {createdAtFormatted} By
             {post.isAnonymous ? ' Anonymous Pizza' : ` ${poster.name}`}
           </Flex>

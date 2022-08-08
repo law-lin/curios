@@ -1,4 +1,19 @@
-import { Box, Text, Button, ListItem, Flex, HStack } from '@chakra-ui/react';
+import {
+  Box,
+  Text,
+  Button,
+  ListItem,
+  Flex,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  Icon,
+} from '@chakra-ui/react';
+import { ChevronDownIcon } from '@chakra-ui/icons';
+import { BsPencilSquare } from 'react-icons/bs';
+
 import Highlight from '@tiptap/extension-highlight';
 import Typography from '@tiptap/extension-typography';
 import { useEditor } from '@tiptap/react';
@@ -88,8 +103,8 @@ const StudentAnswerView = ({ studentAnswer, role, classId }: Props) => {
   );
 
   return (
-    <ListItem>
-      <Box p={5} shadow='sm' borderWidth='1px' borderRadius='5'>
+    <ListItem shadow='sm' borderWidth='1px' borderRadius='5'>
+      <Box p={5}>
         {studentAnswerEdit ? (
           <>
             <Editor
@@ -103,21 +118,40 @@ const StudentAnswerView = ({ studentAnswer, role, classId }: Props) => {
           </>
         ) : (
           <>
-            <Text
-              dangerouslySetInnerHTML={(() => ({
-                __html: studentAnswer?.content,
-              }))()}
-            />
-            {user.id === createdBy ? (
-              <HStack p={5} mt={5}>
-                <Button onClick={() => setStudentAnswerEdit(true)}>Edit</Button>
-                <Button onClick={handleStudentAnswerDelete}>Delete</Button>
-              </HStack>
-            ) : null}
+            <HStack justify='space-between'>
+              <Text
+                dangerouslySetInnerHTML={(() => ({
+                  __html: studentAnswer?.content,
+                }))()}
+              />
+              {user.id === createdBy ? (
+                <Menu>
+                  <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                    <Icon as={BsPencilSquare} />
+                  </MenuButton>
+                  <MenuList width='50px'>
+                    <MenuItem onClick={() => setStudentAnswerEdit(true)}>
+                      Edit
+                    </MenuItem>
+                    <MenuItem
+                      onClick={handleStudentAnswerDelete}
+                      color='#FC144B'
+                      _hover={{
+                        filter: 'brightness(95%)',
+                        backgroundColor: '#FC144B',
+                        color: 'white',
+                      }}
+                    >
+                      Delete
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+              ) : null}
+            </HStack>
           </>
         )}
       </Box>
-      <Flex pt={0} px={5} justify='end' bg='whiteAlpha.300'>
+      <Flex pt={0} px={5} justify='end' bg='whiteAlpha.300' borderRadius='5'>
         Updated on {createdAtFormatted} By
         {studentAnswer.isAnonymous ? ' Anonymous Pizza' : ` ${answerer.name}`}
       </Flex>

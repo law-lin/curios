@@ -51,7 +51,7 @@ const PostList = ({ courseId, posts, handleClick, isArchived }: Props) => {
           <div style={{ float: 'right' }}>
             <VStack align='flex-end'>
               <div>{createdAtFormatted}</div>
-              <div>{unread ? <WarningIcon /> : null}</div>
+              {/*for unanswered posts <div>{unread ? <WarningIcon /> : null}</div> */}
             </VStack>
           </div>
           <div style={{ marginRight: '75px' }}>
